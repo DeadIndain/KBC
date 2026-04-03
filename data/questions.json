@@ -1,0 +1,133 @@
+{
+	"rounds": [
+		{
+			"roundName": "Round 1 - Warm Up",
+			"prizeLevel": "₹10,000",
+			"timeLimit": 30,
+			"questions": [
+				{
+					"id": 1,
+					"question": "Which data structure follows the LIFO (Last In, First Out) principle?",
+					"options": {
+						"A": "Queue",
+						"B": "Stack",
+						"C": "Linked List",
+						"D": "Tree"
+					},
+					"correct": "B",
+					"difficulty": "easy"
+				},
+				{
+					"id": 2,
+					"question": "Which SQL command is used to retrieve data from a table?",
+					"options": {
+						"A": "INSERT",
+						"B": "UPDATE",
+						"C": "SELECT",
+						"D": "DELETE"
+					},
+					"correct": "C",
+					"difficulty": "easy"
+				},
+				{
+					"id": 3,
+					"question": "In JavaScript, which keyword declares a block-scoped variable?",
+					"options": {
+						"A": "var",
+						"B": "let",
+						"C": "define",
+						"D": "constvar"
+					},
+					"correct": "B",
+					"difficulty": "easy"
+				}
+			]
+		},
+		{
+			"roundName": "Round 2 - Getting Hot",
+			"prizeLevel": "₹50,000",
+			"timeLimit": 45,
+			"questions": [
+				{
+					"id": 4,
+					"question": "What is the time complexity of binary search on a sorted array?",
+					"options": {
+						"A": "O(n)",
+						"B": "O(log n)",
+						"C": "O(n log n)",
+						"D": "O(1)"
+					},
+					"correct": "B",
+					"difficulty": "medium"
+				},
+				{
+					"id": 5,
+					"question": "Which HTTP method is typically used for partial updates to a resource?",
+					"options": {
+						"A": "GET",
+						"B": "PUT",
+						"C": "PATCH",
+						"D": "OPTIONS"
+					},
+					"correct": "C",
+					"difficulty": "medium"
+				},
+				{
+					"id": 6,
+					"question": "In Git, which command creates a new branch and switches to it in one step?",
+					"options": {
+						"A": "git branch -d feature",
+						"B": "git checkout -b feature",
+						"C": "git merge feature",
+						"D": "git reset --hard feature"
+					},
+					"correct": "B",
+					"difficulty": "medium"
+				}
+			]
+		},
+		{
+			"roundName": "Final Round - Codepathi!",
+			"prizeLevel": "₹1,00,000",
+			"timeLimit": 60,
+			"questions": [
+				{
+					"id": 7,
+					"question": "Which ACID property guarantees that a transaction is all-or-nothing?",
+					"options": {
+						"A": "Consistency",
+						"B": "Isolation",
+						"C": "Atomicity",
+						"D": "Durability"
+					},
+					"correct": "C",
+					"difficulty": "hard"
+				},
+				{
+					"id": 8,
+					"question": "In operating systems, what is the primary purpose of a mutex?",
+					"options": {
+						"A": "To increase CPU clock speed",
+						"B": "To prevent concurrent access to shared resources",
+						"C": "To encrypt data in memory",
+						"D": "To schedule network packets"
+					},
+					"correct": "B",
+					"difficulty": "hard"
+				},
+				{
+					"id": 9,
+					"question": "Which indexing strategy is generally best for high-cardinality exact-match lookups in relational databases?",
+					"options": {
+						"A": "B-tree index on the lookup column",
+						"B": "No index",
+						"C": "Only full table scan",
+						"D": "Randomized row order"
+					},
+					"correct": "A",
+					"difficulty": "hard"
+				}
+			]
+		}
+	]
+}

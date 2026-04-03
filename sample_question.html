@@ -1,0 +1,1112 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>KBC</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				background: #1a1a2e;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				min-height: 100vh;
+				font-family: "Segoe UI", Arial, sans-serif;
+				overflow: hidden;
+			}
+
+			/* Dark blue gradient background matching KBC studio */
+			.bg {
+				position: fixed;
+				inset: 0;
+				background: radial-gradient(
+					ellipse 80% 60% at 50% 40%,
+					#0d1b4b 0%,
+					#060c26 60%,
+					#000 100%
+				);
+				z-index: 0;
+			}
+
+			/* Subtle light rays from top */
+			.bg::before {
+				content: "";
+				position: absolute;
+				inset: 0;
+				background: conic-gradient(
+					from 260deg at 50% -10%,
+					transparent 0deg,
+					rgba(30, 60, 160, 0.15) 10deg,
+					transparent 20deg,
+					rgba(30, 60, 160, 0.08) 30deg,
+					transparent 40deg,
+					rgba(30, 60, 160, 0.12) 55deg,
+					transparent 70deg,
+					rgba(30, 60, 160, 0.06) 80deg,
+					transparent 100deg
+				);
+			}
+
+			/* ── TIMER HALF-CIRCLE ── */
+			.timer-wrap {
+				position: relative;
+				width: 110px;
+				height: 58px; /* only top half visible */
+				margin: 0 auto;
+				margin-bottom: -2px;
+				z-index: 10;
+				overflow: hidden; /* clip bottom half of circle */
+			}
+
+			.timer-wrap svg {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 110px;
+				height: 110px; /* full circle in SVG, clipped by overflow:hidden on wrapper */
+				overflow: visible;
+			}
+
+			.timer-face {
+				position: absolute;
+				/* circle face: full circle centered, but wrapper clips bottom half */
+				left: 7px;
+				top: 7px;
+				width: 96px;
+				height: 96px;
+				border-radius: 50%;
+				background: radial-gradient(
+					circle at 40% 38%,
+					#2a4db5 0%,
+					#1535a0 30%,
+					#0d228a 60%,
+					#081870 100%
+				);
+				border: 2.5px solid #b8860b;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding-bottom: 0;
+				box-shadow:
+					0 0 0 1px rgba(255, 215, 0, 0.25),
+					inset 0 1px 8px rgba(0, 0, 60, 0.5);
+				clip-path: inset(0 0 50% 0); /* show only top half of face */
+			}
+
+			.timer-number {
+				font-size: 28px;
+				font-weight: 700;
+				color: #fff;
+				font-family: "Segoe UI", Arial, sans-serif;
+				letter-spacing: -1px;
+				text-shadow: 0 0 8px rgba(200, 220, 255, 0.6);
+				margin-top: -35px; /* nudge up since we're in top half */
+			}
+
+			/* ── TIMER BAR (blue body, gold border, inner color line) ── */
+			.timer-bar-wrap {
+				width: 100%;
+				margin-bottom: 8px;
+				position: relative;
+				/* Gold border outer */
+				padding: 2px;
+				background: linear-gradient(
+					180deg,
+					#e0b830 0%,
+					#8a6008 40%,
+					#c09020 60%,
+					#e0b830 100%
+				);
+				border-radius: 4px;
+			}
+
+			.timer-bar-blue {
+				/* Blue body */
+				background: linear-gradient(
+					180deg,
+					#1a3aaa 0%,
+					#0d2080 50%,
+					#1a3aaa 100%
+				);
+				border-radius: 2px;
+				padding: 4px 5px;
+				position: relative;
+				overflow: hidden;
+			}
+
+			/* Inner color line that shrinks */
+			.timer-bar-inner {
+				height: 2px;
+				border-radius: 2px;
+				width: 100%;
+				transition: width 1s linear;
+				/* starts green, JS will update color */
+				background: linear-gradient(90deg, #00cc44, #44ee44);
+			}
+
+			/* Subtle shine on blue bar */
+			.timer-bar-blue::after {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 40%;
+				background: linear-gradient(
+					180deg,
+					rgba(255, 251, 0, 0.08),
+					transparent
+				);
+				border-radius: 2px 2px 0 0;
+				pointer-events: none;
+			}
+
+			/* Main UI container */
+			.kbc-ui {
+				position: relative;
+				z-index: 5;
+				width: 860px;
+				max-width: 98vw;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 0;
+				overflow: visible;
+			}
+
+			/* ── QUESTION BOX ── */
+			.question-outer {
+				width: 100%;
+				padding: 3px;
+				/* Gold border via background gradient + clip-path */
+				background: linear-gradient(
+					180deg,
+					#e8c84a 0%,
+					#9a7010 40%,
+					#c9a020 60%,
+					#e8c84a 100%
+				);
+				clip-path: polygon(
+					26px 0%,
+					calc(100% - 26px) 0%,
+					100% 50%,
+					calc(100% - 26px) 100%,
+					26px 100%,
+					0% 50%
+				);
+				margin-bottom: 10px;
+				filter: drop-shadow(0 0 12px rgba(180, 130, 0, 0.7));
+			}
+
+			.question-inner {
+				background: linear-gradient(
+					180deg,
+					#162d8c 0%,
+					#0f2070 30%,
+					#0b1a60 70%,
+					#162d8c 100%
+				);
+				clip-path: polygon(
+					26px 0%,
+					calc(100% - 26px) 0%,
+					100% 50%,
+					calc(100% - 26px) 100%,
+					26px 100%,
+					0% 50%
+				);
+				padding: 18px 70px;
+				text-align: center;
+			}
+
+			.question-text {
+				font-size: 21px;
+				font-weight: 600;
+				color: #ffffff;
+				letter-spacing: 0.3px;
+				line-height: 1.35;
+				font-family: "Segoe UI", Arial, sans-serif;
+				text-shadow: 0 1px 4px rgba(0, 0, 40, 0.8);
+			}
+
+			/* ── OPTIONS ── */
+			.options-row {
+				display: grid;
+				grid-template-columns: repeat(2, max-content);
+				column-gap: 24px;
+				row-gap: 12px;
+				width: 100%;
+				position: relative;
+				justify-content: center;
+				justify-items: center;
+				margin-bottom: 0;
+				overflow: visible;
+			}
+			.options-row::before,
+			.options-row::after {
+				content: "";
+				position: absolute;
+				left: calc(50% - 50vw);
+				width: 100vw;
+				height: 1.5px;
+				pointer-events: none;
+				z-index: 0;
+				background: linear-gradient(
+					90deg,
+					rgba(180, 130, 20, 0.75),
+					rgba(180, 130, 20, 0.45) 40%,
+					transparent
+				);
+			}
+			.options-row::before {
+				top: 27px;
+			}
+			.options-row::after {
+				bottom: 27px;
+				transform: scaleX(-1);
+			}
+
+			/* Each option: outer gold border shape, inner blue */
+			.opt {
+				position: relative;
+				cursor: pointer;
+				outline: none;
+				background: none;
+				border: none;
+				padding: 0;
+				transition: filter 0.1s;
+			}
+
+			.opt:hover .opt-outer {
+				filter: brightness(1.15) drop-shadow(0 0 8px rgba(220, 170, 20, 0.8));
+			}
+
+			.opt-outer {
+				background: linear-gradient(
+					180deg,
+					#d4a010 0%,
+					#8b6008 40%,
+					#b08018 60%,
+					#d4a010 100%
+				);
+				clip-path: polygon(
+					18px 0%,
+					calc(100% - 18px) 0%,
+					100% 50%,
+					calc(100% - 18px) 100%,
+					18px 100%,
+					0% 50%
+				);
+				padding: 2.5px;
+				filter: drop-shadow(0 0 5px rgba(160, 110, 0, 0.5));
+				transition: filter 0.15s;
+			}
+
+			.opt-inner {
+				background: linear-gradient(
+					180deg,
+					#1a3498 0%,
+					#112480 40%,
+					#0d1c70 70%,
+					#1a3498 100%
+				);
+				clip-path: polygon(
+					18px 0%,
+					calc(100% - 18px) 0%,
+					100% 50%,
+					calc(100% - 18px) 100%,
+					18px 100%,
+					0% 50%
+				);
+				padding: 13px 20px 13px 48px;
+				display: flex;
+				align-items: center;
+				min-height: 52px;
+				position: relative;
+			}
+
+			/* Diamond bullet */
+			.opt-diamond {
+				position: absolute;
+				left: 18px;
+				top: 50%;
+				transform: translateY(-50%) rotate(45deg);
+				width: 13px;
+				height: 13px;
+				background: linear-gradient(135deg, #ffd84d, #c9960a);
+				box-shadow: 0 0 4px rgba(200, 150, 0, 0.6);
+				flex-shrink: 0;
+			}
+
+			.opt-label-wrap {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				flex: 1;
+			}
+
+			.opt-letter {
+				font-size: 17px;
+				font-weight: 700;
+				color: #ffffff;
+				font-family: "Segoe UI", Arial, sans-serif;
+				flex-shrink: 0;
+				text-shadow: 0 0 6px rgba(200, 220, 255, 0.4);
+			}
+
+			.opt-text {
+				font-size: 17px;
+				font-weight: 500;
+				color: #e8eeff;
+				font-family: "Segoe UI", Arial, sans-serif;
+				text-align: left;
+				text-shadow: 0 1px 3px rgba(0, 0, 40, 0.7);
+			}
+
+			/* States */
+			.opt.correct .opt-outer {
+				background: linear-gradient(
+					180deg,
+					#66e866 0%,
+					#1a9a1a 40%,
+					#22bb22 60%,
+					#66e866 100%
+				);
+				filter: drop-shadow(0 0 14px rgba(0, 200, 0, 0.9));
+			}
+			.opt.correct .opt-inner {
+				background: linear-gradient(
+					180deg,
+					#1a7a1a 0%,
+					#0f5a0f 50%,
+					#1a7a1a 100%
+				);
+			}
+			.opt.correct .opt-text,
+			.opt.correct .opt-letter {
+				color: #fff;
+				text-shadow: 0 0 8px rgba(100, 255, 100, 0.6);
+			}
+
+			.opt.wrong .opt-outer {
+				background: linear-gradient(
+					180deg,
+					#ff5555 0%,
+					#aa1010 40%,
+					#cc2020 60%,
+					#ff5555 100%
+				);
+				filter: drop-shadow(0 0 14px rgba(220, 0, 0, 0.9));
+			}
+			.opt.wrong .opt-inner {
+				background: linear-gradient(
+					180deg,
+					#7a1a1a 0%,
+					#5a0f0f 50%,
+					#7a1a1a 100%
+				);
+			}
+			.opt.wrong .opt-text,
+			.opt.wrong .opt-letter {
+				color: #fff;
+			}
+
+			.opt.dimmed {
+				opacity: 0.25;
+				pointer-events: none;
+			}
+
+			/* ── OVERLAY (lose/timeout) ── */
+			.overlay {
+				display: none;
+				position: fixed;
+				inset: 0;
+				background: rgba(0, 0, 10, 0.88);
+				z-index: 100;
+				align-items: center;
+				justify-content: center;
+				flex-direction: column;
+				gap: 16px;
+			}
+			.overlay.active {
+				display: flex;
+			}
+			.overlay-title {
+				font-size: 42px;
+				font-weight: 700;
+				font-family: "Segoe UI", Arial, sans-serif;
+				text-align: center;
+				animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+			}
+			.overlay-title.lose {
+				color: #ff5544;
+				text-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
+			}
+			@keyframes popIn {
+				from {
+					transform: scale(0.4);
+					opacity: 0;
+				}
+				to {
+					transform: scale(1);
+					opacity: 1;
+				}
+			}
+			.overlay-sub {
+				font-size: 18px;
+				color: #aac0ff;
+				font-family: "Segoe UI", Arial, sans-serif;
+				text-align: center;
+			}
+			/* ── WIN BANNER ── */
+			#winScreen {
+				display: none;
+				position: fixed;
+				inset: 0;
+				z-index: 200;
+				align-items: center;
+				justify-content: center;
+				flex-direction: column;
+				gap: 28px;
+				background: rgba(0, 0, 10, 0.82);
+			}
+			#winScreen.active {
+				display: flex;
+			}
+
+			#sparkleCanvas {
+				position: fixed;
+				inset: 0;
+				z-index: 199;
+				pointer-events: none;
+			}
+
+			.win-banner-wrap {
+				position: relative;
+				width: 680px;
+				max-width: 92vw;
+				animation: bannerPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+					forwards;
+			}
+			@keyframes bannerPop {
+				from {
+					transform: scale(0.6) translateY(40px);
+					opacity: 0;
+				}
+				to {
+					transform: scale(1) translateY(0);
+					opacity: 1;
+				}
+			}
+			.win-banner-outer {
+				background: linear-gradient(
+					180deg,
+					#f0d050 0%,
+					#9a7010 35%,
+					#c0900a 65%,
+					#f0d050 100%
+				);
+				clip-path: polygon(
+					26px 0%,
+					calc(100% - 26px) 0%,
+					100% 50%,
+					calc(100% - 26px) 100%,
+					26px 100%,
+					0% 50%
+				);
+				padding: 3px;
+				filter: drop-shadow(0 0 18px rgba(220, 160, 0, 0.9))
+					drop-shadow(0 0 40px rgba(220, 160, 0, 0.4));
+			}
+			.win-banner-inner {
+				background:
+					radial-gradient(
+						ellipse 28% 80% at 12% 50%,
+						rgba(255, 220, 80, 0.2) 0%,
+						transparent 100%
+					),
+					radial-gradient(
+						ellipse 28% 80% at 88% 50%,
+						rgba(255, 220, 80, 0.2) 0%,
+						transparent 100%
+					),
+					linear-gradient(
+						180deg,
+						#1e3db0 0%,
+						#0d2090 40%,
+						#081868 60%,
+						#1e3db0 100%
+					);
+				clip-path: polygon(
+					26px 0%,
+					calc(100% - 26px) 0%,
+					100% 50%,
+					calc(100% - 26px) 100%,
+					26px 100%,
+					0% 50%
+				);
+				padding: 18px 80px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				position: relative;
+				overflow: hidden;
+				min-height: 80px;
+			}
+			.win-banner-inner::before {
+				content: "";
+				position: absolute;
+				inset: 0;
+				background:
+					radial-gradient(
+						1.5px 1.5px at 8% 25%,
+						rgba(255, 240, 150, 0.95) 0%,
+						transparent 100%
+					),
+					radial-gradient(
+						1px 1px at 18% 65%,
+						rgba(255, 240, 150, 0.8) 0%,
+						transparent 100%
+					),
+					radial-gradient(
+						2px 2px at 28% 18%,
+						rgba(255, 240, 150, 0.9) 0%,
+						transparent 100%
+					),
+					radial-gradient(
+						1px 1px at 38% 78%,
+						rgba(255, 240, 150, 0.7) 0%,
+						transparent 100%
+					),
+					radial-gradient(
+						1.5px 1.5px at 48% 35%,
+						rgba(255, 240, 150, 0.6) 0%,
+						transparent 100%
+					),
+					radial-gradient(
+						1px 1px at 58% 72%,
+						rgba(255, 240, 150, 0.85) 0%,
+						transparent 100%
+					),
+					radial-gradient(
+						2px 2px at 68% 22%,
+						rgba(255, 240, 150, 0.9) 0%,
+						transparent 100%
+					),
+					radial-gradient(
+						1px 1px at 78% 58%,
+						rgba(255, 240, 150, 0.75) 0%,
+						transparent 100%
+					),
+					radial-gradient(
+						1.5px 1.5px at 88% 42%,
+						rgba(255, 240, 150, 0.8) 0%,
+						transparent 100%
+					),
+					radial-gradient(
+						1px 1px at 13% 85%,
+						rgba(255, 240, 150, 0.7) 0%,
+						transparent 100%
+					),
+					radial-gradient(
+						1px 1px at 93% 15%,
+						rgba(255, 240, 150, 0.9) 0%,
+						transparent 100%
+					),
+					radial-gradient(
+						2px 2px at 53% 88%,
+						rgba(255, 240, 150, 0.6) 0%,
+						transparent 100%
+					);
+				animation: bannerSparkle 1.4s ease-in-out infinite alternate;
+			}
+			@keyframes bannerSparkle {
+				from {
+					opacity: 0.4;
+				}
+				to {
+					opacity: 1;
+				}
+			}
+			.win-amount {
+				font-size: 40px;
+				font-weight: 700;
+				color: #ffffff;
+				font-family: "Segoe UI", Arial, sans-serif;
+				letter-spacing: 3px;
+				text-shadow:
+					0 0 20px rgba(255, 220, 100, 0.9),
+					0 2px 4px rgba(0, 0, 0, 0.6);
+				position: relative;
+				z-index: 2;
+				white-space: nowrap;
+			}
+			/* Sparkle flash on correct option */
+			@keyframes flashGreen {
+				0%,
+				100% {
+					filter: brightness(1) drop-shadow(0 0 14px rgba(0, 200, 0, 0.9));
+				}
+				50% {
+					filter: brightness(1.4) drop-shadow(0 0 28px rgba(0, 255, 0, 1));
+				}
+			}
+			.opt.correct .opt-outer {
+				animation: flashGreen 0.6s ease-in-out 2;
+			}
+
+			/* ── EXTENDING LINES from pointy tips ── */
+			/* Wrapper that allows overflow beyond the UI container */
+			.line-wrap {
+				position: relative;
+				width: 100%;
+				overflow: visible;
+			}
+
+			/* The line sits at vertical midpoint of the shape, extends left and right to screen edge */
+			.line-wrap::before,
+			.line-wrap::after {
+				content: "";
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				height: 2px;
+				background: linear-gradient(
+					90deg,
+					rgba(201, 160, 32, 0.15),
+					rgba(201, 160, 32, 0.7) 40%,
+					rgba(201, 160, 32, 0.9)
+				);
+				pointer-events: none;
+				z-index: 1;
+			}
+
+			/* Left line: from left edge of screen to left tip of shape */
+			.line-wrap::before {
+				right: 100%;
+				width: max(0px, calc(50vw - 50%));
+				background: linear-gradient(
+					90deg,
+					transparent,
+					rgba(201, 160, 32, 0.5) 60%,
+					rgba(201, 160, 32, 0.85)
+				);
+			}
+
+			/* Right line: from right tip of shape to right edge of screen */
+			.line-wrap::after {
+				left: 100%;
+				width: max(0px, calc(50vw - 50%));
+				background: linear-gradient(
+					90deg,
+					rgba(201, 160, 32, 0.85),
+					rgba(201, 160, 32, 0.5) 40%,
+					transparent
+				);
+			}
+
+			/* Options: lines sit at vertical mid of each option pill */
+			.opt-line-wrap {
+				position: relative;
+				display: block;
+				overflow: visible;
+				width: max-content;
+				z-index: 1;
+			}
+			.opt-line-wrap::before,
+			.opt-line-wrap::after {
+				content: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="bg"></div>
+
+		<div class="kbc-ui">
+			<!-- Timer: half-circle, only top half visible -->
+			<div class="timer-wrap">
+				<!--
+      SVG: full 110x110 circle, viewBox 0 0 110 110.
+      We only show the top half: the wrapper is 110px wide x 58px tall,
+      and overflow:hidden clips the bottom semicircle.
+      Arc goes from left (180°) clockwise to right (0°) = top half.
+    -->
+				<svg
+					viewBox="0 0 110 110"
+					xmlns="http://www.w3.org/2000/svg"
+					style="
+						position: absolute;
+						top: 0;
+						left: 0;
+						width: 110px;
+						height: 110px;
+						overflow: visible;
+					">
+					<defs>
+						<linearGradient id="tg" x1="0%" y1="0%" x2="100%" y2="0%">
+							<stop offset="0%" stop-color="#ffe066" />
+							<stop offset="50%" stop-color="#c9a020" />
+							<stop offset="100%" stop-color="#ffe066" />
+						</linearGradient>
+					</defs>
+					<!-- Track arc: top semicircle only, drawn as a path -->
+					<!-- Semicircle: M 5,55 A 50,50 0 0 1 105,55 (top arc from left to right) -->
+					<path
+						d="M 7,55 A 48,48 0 0 1 103,55"
+						fill="none"
+						stroke="rgba(20,40,120,0.5)"
+						stroke-width="7"
+						stroke-linecap="round" />
+					<!-- Progress arc: same path, will use stroke-dasharray to animate -->
+					<path
+						id="timerRing"
+						d="M 7,55 A 48,48 0 0 1 103,55"
+						fill="none"
+						stroke="url(#tg)"
+						stroke-width="7"
+						stroke-linecap="round" />
+				</svg>
+				<div class="timer-face">
+					<span class="timer-number" id="timerNum">30</span>
+				</div>
+			</div>
+
+			<!-- Blue bar with gold border, inner color line -->
+			<div class="timer-bar-wrap">
+				<div class="timer-bar-inner" id="innerBar"></div>
+			</div>
+
+			<!-- Question -->
+			<div class="line-wrap">
+				<div class="question-outer">
+					<div class="question-inner">
+						<div class="question-text">
+							Which of these objects is often used to hang clothes?
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /line-wrap -->
+
+			<!-- Options -->
+			<div class="options-row">
+				<!-- A -->
+				<div class="opt-line-wrap">
+					<button class="opt" onclick="pick(this, false)" id="optA">
+						<div class="opt-outer">
+							<div class="opt-inner">
+								<div class="opt-diamond"></div>
+								<div class="opt-label-wrap">
+									<span class="opt-letter">A:</span>
+									<span class="opt-text">Image Option A</span>
+								</div>
+							</div>
+						</div>
+					</button>
+				</div>
+				<!-- /opt-line-wrap -->
+				<!-- B -->
+				<div class="opt-line-wrap">
+					<button class="opt" onclick="pick(this, true)" id="optB">
+						<div class="opt-outer">
+							<div class="opt-inner">
+								<div class="opt-diamond"></div>
+								<div class="opt-label-wrap">
+									<span class="opt-letter">B:</span>
+									<span class="opt-text">Image Option B</span>
+								</div>
+							</div>
+						</div>
+					</button>
+				</div>
+				<!-- /opt-line-wrap -->
+				<!-- C -->
+				<div class="opt-line-wrap">
+					<button class="opt" onclick="pick(this, false)" id="optC">
+						<div class="opt-outer">
+							<div class="opt-inner">
+								<div class="opt-diamond"></div>
+								<div class="opt-label-wrap">
+									<span class="opt-letter">C:</span>
+									<span class="opt-text">Image Option C</span>
+								</div>
+							</div>
+						</div>
+					</button>
+				</div>
+				<!-- /opt-line-wrap -->
+				<!-- D -->
+				<div class="opt-line-wrap">
+					<button class="opt" onclick="pick(this, false)" id="optD">
+						<div class="opt-outer">
+							<div class="opt-inner">
+								<div class="opt-diamond"></div>
+								<div class="opt-label-wrap">
+									<span class="opt-letter">D:</span>
+									<span class="opt-text">Image Option D</span>
+								</div>
+							</div>
+						</div>
+					</button>
+				</div>
+				<!-- /opt-line-wrap -->
+			</div>
+		</div>
+
+		<!-- Lose overlay -->
+		<div class="overlay" id="overlay">
+			<div class="overlay-title" id="overlayTitle"></div>
+			<div class="overlay-sub" id="overlaySub"></div>
+		</div>
+
+		<!-- Win screen -->
+		<canvas id="sparkleCanvas"></canvas>
+		<div id="winScreen">
+			<div class="win-banner-wrap">
+				<div class="win-banner-outer">
+					<div class="win-banner-inner">
+						<span class="win-amount" id="winAmount">₹ 7,00,00,000</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			const TOTAL = 30;
+			const ARC_LEN = Math.PI * 48;
+
+			let t = TOTAL,
+				tid = null,
+				done = false;
+			let sparkleRAF = null,
+				particles = [];
+
+			const ring = document.getElementById("timerRing");
+			const numEl = document.getElementById("timerNum");
+			const innerBar = document.getElementById("innerBar");
+			const canvas = document.getElementById("sparkleCanvas");
+			const ctx = canvas.getContext("2d");
+
+			ring.setAttribute("stroke-dasharray", ARC_LEN);
+			ring.setAttribute("stroke-dashoffset", 0);
+
+			function resizeCanvas() {
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+			}
+			resizeCanvas();
+			window.addEventListener("resize", resizeCanvas);
+
+			function getBarColor(pct) {
+				if (pct > 0.5) {
+					const r = Math.round(255 * (1 - pct) * 2);
+					return `linear-gradient(90deg, #00cc44, rgb(${r},${Math.round(180 + 75 * pct)},0))`;
+				} else {
+					const g = Math.round(140 * (pct * 2));
+					return `linear-gradient(90deg, rgb(255,${g},0), #ff2200)`;
+				}
+			}
+
+			function startTimer() {
+				innerBar.style.background = getBarColor(1);
+				tid = setInterval(() => {
+					t--;
+					numEl.textContent = t;
+					const pct = t / TOTAL;
+					ring.setAttribute("stroke-dashoffset", ARC_LEN * (1 - pct));
+					innerBar.style.width = pct * 100 + "%";
+					innerBar.style.background = getBarColor(pct);
+					if (t <= 10) numEl.style.color = "#ff8866";
+					if (t <= 0) {
+						clearInterval(tid);
+						if (!done) timeUp();
+					}
+				}, 1000);
+			}
+
+			/* ── SPARKLE PARTICLES ── */
+			const COLORS = [
+				"#ffe566",
+				"#ffd700",
+				"#ffb300",
+				"#fff0a0",
+				"#ffffff",
+				"#ffcc44",
+				"#ffe0ff",
+				"#c8f0ff",
+			];
+
+			function spawnParticles() {
+				particles = [];
+				const W = canvas.width,
+					H = canvas.height;
+				for (let i = 0; i < 220; i++) {
+					const side = Math.random() < 0.5 ? -1 : 1;
+					particles.push({
+						x: W / 2 + side * (Math.random() * W * 0.55),
+						y: H * 0.3 + Math.random() * H * 0.5,
+						vx: (Math.random() - 0.5) * 4,
+						vy: -(Math.random() * 5 + 2),
+						r: Math.random() * 3 + 1,
+						alpha: 1,
+						decay: Math.random() * 0.012 + 0.006,
+						color: COLORS[Math.floor(Math.random() * COLORS.length)],
+						rot: Math.random() * Math.PI * 2,
+						rotV: (Math.random() - 0.5) * 0.2,
+						star: Math.random() < 0.4,
+						gravity: 0.06 + Math.random() * 0.04,
+					});
+				}
+			}
+
+			function drawStar(cx, cy, r, rot) {
+				ctx.save();
+				ctx.translate(cx, cy);
+				ctx.rotate(rot);
+				ctx.beginPath();
+				for (let i = 0; i < 4; i++) {
+					const a = (i / 4) * Math.PI * 2;
+					const x1 = Math.cos(a) * r,
+						y1 = Math.sin(a) * r;
+					const x2 = Math.cos(a + Math.PI / 4) * r * 0.4;
+					const y2 = Math.sin(a + Math.PI / 4) * r * 0.4;
+					i === 0 ? ctx.moveTo(x1, y1) : ctx.lineTo(x1, y1);
+					ctx.lineTo(x2, y2);
+				}
+				ctx.closePath();
+				ctx.fill();
+				ctx.restore();
+			}
+
+			function animateSparkles() {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				let alive = false;
+				for (const p of particles) {
+					if (p.alpha <= 0) continue;
+					alive = true;
+					p.x += p.vx;
+					p.vy += p.gravity;
+					p.y += p.vy;
+					p.rot += p.rotV;
+					p.alpha -= p.decay;
+					ctx.globalAlpha = Math.max(0, p.alpha);
+					ctx.fillStyle = p.color;
+					if (p.star) {
+						drawStar(p.x, p.y, p.r * 2, p.rot);
+					} else {
+						ctx.beginPath();
+						ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+						ctx.fill();
+					}
+				}
+				ctx.globalAlpha = 1;
+				if (alive) sparkleRAF = requestAnimationFrame(animateSparkles);
+				else ctx.clearRect(0, 0, canvas.width, canvas.height);
+			}
+
+			function startSparkles() {
+				if (sparkleRAF) cancelAnimationFrame(sparkleRAF);
+				spawnParticles();
+				animateSparkles();
+				// Respawn burst waves
+				let waves = 0;
+				const waveTimer = setInterval(() => {
+					waves++;
+					spawnParticles();
+					if (waves >= 3) clearInterval(waveTimer);
+				}, 800);
+			}
+
+			function stopSparkles() {
+				if (sparkleRAF) {
+					cancelAnimationFrame(sparkleRAF);
+					sparkleRAF = null;
+				}
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				particles = [];
+			}
+
+			/* ── GAME LOGIC ── */
+			function pick(btn, correct) {
+				if (done) return;
+				done = true;
+				clearInterval(tid);
+				setTimeout(() => {
+					if (correct) {
+						btn.classList.add("correct");
+						document.querySelectorAll(".opt").forEach((o) => {
+							if (o !== btn) o.classList.add("dimmed");
+						});
+						setTimeout(() => showWin(), 1400);
+					} else {
+						btn.classList.add("wrong");
+						setTimeout(() => {
+							document.getElementById("optB").classList.add("correct");
+							document.querySelectorAll(".opt").forEach((o) => {
+								if (
+									!o.classList.contains("wrong") &&
+									!o.classList.contains("correct")
+								)
+									o.classList.add("dimmed");
+							});
+							setTimeout(() => showLose(), 1200);
+						}, 900);
+					}
+				}, 350);
+			}
+
+			function timeUp() {
+				done = true;
+				document.getElementById("optB").classList.add("correct");
+				setTimeout(() => showLose(true), 800);
+			}
+
+			function showWin() {
+				document.getElementById("winAmount").textContent = "₹ 7,00,00,000";
+				document.getElementById("winScreen").classList.add("active");
+				startSparkles();
+			}
+
+			function showLose(timeout) {
+				const tEl = document.getElementById("overlayTitle");
+				const s = document.getElementById("overlaySub");
+				if (timeout) {
+					tEl.textContent = "⏰ Time's Up!";
+					s.textContent = "The correct answer was: Image Option B";
+				} else {
+					tEl.textContent = "✗ Wrong Answer!";
+					s.textContent = "The correct answer was: Image Option B";
+				}
+				tEl.className = "overlay-title lose";
+				document.getElementById("overlay").classList.add("active");
+			}
+
+			function reset() {
+				done = false;
+				t = TOTAL;
+				numEl.textContent = TOTAL;
+				numEl.style.color = "#fff";
+				ring.setAttribute("stroke-dashoffset", 0);
+				innerBar.style.transition = "none";
+				innerBar.style.width = "100%";
+				innerBar.style.background = getBarColor(1);
+				setTimeout(() => (innerBar.style.transition = "width 1s linear"), 50);
+				document.querySelectorAll(".opt").forEach((o) => {
+					o.className = "opt";
+					o.style.opacity = "";
+				});
+				document.getElementById("overlay").classList.remove("active");
+				document.getElementById("winScreen").classList.remove("active");
+				stopSparkles();
+				startTimer();
+			}
+
+			startTimer();
+		</script>
+	</body>
+</html>

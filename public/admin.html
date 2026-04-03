@@ -1,0 +1,1222 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>KBC Admin Panel</title>
+		<script src="/socket.io/socket.io.js"></script>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Cinzel:wght@700&display=swap"
+			rel="stylesheet" />
+		<style>
+			:root {
+				--gold: #f5c842;
+				--gold2: #c8900a;
+				--bg: #0d1117;
+				--card: #161b22;
+				--border: #30363d;
+				--accent: #00d4ff;
+				--correct: #3fb950;
+				--wrong: #f85149;
+				--text: #c9d1d9;
+				--muted: #8b949e;
+			}
+
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
+			body {
+				min-height: 100vh;
+				background:
+					radial-gradient(
+						circle at top,
+						rgba(0, 212, 255, 0.08),
+						transparent 35%
+					),
+					linear-gradient(180deg, #0a0e16 0%, var(--bg) 100%);
+				color: var(--text);
+				font-family: "Rajdhani", sans-serif;
+				font-size: 15px;
+				overflow: hidden;
+			}
+
+			.top-bar {
+				height: 56px;
+				padding: 0 18px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 16px;
+				background: rgba(22, 27, 34, 0.94);
+				border-bottom: 1px solid var(--border);
+				position: sticky;
+				top: 0;
+				z-index: 50;
+			}
+
+			.top-left {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				flex-wrap: wrap;
+			}
+
+			.top-logo {
+				font-family: "Cinzel", serif;
+				font-size: 20px;
+				color: var(--gold);
+				letter-spacing: 2px;
+			}
+
+			.stats-pill {
+				padding: 4px 12px;
+				border-radius: 999px;
+				border: 1px solid rgba(245, 200, 66, 0.35);
+				background: rgba(245, 200, 66, 0.08);
+				color: var(--gold);
+				font-size: 13px;
+				font-weight: 700;
+				letter-spacing: 1px;
+			}
+
+			.phase-badge {
+				padding: 4px 14px;
+				border-radius: 999px;
+				border: 1px solid rgba(245, 200, 66, 0.4);
+				background: rgba(245, 200, 66, 0.1);
+				color: var(--gold);
+				font-size: 13px;
+				font-weight: 700;
+				letter-spacing: 2px;
+				text-transform: uppercase;
+			}
+
+			.top-actions {
+				display: flex;
+				gap: 8px;
+				flex-wrap: wrap;
+				justify-content: flex-end;
+			}
+
+			.admin-body {
+				height: calc(100vh - 56px);
+				padding: 16px 16px 148px;
+				display: grid;
+				grid-template-columns: 300px minmax(0, 1fr) 300px;
+				gap: 16px;
+				overflow: hidden;
+			}
+
+			.panel {
+				min-height: 0;
+				display: flex;
+				flex-direction: column;
+				gap: 14px;
+				overflow-y: auto;
+				padding-right: 2px;
+			}
+
+			.card {
+				background: rgba(22, 27, 34, 0.96);
+				border: 1px solid var(--border);
+				border-radius: 12px;
+				overflow: hidden;
+			}
+
+			.card-header {
+				padding: 10px 14px;
+				background: rgba(255, 255, 255, 0.03);
+				border-bottom: 1px solid var(--border);
+				font-size: 12px;
+				font-weight: 700;
+				letter-spacing: 3px;
+				text-transform: uppercase;
+				color: var(--muted);
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 8px;
+			}
+
+			.card-body {
+				padding: 14px;
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+			}
+
+			.btn {
+				padding: 8px 14px;
+				border-radius: 8px;
+				border: 1px solid transparent;
+				font-family: "Rajdhani", sans-serif;
+				font-size: 14px;
+				font-weight: 700;
+				letter-spacing: 1px;
+				cursor: pointer;
+				transition: all 0.15s;
+				text-transform: uppercase;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				gap: 6px;
+			}
+
+			.btn:disabled {
+				opacity: 0.35;
+				cursor: not-allowed;
+			}
+
+			.btn-gold {
+				background: linear-gradient(135deg, var(--gold), var(--gold2));
+				color: #000;
+			}
+
+			.btn-outline {
+				background: transparent;
+				border-color: var(--border);
+				color: var(--text);
+			}
+
+			.btn-accent {
+				background: rgba(0, 212, 255, 0.1);
+				border-color: rgba(0, 212, 255, 0.4);
+				color: var(--accent);
+			}
+
+			.btn-green {
+				background: rgba(63, 185, 80, 0.15);
+				border-color: rgba(63, 185, 80, 0.5);
+				color: var(--correct);
+			}
+
+			.btn-red {
+				background: rgba(248, 81, 73, 0.15);
+				border-color: rgba(248, 81, 73, 0.4);
+				color: var(--wrong);
+			}
+
+			.btn-sm {
+				padding: 5px 10px;
+				font-size: 12px;
+			}
+
+			.btn-full {
+				width: 100%;
+			}
+
+			.btn-row {
+				display: flex;
+				gap: 8px;
+				flex-wrap: wrap;
+			}
+
+			input[type="text"],
+			input[type="number"],
+			textarea,
+			select {
+				width: 100%;
+				padding: 8px 12px;
+				border-radius: 8px;
+				border: 1px solid var(--border);
+				background: rgba(255, 255, 255, 0.05);
+				color: var(--text);
+				font-family: "Rajdhani", sans-serif;
+				font-size: 14px;
+			}
+
+			input:focus,
+			textarea:focus,
+			select:focus {
+				outline: none;
+				border-color: var(--gold);
+			}
+
+			textarea {
+				resize: vertical;
+				min-height: 84px;
+			}
+
+			label {
+				font-size: 12px;
+				color: var(--muted);
+				font-weight: 700;
+				letter-spacing: 1px;
+				text-transform: uppercase;
+			}
+
+			.count-grid {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: 10px;
+			}
+
+			.count-card {
+				padding: 12px;
+				border-radius: 10px;
+				border: 1px solid var(--border);
+				background: rgba(255, 255, 255, 0.02);
+			}
+
+			.count-label {
+				font-size: 12px;
+				color: var(--muted);
+				letter-spacing: 2px;
+				text-transform: uppercase;
+			}
+
+			.count-value {
+				margin-top: 6px;
+				font-family: "Cinzel", serif;
+				font-size: 34px;
+				line-height: 1;
+				color: var(--gold);
+			}
+
+			.question-preview {
+				padding: 14px;
+				border-radius: 10px;
+				border: 1px solid rgba(0, 212, 255, 0.2);
+				background: rgba(0, 212, 255, 0.05);
+				line-height: 1.5;
+			}
+
+			.settings-details {
+				border: 1px solid var(--border);
+				border-radius: 10px;
+				background: rgba(255, 255, 255, 0.02);
+				padding: 0 12px 12px;
+			}
+
+			.settings-details summary {
+				cursor: pointer;
+				list-style: none;
+				padding: 12px 0;
+				font-size: 12px;
+				font-weight: 700;
+				letter-spacing: 3px;
+				text-transform: uppercase;
+				color: var(--gold);
+			}
+
+			.settings-details summary::-webkit-details-marker {
+				display: none;
+			}
+
+			.small-chip {
+				display: inline-flex;
+				align-items: center;
+				padding: 8px 10px;
+				border-radius: 8px;
+				border: 1px solid var(--border);
+				background: rgba(255, 255, 255, 0.02);
+				font-weight: 700;
+			}
+
+			.question-header {
+				display: flex;
+				justify-content: space-between;
+				gap: 12px;
+				align-items: flex-start;
+			}
+
+			.question-title {
+				font-family: "Cinzel", serif;
+				font-size: 26px;
+				line-height: 1.15;
+				color: var(--gold);
+			}
+
+			.question-meta {
+				font-size: 12px;
+				letter-spacing: 2px;
+				text-transform: uppercase;
+				color: var(--muted);
+			}
+
+			.question-actions,
+			.flow-actions,
+			.audio-grid {
+				display: grid;
+				gap: 8px;
+			}
+
+			.question-actions {
+				grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+			}
+
+			.flow-actions {
+				grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+			}
+
+			.audio-grid {
+				grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+			}
+
+			.option-grid {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: 8px;
+			}
+
+			.opt-btn {
+				padding: 10px 12px;
+				border-radius: 8px;
+				border: 1px solid var(--border);
+				background: rgba(255, 255, 255, 0.03);
+				color: var(--text);
+				font-family: "Rajdhani", sans-serif;
+				font-size: 14px;
+				font-weight: 700;
+				cursor: pointer;
+				text-align: left;
+				transition: all 0.15s;
+			}
+
+			.opt-btn:hover {
+				border-color: var(--gold);
+				color: var(--gold);
+			}
+
+			.opt-btn.revealed {
+				border-color: var(--accent);
+				color: var(--accent);
+				background: rgba(0, 212, 255, 0.08);
+			}
+
+			.opt-btn.removed {
+				opacity: 0.3;
+				cursor: not-allowed;
+				text-decoration: line-through;
+			}
+
+			.lifeline-list {
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+			}
+
+			.lifeline-row {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 12px;
+				padding: 10px 12px;
+				border: 1px solid var(--border);
+				border-radius: 10px;
+				background: rgba(255, 255, 255, 0.02);
+			}
+
+			.lifeline-row.selected {
+				border-color: var(--gold);
+				background: rgba(245, 200, 66, 0.08);
+			}
+
+			.lifeline-name {
+				font-size: 14px;
+				font-weight: 700;
+			}
+
+			.lifeline-status {
+				font-size: 12px;
+				color: var(--muted);
+			}
+
+			.hidden {
+				display: none !important;
+			}
+
+			.audio-dock {
+				position: fixed;
+				left: 16px;
+				right: 16px;
+				bottom: 16px;
+				z-index: 40;
+			}
+
+			.audio-title {
+				font-size: 12px;
+				letter-spacing: 3px;
+				text-transform: uppercase;
+				color: var(--muted);
+				margin-bottom: 8px;
+			}
+
+			.audio-btn {
+				padding: 10px 12px;
+				border-radius: 8px;
+				border: 1px solid var(--border);
+				background: rgba(255, 255, 255, 0.03);
+				color: var(--text);
+				font-family: "Rajdhani", sans-serif;
+				font-size: 13px;
+				font-weight: 700;
+				cursor: pointer;
+				transition: all 0.15s;
+			}
+
+			.audio-btn:hover {
+				border-color: var(--accent);
+				color: var(--accent);
+			}
+
+			::-webkit-scrollbar {
+				width: 6px;
+			}
+
+			::-webkit-scrollbar-track {
+				background: transparent;
+			}
+
+			::-webkit-scrollbar-thumb {
+				background: var(--border);
+				border-radius: 3px;
+			}
+
+			#toast {
+				position: fixed;
+				right: 24px;
+				bottom: 24px;
+				padding: 12px 20px;
+				border-radius: 8px;
+				border: 1px solid var(--gold);
+				background: var(--card);
+				color: var(--gold);
+				font-weight: 700;
+				font-size: 14px;
+				z-index: 999;
+				transform: translateY(80px);
+				opacity: 0;
+				transition: all 0.3s;
+			}
+
+			#toast.show {
+				transform: translateY(0);
+				opacity: 1;
+			}
+
+			.modal-overlay {
+				position: fixed;
+				inset: 0;
+				z-index: 100;
+				background: rgba(0, 0, 0, 0.85);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				backdrop-filter: blur(4px);
+			}
+
+			.modal-overlay.hidden {
+				display: none;
+			}
+
+			.modal {
+				width: 480px;
+				max-width: 95vw;
+				padding: 28px;
+				border-radius: 14px;
+				border: 1px solid var(--border);
+				background: var(--card);
+				display: flex;
+				flex-direction: column;
+				gap: 18px;
+			}
+
+			.modal-title {
+				font-family: "Cinzel", serif;
+				font-size: 24px;
+				color: var(--gold);
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="top-bar">
+			<div class="top-left">
+				<div class="top-logo">KBC Admin</div>
+				<div class="stats-pill" id="question-stats">Used 0 · Remaining 0</div>
+			</div>
+			<div class="phase-badge" id="phase-badge">LOBBY</div>
+			<div class="top-actions">
+				<button class="btn btn-outline btn-sm" onclick="reloadQuestions()">
+					Reload Questions
+				</button>
+				<button class="btn btn-outline btn-sm" onclick="resetQuestionDb()">
+					Reset Question DB
+				</button>
+				<button class="btn btn-outline btn-sm" onclick="showSetupModal()">
+					Set Participant
+				</button>
+			</div>
+		</div>
+
+		<div class="admin-body">
+			<div class="panel" id="panel-left">
+				<div class="card">
+					<div class="card-header">Question Counts</div>
+					<div class="card-body">
+						<div class="count-grid">
+							<div class="count-card">
+								<div class="count-label">Used up</div>
+								<div class="count-value" id="questions-used-count">0</div>
+							</div>
+							<div class="count-card">
+								<div class="count-label">Remaining</div>
+								<div class="count-value" id="questions-remaining-count">0</div>
+							</div>
+						</div>
+						<div class="question-preview" id="flow-info">
+							Waiting for question stats...
+						</div>
+					</div>
+				</div>
+
+				<div class="card">
+					<div class="card-header">Settings</div>
+					<div class="card-body">
+						<details class="settings-details">
+							<summary>Question plan</summary>
+							<div style="display: flex; flex-direction: column; gap: 10px">
+								<label>Questions to win</label>
+								<input
+									type="number"
+									id="total-questions-input"
+									min="1"
+									max="20"
+									value="5" />
+								<label>Prize values</label>
+								<textarea
+									id="prize-lines"
+									rows="5"
+									placeholder="₹10,000&#10;₹20,000&#10;₹40,000"></textarea>
+								<div class="btn-row">
+									<button class="btn btn-gold" onclick="applyGameConfig()">
+										Save Plan
+									</button>
+									<div
+										id="progress-info"
+										style="
+											font-size: 13px;
+											color: var(--muted);
+											align-self: center;
+										"></div>
+								</div>
+							</div>
+						</details>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel" id="panel-center">
+				<div class="card">
+					<div class="card-header">
+						<span>Current Round</span>
+						<span
+							class="small-chip"
+							id="correct-answer-badge"
+							style="display: none"></span>
+					</div>
+					<div class="card-body question-stage">
+						<div class="question-header">
+							<div>
+								<div class="question-title" id="current-round-name">
+									Waiting for question...
+								</div>
+								<div class="question-meta" id="current-round-meta">
+									Load the next eligible question to begin.
+								</div>
+							</div>
+							<div class="small-chip" id="timer-display-chip">Timer: —</div>
+						</div>
+						<div class="question-preview" id="current-q-display">
+							No question loaded yet.
+						</div>
+						<div class="question-actions">
+							<select id="difficulty-select">
+								<option value="any">Any</option>
+								<option value="easy">Easy</option>
+								<option value="medium">Medium</option>
+								<option value="hard">Hard</option>
+							</select>
+							<button
+								class="btn btn-accent"
+								id="load-question-btn"
+								onclick="loadNextQuestion()">
+								Re-roll question
+							</button>
+							<button
+								class="btn btn-gold"
+								onclick="socket.emit('reveal-all-options')">
+								Reveal options
+							</button>
+							<button
+								class="btn btn-green"
+								onclick="socket.emit('reveal-answer')">
+								Reveal correct
+							</button>
+						</div>
+						<div class="option-grid" id="opt-reveal-row">
+							<button class="opt-btn" id="revbtn-A" onclick="revealOption('A')">
+								A: —
+							</button>
+							<button class="opt-btn" id="revbtn-B" onclick="revealOption('B')">
+								B: —
+							</button>
+							<button class="opt-btn" id="revbtn-C" onclick="revealOption('C')">
+								C: —
+							</button>
+							<button class="opt-btn" id="revbtn-D" onclick="revealOption('D')">
+								D: —
+							</button>
+						</div>
+						<div class="btn-row" id="lock-answer-row">
+							<button class="btn btn-outline btn-sm" onclick="lockAnswer('A')">
+								Lock A
+							</button>
+							<button class="btn btn-outline btn-sm" onclick="lockAnswer('B')">
+								Lock B
+							</button>
+							<button class="btn btn-outline btn-sm" onclick="lockAnswer('C')">
+								Lock C
+							</button>
+							<button class="btn btn-outline btn-sm" onclick="lockAnswer('D')">
+								Lock D
+							</button>
+						</div>
+						<div class="btn-row">
+							<button
+								class="btn btn-gold"
+								onclick="socket.emit('start-timer', {})">
+								Start timer
+							</button>
+							<button
+								class="btn btn-outline"
+								onclick="socket.emit('pause-timer')">
+								Pause
+							</button>
+							<button
+								class="btn btn-outline"
+								onclick="socket.emit('reset-timer')">
+								Reset
+							</button>
+						</div>
+						<div class="btn-row">
+							<input
+								type="number"
+								id="custom-timer"
+								placeholder="secs"
+								min="5"
+								max="300"
+								style="max-width: 96px" />
+							<button
+								class="btn btn-outline btn-sm"
+								onclick="startCustomTimer()">
+								Go
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel" id="panel-right">
+				<div class="card">
+					<div class="card-header">Lifelines</div>
+					<div class="card-body">
+						<div style="font-size: 13px; color: var(--muted)">
+							Active contestant:
+							<strong id="active-contestant-name" style="color: var(--gold)"
+								>—</strong
+							>
+						</div>
+						<div class="lifeline-list" id="lifeline-controls">
+							<div style="color: var(--muted); font-size: 13px">
+								Set a participant first
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card hidden" id="audience-poll-card">
+					<div class="card-header">Audience Poll</div>
+					<div class="card-body">
+						<div class="count-grid" id="poll-inputs">
+							<div style="display: flex; flex-direction: column; gap: 4px">
+								<label>A count</label>
+								<input type="number" id="poll-A" min="0" value="0" />
+							</div>
+							<div style="display: flex; flex-direction: column; gap: 4px">
+								<label>B count</label>
+								<input type="number" id="poll-B" min="0" value="0" />
+							</div>
+							<div style="display: flex; flex-direction: column; gap: 4px">
+								<label>C count</label>
+								<input type="number" id="poll-C" min="0" value="0" />
+							</div>
+							<div style="display: flex; flex-direction: column; gap: 4px">
+								<label>D count</label>
+								<input type="number" id="poll-D" min="0" value="0" />
+							</div>
+						</div>
+						<button
+							class="btn btn-accent btn-full"
+							onclick="submitAudiencePoll()">
+							Show poll on screen
+						</button>
+					</div>
+				</div>
+
+				<div class="card">
+					<div class="card-header">Game Flow</div>
+					<div class="card-body">
+						<div class="flow-actions">
+							<button class="btn btn-accent" onclick="introParticipant()">
+								Intro
+							</button>
+							<button class="btn btn-gold" onclick="socket.emit('round-end')">
+								End round
+							</button>
+							<button class="btn btn-accent" onclick="socket.emit('game-over')">
+								End game
+							</button>
+							<button
+								class="btn btn-outline"
+								onclick="resetForNextParticipant()">
+								Next participant
+							</button>
+						</div>
+						<div class="question-preview" id="question-meta-info">
+							Waiting for question stats...
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="audio-dock">
+			<div class="card">
+				<div class="card-body">
+					<div class="audio-title">Audio mixer</div>
+					<div class="audio-grid">
+						<button class="audio-btn" onclick="triggerSound('introDramatic')">
+							Dramatic Intro
+						</button>
+						<button class="audio-btn" onclick="triggerSound('intro')">
+							Intro
+						</button>
+						<button class="audio-btn" onclick="triggerSound('firstQuestion')">
+							First Question
+						</button>
+						<button class="audio-btn" onclick="triggerSound('question')">
+							Next Question
+						</button>
+						<button class="audio-btn" onclick="triggerSound('suspense1')">
+							Suspense 1
+						</button>
+						<button class="audio-btn" onclick="triggerSound('suspense2')">
+							Suspense 2
+						</button>
+						<button class="audio-btn" onclick="triggerSound('suspense3')">
+							Suspense 3
+						</button>
+						<button class="audio-btn" onclick="triggerSound('suspense4')">
+							Suspense 4
+						</button>
+						<button class="audio-btn" onclick="triggerSound('lock')">
+							Lock
+						</button>
+						<button class="audio-btn" onclick="triggerSound('correct')">
+							Correct
+						</button>
+						<button class="audio-btn" onclick="triggerSound('wrong')">
+							Wrong
+						</button>
+						<button class="audio-btn" onclick="triggerSound('fastest')">
+							Fastest Fingers
+						</button>
+						<button class="audio-btn" onclick="triggerSound('audience')">
+							Audience Poll
+						</button>
+						<button class="audio-btn" onclick="triggerSound('timer45')">
+							Timer 45 Sec
+						</button>
+						<button class="audio-btn" onclick="triggerSound('timer')">
+							Timer
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal-overlay hidden" id="setup-modal">
+			<div class="modal">
+				<div class="modal-title">Participant Setup</div>
+				<div>
+					<label>Participant Name</label>
+					<input
+						type="text"
+						id="participant-name"
+						placeholder="Enter participant name"
+						style="margin-top: 6px" />
+				</div>
+				<div class="btn-row" style="justify-content: flex-end">
+					<button class="btn btn-outline" onclick="closeSetupModal()">
+						Cancel
+					</button>
+					<button class="btn btn-gold" onclick="startGame()">Start</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="toast"></div>
+
+		<script>
+			const socket = io();
+			let gameState = null;
+			let questionsMeta = null;
+			let activeContestantId = null;
+			let lastConfigSignature = "";
+			let selectedLifeline = null;
+
+			socket.on("state", (state) => {
+				gameState = state;
+				renderAdmin(state);
+			});
+
+			socket.on("questions-meta", (meta) => {
+				questionsMeta = meta;
+				renderQuestionStats();
+				renderQuestionMeta();
+			});
+
+			function showSetupModal() {
+				const active =
+					gameState?.contestants?.find((c) => c.active) ||
+					gameState?.contestants?.[0];
+				document.getElementById("participant-name").value = active?.name || "";
+				document.getElementById("setup-modal").classList.remove("hidden");
+			}
+
+			function closeSetupModal() {
+				document.getElementById("setup-modal").classList.add("hidden");
+			}
+
+			function collectGameConfigInput() {
+				const total =
+					parseInt(
+						document.getElementById("total-questions-input").value,
+						10,
+					) || 5;
+				const prizes = (document.getElementById("prize-lines").value || "")
+					.split(/\n|,/)
+					.map((value) => value.trim())
+					.filter(Boolean);
+				return { totalQuestionsToWin: total, prizes };
+			}
+
+			function startGame() {
+				const name = document.getElementById("participant-name").value.trim();
+				if (!name) return toast("Enter participant name!");
+				socket.emit("setup-game", {
+					contestants: [name],
+					config: collectGameConfigInput(),
+				});
+				closeSetupModal();
+				toast(`Participant ready: ${name}`);
+			}
+
+			function introParticipant() {
+				const active =
+					gameState?.contestants?.find((c) => c.active) ||
+					gameState?.contestants?.[0];
+				if (!active) return toast("Set a participant first");
+				socket.emit("intro-contestant", { contestantId: active.id });
+				toast(`Intro started: ${active.name}`);
+			}
+
+			function applyGameConfig() {
+				const config = collectGameConfigInput();
+				socket.emit("set-game-config", config, (res) => {
+					toast(
+						res?.ok
+							? "Question plan updated"
+							: res?.message || "Failed to save plan",
+					);
+				});
+			}
+
+			function loadNextQuestion() {
+				const difficulty = document.getElementById("difficulty-select").value;
+				socket.emit("load-next-question", { difficulty }, (res) => {
+					toast(
+						res?.ok
+							? "Next question loaded"
+							: res?.message || "No question available",
+					);
+				});
+			}
+
+			function triggerSound(sound) {
+				socket.emit("play-sound", { sound });
+				toast(`Sound sent: ${sound}`);
+			}
+
+			function renderAdmin(state) {
+				document.getElementById("phase-badge").textContent = state.phase
+					.toUpperCase()
+					.replace(/-/g, " ");
+				renderQuestionStats();
+				renderConfigInputs(state);
+				renderQuestionMeta();
+				renderCurrentQuestion(state);
+				renderLifelines(state);
+				renderAudiencePollPanel(state);
+			}
+
+			function renderQuestionStats() {
+				const usedEl = document.getElementById("questions-used-count");
+				const remainingEl = document.getElementById(
+					"questions-remaining-count",
+				);
+				const pillEl = document.getElementById("question-stats");
+				if (!questionsMeta) {
+					usedEl.textContent = "0";
+					remainingEl.textContent = "0";
+					pillEl.textContent = "Used 0 · Remaining 0";
+					return;
+				}
+				const remaining = Number(questionsMeta.available?.any) || 0;
+				const total = Number(questionsMeta.questionCount) || 0;
+				const used = Math.max(total - remaining, 0);
+				usedEl.textContent = String(used);
+				remainingEl.textContent = String(remaining);
+				pillEl.textContent = `Used ${used} · Remaining ${remaining}`;
+			}
+
+			function renderConfigInputs(state) {
+				if (!state?.gameConfig) return;
+				const signature = JSON.stringify(state.gameConfig);
+				if (signature === lastConfigSignature) return;
+				document.getElementById("total-questions-input").value =
+					state.gameConfig.totalQuestionsToWin || 5;
+				document.getElementById("prize-lines").value = (
+					state.gameConfig.prizes || []
+				).join("\n");
+				lastConfigSignature = signature;
+			}
+
+			function renderQuestionMeta() {
+				const el = document.getElementById("question-meta-info");
+				const flowEl = document.getElementById("flow-info");
+				if (!questionsMeta) {
+					el.textContent = "Waiting for question stats...";
+					flowEl.textContent = "Waiting for question stats...";
+					return;
+				}
+				const solved = Number(questionsMeta.solvedCount) || 0;
+				const exhausted = Number(questionsMeta.exhaustedCount) || 0;
+				const remaining = Number(questionsMeta.available?.any) || 0;
+				const text = `Total ${questionsMeta.questionCount} | Remaining ${remaining} | Solved ${solved} | Exhausted ${exhausted}`;
+				el.textContent = text;
+				flowEl.textContent = text;
+			}
+
+			function renderCurrentQuestion(state) {
+				const q = state.currentQuestion;
+				const loadQuestionBtn = document.getElementById("load-question-btn");
+				const correctBadge = document.getElementById("correct-answer-badge");
+				const roundNameEl = document.getElementById("current-round-name");
+				const roundMetaEl = document.getElementById("current-round-meta");
+				const questionEl = document.getElementById("current-q-display");
+				const timerChip = document.getElementById("timer-display-chip");
+				const timerRows = document.querySelectorAll("#lock-answer-row .btn");
+
+				if (!q) {
+					if (loadQuestionBtn) loadQuestionBtn.textContent = "Load a question";
+					roundNameEl.textContent = "Waiting for question...";
+					roundMetaEl.textContent = "Load the next eligible question to begin.";
+					questionEl.textContent = "No question loaded yet.";
+					timerChip.textContent = `Timer: ${state.timerValue || "—"}`;
+					correctBadge.style.display = "none";
+					timerRows.forEach((btn) => {
+						btn.style.borderColor = "";
+						btn.style.color = "";
+					});
+					return;
+				}
+
+				if (loadQuestionBtn) loadQuestionBtn.textContent = "Re-roll question";
+
+				roundNameEl.textContent = q.roundName || "Current Round";
+				roundMetaEl.textContent = `Difficulty ${String(q.difficulty || "medium").toUpperCase()} | Attempt ${q.attemptNumber || 1}/${q.maxAttempts || 3}`;
+				questionEl.innerHTML = `<strong>${q.question}</strong>`;
+				timerChip.textContent = `Timer: ${state.timerValue || "—"}`;
+				correctBadge.style.display = state.correctAnswer
+					? "inline-block"
+					: "none";
+				correctBadge.textContent = state.correctAnswer
+					? `✅ ${state.correctAnswer}: ${q.options[state.correctAnswer]}`
+					: "";
+
+				["A", "B", "C", "D"].forEach((opt) => {
+					const btn = document.getElementById(`revbtn-${opt}`);
+					btn.textContent = `${opt}: ${q.options[opt] || "—"}`;
+					btn.className = "opt-btn";
+					if (state.revealedOptions.includes(opt))
+						btn.classList.add("revealed");
+					if (state.removedOptions.includes(opt)) btn.classList.add("removed");
+				});
+
+				timerRows.forEach((btn) => {
+					const opt = btn.textContent.replace("Lock ", "");
+					if (state.selectedAnswer === opt) {
+						btn.style.borderColor = "var(--gold)";
+						btn.style.color = "var(--gold)";
+					} else {
+						btn.style.borderColor = "";
+						btn.style.color = "";
+					}
+				});
+			}
+
+			function renderLifelines(state) {
+				const container = document.getElementById("lifeline-controls");
+				const active = state.contestants.find((c) => c.active);
+				if (!active) {
+					container.innerHTML =
+						'<div style="color: var(--muted); font-size: 13px">Set a participant first</div>';
+					document.getElementById("active-contestant-name").textContent = "—";
+					activeContestantId = null;
+					return;
+				}
+
+				const ll = state.lifelines[active.id] || {};
+				activeContestantId = active.id;
+				document.getElementById("active-contestant-name").textContent =
+					active.name;
+
+				container.innerHTML = `
+					<div class="lifeline-row">
+						<div>
+							<div class="lifeline-name">50:50</div>
+							<div class="lifeline-status">${ll.fiftyFifty ? "Available" : "Used"}</div>
+						</div>
+						<button class="btn btn-outline btn-sm" onclick="useFiftyFifty()" ${ll.fiftyFifty ? "" : "disabled"}>Use</button>
+					</div>
+					<div class="lifeline-row">
+						<div>
+							<div class="lifeline-name">Audience Poll</div>
+							<div class="lifeline-status">${ll.audiencePoll ? "Available" : "Used"}</div>
+						</div>
+						<button class="btn btn-outline btn-sm" onclick="useAudiencePoll()" ${ll.audiencePoll ? "" : "disabled"}>Use</button>
+					</div>
+				`;
+
+				const audienceRow = container.querySelectorAll(".lifeline-row")[1];
+				audienceRow?.classList.toggle(
+					"selected",
+					selectedLifeline === "audience-poll",
+				);
+			}
+
+			function renderAudiencePollPanel(state) {
+				const panel = document.getElementById("audience-poll-card");
+				const visible =
+					selectedLifeline === "audience-poll" ||
+					state.phase === "lifeline-poll";
+				panel.classList.toggle("hidden", !visible);
+			}
+
+			function revealOption(opt) {
+				socket.emit("reveal-option", { option: opt });
+			}
+
+			function lockAnswer(opt) {
+				socket.emit("lock-answer", { answer: opt });
+				toast(`Answer locked: ${opt}`);
+			}
+
+			function useFiftyFifty() {
+				if (!activeContestantId) return;
+				socket.emit("lifeline-fifty-fifty", {
+					contestantId: activeContestantId,
+				});
+				toast("50:50 lifeline used!");
+			}
+
+			function useAudiencePoll() {
+				if (!activeContestantId) return;
+				selectedLifeline = "audience-poll";
+				socket.emit("lifeline-audience", { contestantId: activeContestantId });
+				toast("Audience Poll activated!");
+				renderAudiencePollPanel(gameState || {});
+				renderLifelines(gameState || {});
+			}
+
+			function submitAudiencePoll() {
+				const counts = {
+					A: parseInt(document.getElementById("poll-A").value, 10) || 0,
+					B: parseInt(document.getElementById("poll-B").value, 10) || 0,
+					C: parseInt(document.getElementById("poll-C").value, 10) || 0,
+					D: parseInt(document.getElementById("poll-D").value, 10) || 0,
+				};
+				socket.emit("submit-audience-poll", { counts });
+				toast("Audience poll submitted!");
+				selectedLifeline = null;
+				["A", "B", "C", "D"].forEach((opt) => {
+					document.getElementById(`poll-${opt}`).value = 0;
+				});
+				renderAudiencePollPanel(gameState || {});
+				renderLifelines(gameState || {});
+			}
+
+			function startCustomTimer() {
+				const secs = parseInt(
+					document.getElementById("custom-timer").value,
+					10,
+				);
+				if (!secs || secs < 1) return;
+				socket.emit("start-timer", { seconds: secs });
+				toast(`Timer started: ${secs}s`);
+			}
+
+			function reloadQuestions() {
+				fetch("/reload-questions")
+					.then((response) => response.json())
+					.then((data) => toast(data.message));
+			}
+
+			function resetQuestionDb() {
+				if (!confirm("Reset SQLite question tracking for the whole event?"))
+					return;
+				socket.emit("reset-question-tracking", (res) => {
+					toast(res?.message || "Question DB reset");
+				});
+			}
+
+			function resetForNextParticipant() {
+				const name = prompt("Next participant name:");
+				if (name === null) return;
+				const trimmed = name.trim();
+				if (!trimmed) return toast("Reset cancelled: name is required");
+				socket.emit("reset-for-next-participant", { name: trimmed });
+				toast(`Ready for next participant: ${trimmed}`);
+			}
+
+			function toast(message) {
+				const el = document.getElementById("toast");
+				el.textContent = message;
+				el.classList.add("show");
+				setTimeout(() => el.classList.remove("show"), 2500);
+			}
+
+			setTimeout(() => {
+				if (!gameState || !gameState.contestants.length) {
+					showSetupModal();
+				}
+			}, 600);
+		</script>
+	</body>
+</html>
