@@ -1025,6 +1025,38 @@
 				}
 			}
 
+				body.timeout-shake {
+					animation: timeoutShake 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+				}
+
+				@keyframes timeoutShake {
+					0%,
+					100% {
+						transform: translate3d(0, 0, 0);
+					}
+					12% {
+						transform: translate3d(-10px, 2px, 0);
+					}
+					25% {
+						transform: translate3d(10px, -2px, 0);
+					}
+					38% {
+						transform: translate3d(-8px, 2px, 0);
+					}
+					50% {
+						transform: translate3d(8px, -2px, 0);
+					}
+					62% {
+						transform: translate3d(-6px, 1px, 0);
+					}
+					75% {
+						transform: translate3d(6px, -1px, 0);
+					}
+					88% {
+						transform: translate3d(-3px, 0, 0);
+					}
+				}
+
 			/* ── Particles ── */
 			.particles {
 				position: fixed;
@@ -1799,6 +1831,7 @@
 			let currentState = null;
 			let maxTime = 45;
 			let lastIntroTrigger = -1;
+			let handledTimeoutKey = "";
 			const sounds = {
 				introDramatic: new Audio("/sounds/Dramatic Intro.mp3"),
 				intro: new Audio("/sounds/Intro.mp3"),
@@ -1836,6 +1869,47 @@
 			socket.on("play-sound", ({ sound }) => {
 				playSound(sound);
 			});
+
+			function getQuestionTimeoutKey(state) {
+				if (!state || !state.currentQuestion) return "";
+				return [
+					state.currentRoundIndex,
+					state.currentQuestionIndex,
+					state.currentQuestion.question,
+				].join("|");
+			}
+
+			function triggerTimeoutShake() {
+				const target =
+					document.querySelector("#screen-question.active .kbc-ui") ||
+					document.getElementById("screen-question") ||
+					document.body;
+
+				if (typeof target.animate === "function") {
+					target.animate(
+						[
+							{ transform: "translate3d(0, 0, 0)" },
+							{ transform: "translate3d(-10px, 2px, 0)" },
+							{ transform: "translate3d(10px, -2px, 0)" },
+							{ transform: "translate3d(-8px, 2px, 0)" },
+							{ transform: "translate3d(8px, -2px, 0)" },
+							{ transform: "translate3d(-6px, 1px, 0)" },
+							{ transform: "translate3d(6px, -1px, 0)" },
+							{ transform: "translate3d(-3px, 0, 0)" },
+							{ transform: "translate3d(0, 0, 0)" },
+						],
+						{
+							duration: 650,
+							easing: "cubic-bezier(0.36, 0.07, 0.19, 0.97)",
+						},
+					);
+					return;
+				}
+
+				document.body.classList.remove("timeout-shake");
+				void document.body.offsetWidth;
+				document.body.classList.add("timeout-shake");
+			}
 
 			// ── Particles ────────────────────────────────────────────────────────────────
 			(function spawnParticles() {
@@ -1894,6 +1968,7 @@
 			// ── Render State ──────────────────────────────────────────────────────────────
 			socket.on("state", (state) => {
 				const previousPhase = currentState?.phase;
+				const previousTimerValue = Number(currentState?.timerValue || 0);
 				const previousIntroTrigger = Number(currentState?.introTrigger || 0);
 				currentState = state;
 				render(state);
@@ -1916,6 +1991,26 @@
 						);
 					}
 					if (state.phase === "lifeline-phone") playSound("fastest");
+				}
+
+				const timeoutKey = getQuestionTimeoutKey(state);
+				const timerExpiredNow =
+					state.phase === "answer-reveal" &&
+					Number(state.timerValue) === 0 &&
+					!state.selectedAnswer &&
+					state.highlightCorrect &&
+					(previousPhase === "question" || previousTimerValue > 0);
+
+				if (timerExpiredNow && timeoutKey && timeoutKey !== handledTimeoutKey) {
+					handledTimeoutKey = timeoutKey;
+					triggerTimeoutShake();
+				}
+
+				if (state.phase === "question") {
+					const questionKey = getQuestionTimeoutKey(state);
+					if (questionKey && questionKey !== handledTimeoutKey) {
+						handledTimeoutKey = "";
+					}
 				}
 			});
 

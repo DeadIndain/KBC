@@ -254,6 +254,8 @@ function startTimer(seconds) {
 	stopTimer();
 	gameState.timerValue = seconds;
 	gameState.timerRunning = true;
+	gameState.highlightCorrect = false;
+	gameState.highlightWrong = false;
 	broadcast();
 
 	timerInterval = setInterval(() => {
@@ -261,7 +263,10 @@ function startTimer(seconds) {
 		if (gameState.timerValue <= 0) {
 			stopTimer();
 			gameState.timerRunning = false;
+			gameState.timerValue = 0;
 			gameState.phase = "answer-reveal";
+			gameState.highlightCorrect = true;
+			gameState.highlightWrong = false;
 			broadcast();
 		} else {
 			broadcast();
@@ -619,6 +624,7 @@ io.on("connection", async (socket) => {
 		const duration =
 			Number(seconds) || Number(gameState.currentQuestion?.timeLimit) || 45;
 		startTimer(duration);
+		io.emit("play-sound", { sound: "timer45" });
 	});
 
 	socket.on("pause-timer", () => {
