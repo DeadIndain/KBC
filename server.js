@@ -1,13 +1,15 @@
 const express = require("express");
 const http = require("http");
-const { Server } = require("socket.io");
+const { EventEmitter } = require("events");
 const path = require("path");
 const fs = require("fs");
 const sqlite3 = require("sqlite3").verbose();
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const bus = new EventEmitter();
+const pubsubClients = new Set();
+const commandHandlers = new Map();
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
@@ -55,6 +57,22 @@ let gameState = {
 };
 
 let timerInterval = null;
+
+function sendSseEvent(res, event, payload) {
+	res.write(`event: ${event}\n`);
+	res.write(`data: ${JSON.stringify(payload)}\n\n`);
+}
+
+function publish(event, payload) {
+	bus.emit(event, payload);
+	for (const res of pubsubClients) {
+		sendSseEvent(res, event, payload);
+	}
+}
+
+function registerCommand(name, handler) {
+	commandHandlers.set(name, handler);
+}
 
 // ─── DB Helpers ───────────────────────────────────────────────────────────────
 function runDb(sql, params = []) {
@@ -239,7 +257,7 @@ function setActivePrizeIndex(index) {
 }
 
 function broadcast() {
-	io.emit("state", gameState);
+	publish("state", gameState);
 }
 
 function stopTimer() {
@@ -331,9 +349,9 @@ async function getQuestionsMetaPayload() {
 async function emitQuestionsMeta(targetSocket = null) {
 	const payload = await getQuestionsMetaPayload();
 	if (targetSocket) {
-		targetSocket.emit("questions-meta", payload);
+		sendSseEvent(targetSocket, "questions-meta", payload);
 	} else {
-		io.emit("questions-meta", payload);
+		publish("questions-meta", payload);
 	}
 }
 
@@ -461,331 +479,364 @@ function resetParticipantState(name, keepConfig = true) {
 	setActivePrizeIndex(0);
 }
 
-// ─── Socket Events ────────────────────────────────────────────────────────────
-io.on("connection", async (socket) => {
-	console.log(`[Socket] Client connected: ${socket.id}`);
+// ─── Pub/Sub Transport ───────────────────────────────────────────────────────
+app.get("/events", async (req, res) => {
+	res.writeHead(200, {
+		"Content-Type": "text/event-stream",
+		"Cache-Control": "no-cache, no-transform",
+		Connection: "keep-alive",
+		"X-Accel-Buffering": "no",
+	});
+	res.write(": connected\n\n");
+	pubsubClients.add(res);
 
-	socket.emit("state", gameState);
+	const cleanup = () => {
+		pubsubClients.delete(res);
+	};
+
+	req.on("close", cleanup);
+	req.on("aborted", cleanup);
+
+	sendSseEvent(res, "state", gameState);
 	if (gameState.phase === "contestant-intro") {
-		socket.emit("play-sound", { sound: "introDramatic" });
+		sendSseEvent(res, "play-sound", { sound: "introDramatic" });
 	}
-	await emitQuestionsMeta(socket);
+	await emitQuestionsMeta(res);
+});
 
-	socket.on("setup-game", async ({ contestants, config }) => {
-		stopTimer();
-		const firstName =
-			Array.isArray(contestants) && contestants.length
-				? String(contestants[0]).trim()
-				: "Participant";
+app.post("/api/command/:name", async (req, res) => {
+	const handler = commandHandlers.get(req.params.name);
+	if (!handler) {
+		res.status(404).json({ ok: false, message: "Unknown command" });
+		return;
+	}
 
-		if (config) {
-			gameState.gameConfig = normalizeGameConfig(config);
-		}
-
-		resetParticipantState(firstName || "Participant", true);
-		gameState.phase = "contestant-intro";
-		gameState.introTrigger = Number(gameState.introTrigger || 0) + 1;
-		gameState.message = "";
-		broadcast();
-		io.emit("play-sound", { sound: "introDramatic" });
-		await emitQuestionsMeta();
-	});
-
-	socket.on("set-game-config", ({ totalQuestionsToWin, prizes }, callback) => {
-		try {
-			const config = normalizeGameConfig({ totalQuestionsToWin, prizes });
-			gameState.gameConfig = config;
-			gameState.prizeMoneyLadder = buildPrizeLadder(config);
-			savePersistedGameConfig(config).catch((error) => {
-				console.error("Failed to persist game config:", error);
-			});
-
-			const nextActiveIndex = Math.min(
-				gameState.questionsAnswered,
-				Math.max(config.totalQuestionsToWin - 1, 0),
-			);
-			setActivePrizeIndex(nextActiveIndex);
-
-			broadcast();
-			if (typeof callback === "function") {
-				callback({ ok: true, message: "Game config updated" });
-			}
-		} catch (error) {
-			if (typeof callback === "function") {
-				callback({ ok: false, message: error.message });
-			}
-		}
-	});
-
-	socket.on("reset-question-tracking", async (callback) => {
-		try {
-			await resetQuestionTracking();
-			await emitQuestionsMeta();
-			if (typeof callback === "function") {
-				callback({ ok: true, message: "Question tracking reset" });
-			}
-		} catch (error) {
-			if (typeof callback === "function") {
-				callback({ ok: false, message: error.message });
-			}
-		}
-	});
-
-	socket.on("intro-contestant", ({ contestantId }) => {
-		stopTimer();
-		gameState.contestants.forEach((c) => {
-			c.active = false;
-		});
-		const c = getContestantById(contestantId) || gameState.contestants[0];
-		if (c) c.active = true;
-		gameState.phase = "contestant-intro";
-		gameState.introTrigger = Number(gameState.introTrigger || 0) + 1;
-		gameState.message = "";
-		broadcast();
-		io.emit("play-sound", { sound: "introDramatic" });
-	});
-
-	socket.on("load-next-question", async ({ difficulty }, callback) => {
-		try {
-			stopTimer();
-			const question = await selectNextQuestion(difficulty);
-
-			if (!question) {
-				if (typeof callback === "function") {
-					callback({
-						ok: false,
-						message:
-							"No eligible questions left for this difficulty (all solved or reached 3 attempts).",
-					});
-				}
-				return;
-			}
-
-			gameState.currentRoundIndex = question.roundIndex;
-			gameState.currentQuestionIndex = question.questionIndex;
-			gameState.currentQuestionTrackingId = question.trackingId;
-			gameState.currentQuestion = {
-				id: question.id,
-				question: question.question,
-				options: question.options,
-				difficulty: question.difficulty,
-				roundName: question.roundName,
-				prizeLevel: question.prizeLevel,
-				timeLimit: question.timeLimit,
-				attemptNumber: question.askedCount,
-				maxAttempts: 3,
-			};
-
-			gameState.correctAnswer = question.correct;
-			gameState.revealedOptions = [];
-			gameState.selectedAnswer = null;
-			gameState.answerEvaluated = false;
-			gameState.highlightCorrect = false;
-			gameState.highlightWrong = false;
-			gameState.audiencePollData = null;
-			gameState.removedOptions = [];
-			gameState.phase = "question";
-			gameState.message = "";
-
-			const activeIndex = Math.min(
-				gameState.questionsAnswered,
-				Math.max(gameState.gameConfig.totalQuestionsToWin - 1, 0),
-			);
-			setActivePrizeIndex(activeIndex);
-
-			broadcast();
-			await emitQuestionsMeta();
-
-			if (typeof callback === "function") {
-				callback({ ok: true, message: "Question loaded" });
-			}
-		} catch (error) {
-			if (typeof callback === "function") {
-				callback({ ok: false, message: error.message });
-			}
-		}
-	});
-
-	socket.on("reveal-option", ({ option }) => {
-		if (!gameState.revealedOptions.includes(option)) {
-			gameState.revealedOptions.push(option);
-		}
-		broadcast();
-	});
-
-	socket.on("reveal-all-options", () => {
-		gameState.revealedOptions = ["A", "B", "C", "D"].filter(
-			(o) => !gameState.removedOptions.includes(o),
-		);
-		broadcast();
-	});
-
-	socket.on("start-timer", ({ seconds }) => {
-		const duration =
-			Number(seconds) || Number(gameState.currentQuestion?.timeLimit) || 45;
-		startTimer(duration);
-		io.emit("play-sound", { sound: "timer45" });
-	});
-
-	socket.on("pause-timer", () => {
-		stopTimer();
-		broadcast();
-	});
-
-	socket.on("reset-timer", () => {
-		stopTimer();
-		gameState.timerValue = Number(gameState.currentQuestion?.timeLimit) || 45;
-		broadcast();
-	});
-
-	socket.on("lock-answer", ({ answer }) => {
-		stopTimer();
-		gameState.selectedAnswer = answer;
-		gameState.phase = "answer-reveal";
-		broadcast();
-	});
-
-	socket.on("reveal-answer", async () => {
-		if (gameState.answerEvaluated) {
+	try {
+		const result = await handler(req.body || {});
+		if (res.headersSent) return;
+		if (result === undefined) {
+			res.json({ ok: true });
 			return;
 		}
+		res.json(result);
+	} catch (error) {
+		res.status(500).json({ ok: false, message: error.message });
+	}
+});
 
-		gameState.highlightCorrect = true;
-		const isCorrect = gameState.selectedAnswer === gameState.correctAnswer;
-		gameState.highlightWrong = !isCorrect;
+registerCommand("setup-game", async ({ contestants, config }) => {
+	stopTimer();
+	const firstName =
+		Array.isArray(contestants) && contestants.length
+			? String(contestants[0]).trim()
+			: "Participant";
 
-		const active = getActiveContestant();
-		if (active && isCorrect) {
-			gameState.scores[active.id] = (gameState.scores[active.id] || 0) + 1;
-			active.score = gameState.scores[active.id];
-			gameState.questionsAnswered = active.score;
-		}
+	if (config) {
+		gameState.gameConfig = normalizeGameConfig(config);
+	}
 
-		gameState.answerEvaluated = true;
-		await markCurrentQuestionResult(isCorrect);
+	resetParticipantState(firstName || "Participant", true);
+	gameState.phase = "contestant-intro";
+	gameState.introTrigger = Number(gameState.introTrigger || 0) + 1;
+	gameState.message = "";
+	broadcast();
+	publish("play-sound", { sound: "introDramatic" });
+	await emitQuestionsMeta();
+	return { ok: true, message: "Game started" };
+});
 
-		if (
-			gameState.questionsAnswered >= gameState.gameConfig.totalQuestionsToWin
-		) {
-			gameState.phase = "game-over";
-		}
+registerCommand("set-game-config", async ({ totalQuestionsToWin, prizes }) => {
+	try {
+		const config = normalizeGameConfig({ totalQuestionsToWin, prizes });
+		gameState.gameConfig = config;
+		gameState.prizeMoneyLadder = buildPrizeLadder(config);
+		savePersistedGameConfig(config).catch((error) => {
+			console.error("Failed to persist game config:", error);
+		});
 
 		const nextActiveIndex = Math.min(
 			gameState.questionsAnswered,
-			Math.max(gameState.gameConfig.totalQuestionsToWin - 1, 0),
+			Math.max(config.totalQuestionsToWin - 1, 0),
 		);
 		setActivePrizeIndex(nextActiveIndex);
 
 		broadcast();
+		return { ok: true, message: "Game config updated" };
+	} catch (error) {
+		return { ok: false, message: error.message };
+	}
+});
+
+registerCommand("reset-question-tracking", async () => {
+	try {
+		await resetQuestionTracking();
 		await emitQuestionsMeta();
+		return { ok: true, message: "Question tracking reset" };
+	} catch (error) {
+		return { ok: false, message: error.message };
+	}
+});
+
+registerCommand("intro-contestant", async ({ contestantId }) => {
+	stopTimer();
+	gameState.contestants.forEach((c) => {
+		c.active = false;
 	});
+	const c = getContestantById(contestantId) || gameState.contestants[0];
+	if (c) c.active = true;
+	gameState.phase = "contestant-intro";
+	gameState.introTrigger = Number(gameState.introTrigger || 0) + 1;
+	gameState.message = "";
+	broadcast();
+	publish("play-sound", { sound: "introDramatic" });
+	return { ok: true };
+});
 
-	socket.on("lifeline-fifty-fifty", ({ contestantId }) => {
-		if (!gameState.lifelines[contestantId]?.fiftyFifty) return;
-		gameState.lifelines[contestantId].fiftyFifty = false;
+registerCommand("load-next-question", async ({ difficulty }) => {
+	try {
+		stopTimer();
+		const question = await selectNextQuestion(difficulty);
 
-		const correct = gameState.correctAnswer;
-		const allOptions = ["A", "B", "C", "D"];
-		const wrong = allOptions.filter((o) => o !== correct);
-		const toRemove = wrong.sort(() => Math.random() - 0.5).slice(0, 2);
-		gameState.removedOptions = toRemove;
-		gameState.revealedOptions = gameState.revealedOptions.filter(
-			(o) => !toRemove.includes(o),
-		);
-
-		broadcast();
-	});
-
-	socket.on("lifeline-phone", ({ contestantId }) => {
-		if (!gameState.lifelines[contestantId]?.phoneFriend) return;
-		gameState.lifelines[contestantId].phoneFriend = false;
-		gameState.phase = "lifeline-phone";
-		broadcast();
-	});
-
-	socket.on("end-lifeline-phone", () => {
-		gameState.phase = "question";
-		broadcast();
-	});
-
-	socket.on("lifeline-audience", ({ contestantId }) => {
-		if (!gameState.lifelines[contestantId]?.audiencePoll) return;
-		gameState.lifelines[contestantId].audiencePoll = false;
-		gameState.phase = "lifeline-poll";
-		gameState.audiencePollData = null;
-		broadcast();
-	});
-
-	socket.on("submit-audience-poll", ({ counts }) => {
-		const activeOptions = ["A", "B", "C", "D"].filter(
-			(o) => !gameState.removedOptions.includes(o),
-		);
-		const total = activeOptions.reduce((sum, k) => sum + (counts[k] || 0), 0);
-		const percentages = {};
-		activeOptions.forEach((k) => {
-			percentages[k] =
-				total > 0 ? Math.round(((counts[k] || 0) / total) * 100) : 0;
-		});
-
-		const sum = activeOptions.reduce((s, k) => s + percentages[k], 0);
-		if (sum !== 100 && activeOptions.length > 0) {
-			percentages[activeOptions[0]] += 100 - sum;
+		if (!question) {
+			return {
+				ok: false,
+				message:
+					"No eligible questions left for this difficulty (all solved or reached 3 attempts).",
+			};
 		}
 
-		gameState.audiencePollData = percentages;
+		gameState.currentRoundIndex = question.roundIndex;
+		gameState.currentQuestionIndex = question.questionIndex;
+		gameState.currentQuestionTrackingId = question.trackingId;
+		gameState.currentQuestion = {
+			id: question.id,
+			question: question.question,
+			options: question.options,
+			difficulty: question.difficulty,
+			roundName: question.roundName,
+			prizeLevel: question.prizeLevel,
+			timeLimit: question.timeLimit,
+			attemptNumber: question.askedCount,
+			maxAttempts: 3,
+		};
+
+		gameState.correctAnswer = question.correct;
+		gameState.revealedOptions = [];
+		gameState.selectedAnswer = null;
+		gameState.answerEvaluated = false;
+		gameState.highlightCorrect = false;
+		gameState.highlightWrong = false;
+		gameState.audiencePollData = null;
+		gameState.removedOptions = [];
 		gameState.phase = "question";
-		broadcast();
-	});
-
-	socket.on("show-message", ({ message }) => {
-		gameState.message = message;
-		broadcast();
-	});
-
-	socket.on("play-sound", ({ sound }) => {
-		const safeSound = String(sound || "").trim();
-		if (!safeSound) return;
-		io.emit("play-sound", { sound: safeSound });
-	});
-
-	socket.on("clear-message", () => {
 		gameState.message = "";
-		broadcast();
-	});
 
-	socket.on("round-end", () => {
-		stopTimer();
-		gameState.phase = "round-end";
-		broadcast();
-	});
+		const activeIndex = Math.min(
+			gameState.questionsAnswered,
+			Math.max(gameState.gameConfig.totalQuestionsToWin - 1, 0),
+		);
+		setActivePrizeIndex(activeIndex);
 
-	socket.on("game-over", () => {
-		stopTimer();
+		broadcast();
+		await emitQuestionsMeta();
+		return { ok: true, message: "Question loaded" };
+	} catch (error) {
+		return { ok: false, message: error.message };
+	}
+});
+
+registerCommand("reveal-option", async ({ option }) => {
+	if (!gameState.revealedOptions.includes(option)) {
+		gameState.revealedOptions.push(option);
+	}
+	broadcast();
+	return { ok: true };
+});
+
+registerCommand("reveal-all-options", async () => {
+	gameState.revealedOptions = ["A", "B", "C", "D"].filter(
+		(o) => !gameState.removedOptions.includes(o),
+	);
+	broadcast();
+	return { ok: true };
+});
+
+registerCommand("start-timer", async ({ seconds }) => {
+	const duration =
+		Number(seconds) || Number(gameState.currentQuestion?.timeLimit) || 45;
+	startTimer(duration);
+	publish("play-sound", { sound: "timer45" });
+	return { ok: true };
+});
+
+registerCommand("pause-timer", async () => {
+	stopTimer();
+	broadcast();
+	return { ok: true };
+});
+
+registerCommand("reset-timer", async () => {
+	stopTimer();
+	gameState.timerValue = Number(gameState.currentQuestion?.timeLimit) || 45;
+	broadcast();
+	return { ok: true };
+});
+
+registerCommand("lock-answer", async ({ answer }) => {
+	stopTimer();
+	gameState.selectedAnswer = answer;
+	gameState.phase = "answer-reveal";
+	broadcast();
+	return { ok: true };
+});
+
+registerCommand("reveal-answer", async () => {
+	if (gameState.answerEvaluated) {
+		return { ok: true };
+	}
+
+	gameState.highlightCorrect = true;
+	const isCorrect = gameState.selectedAnswer === gameState.correctAnswer;
+	gameState.highlightWrong = !isCorrect;
+
+	const active = getActiveContestant();
+	if (active && isCorrect) {
+		gameState.scores[active.id] = (gameState.scores[active.id] || 0) + 1;
+		active.score = gameState.scores[active.id];
+		gameState.questionsAnswered = active.score;
+	}
+
+	gameState.answerEvaluated = true;
+	await markCurrentQuestionResult(isCorrect);
+
+	if (gameState.questionsAnswered >= gameState.gameConfig.totalQuestionsToWin) {
 		gameState.phase = "game-over";
-		broadcast();
+	}
+
+	const nextActiveIndex = Math.min(
+		gameState.questionsAnswered,
+		Math.max(gameState.gameConfig.totalQuestionsToWin - 1, 0),
+	);
+	setActivePrizeIndex(nextActiveIndex);
+
+	broadcast();
+	await emitQuestionsMeta();
+	return { ok: true };
+});
+
+registerCommand("lifeline-fifty-fifty", async ({ contestantId }) => {
+	if (!gameState.lifelines[contestantId]?.fiftyFifty) return { ok: true };
+	gameState.lifelines[contestantId].fiftyFifty = false;
+
+	const correct = gameState.correctAnswer;
+	const allOptions = ["A", "B", "C", "D"];
+	const wrong = allOptions.filter((o) => o !== correct);
+	const toRemove = wrong.sort(() => Math.random() - 0.5).slice(0, 2);
+	gameState.removedOptions = toRemove;
+	gameState.revealedOptions = gameState.revealedOptions.filter(
+		(o) => !toRemove.includes(o),
+	);
+
+	broadcast();
+	return { ok: true };
+});
+
+registerCommand("lifeline-phone", async ({ contestantId }) => {
+	if (!gameState.lifelines[contestantId]?.phoneFriend) return { ok: true };
+	gameState.lifelines[contestantId].phoneFriend = false;
+	gameState.phase = "lifeline-phone";
+	broadcast();
+	return { ok: true };
+});
+
+registerCommand("end-lifeline-phone", async () => {
+	gameState.phase = "question";
+	broadcast();
+	return { ok: true };
+});
+
+registerCommand("lifeline-audience", async ({ contestantId }) => {
+	if (!gameState.lifelines[contestantId]?.audiencePoll) return { ok: true };
+	gameState.lifelines[contestantId].audiencePoll = false;
+	gameState.phase = "lifeline-poll";
+	gameState.audiencePollData = null;
+	broadcast();
+	return { ok: true };
+});
+
+registerCommand("submit-audience-poll", async ({ counts }) => {
+	const activeOptions = ["A", "B", "C", "D"].filter(
+		(o) => !gameState.removedOptions.includes(o),
+	);
+	const total = activeOptions.reduce((sum, k) => sum + (counts[k] || 0), 0);
+	const percentages = {};
+	activeOptions.forEach((k) => {
+		percentages[k] =
+			total > 0 ? Math.round(((counts[k] || 0) / total) * 100) : 0;
 	});
 
-	socket.on("reset-game", () => {
-		stopTimer();
-		resetParticipantState("Participant", true);
-		gameState.contestants = [];
-		gameState.message = "";
-		broadcast();
-	});
+	const sum = activeOptions.reduce((s, k) => s + percentages[k], 0);
+	if (sum !== 100 && activeOptions.length > 0) {
+		percentages[activeOptions[0]] += 100 - sum;
+	}
 
-	socket.on("reset-for-next-participant", ({ name }) => {
-		stopTimer();
-		resetParticipantState(name, true);
-		gameState.phase = "contestant-intro";
-		gameState.introTrigger = Number(gameState.introTrigger || 0) + 1;
-		gameState.message = "";
-		broadcast();
-		io.emit("play-sound", { sound: "introDramatic" });
-	});
+	gameState.audiencePollData = percentages;
+	gameState.phase = "question";
+	broadcast();
+	return { ok: true };
+});
 
-	socket.on("disconnect", () => {
-		console.log(`[Socket] Client disconnected: ${socket.id}`);
-	});
+registerCommand("show-message", async ({ message }) => {
+	gameState.message = message;
+	broadcast();
+	return { ok: true };
+});
+
+registerCommand("play-sound", async ({ sound }) => {
+	const safeSound = String(sound || "").trim();
+	if (!safeSound) return { ok: false, message: "Sound name required" };
+	publish("play-sound", { sound: safeSound });
+	return { ok: true };
+});
+
+registerCommand("clear-message", async () => {
+	gameState.message = "";
+	broadcast();
+	return { ok: true };
+});
+
+registerCommand("round-end", async () => {
+	stopTimer();
+	gameState.phase = "round-end";
+	broadcast();
+	return { ok: true };
+});
+
+registerCommand("game-over", async () => {
+	stopTimer();
+	gameState.phase = "game-over";
+	broadcast();
+	return { ok: true };
+});
+
+registerCommand("reset-game", async () => {
+	stopTimer();
+	resetParticipantState("Participant", true);
+	gameState.contestants = [];
+	gameState.message = "";
+	broadcast();
+	return { ok: true };
+});
+
+registerCommand("reset-for-next-participant", async ({ name }) => {
+	stopTimer();
+	resetParticipantState(name, true);
+	gameState.phase = "contestant-intro";
+	gameState.introTrigger = Number(gameState.introTrigger || 0) + 1;
+	gameState.message = "";
+	broadcast();
+	publish("play-sound", { sound: "introDramatic" });
+	return { ok: true };
 });
 
 // ─── Reload Questions endpoint ────────────────────────────────────────────────

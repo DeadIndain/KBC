@@ -1,4 +1,5 @@
 # 🎯 Koun Banega Codepathi (KBC)
+
 > A real-time game show app for college events. Runs fully on localhost.
 
 ---
@@ -6,21 +7,24 @@
 ## 🚀 Quick Start
 
 ### 1. Install Dependencies
+
 ```bash
 cd kbc
 npm install
 ```
 
 ### 2. Start the Server
+
 ```bash
 npm start
 ```
 
 ### 3. Open the Two Screens
-| Screen | URL | Purpose |
-|---|---|---|
+
+| Screen      | URL                                | Purpose                        |
+| ----------- | ---------------------------------- | ------------------------------ |
 | **Display** | http://localhost:3000/display.html | Project this on the big screen |
-| **Admin** | http://localhost:3000/admin.html | You control from this tab |
+| **Admin**   | http://localhost:3000/admin.html   | You control from this tab      |
 
 > Tip: Open Display in full screen (F11), then switch to Admin tab to control.
 
@@ -29,6 +33,7 @@ npm start
 ## 🎮 How to Run a Game
 
 ### Before the Event
+
 1. Edit `data/questions.json` with your actual questions (see format below)
 2. You can add as many rounds and questions as you want
 
@@ -45,11 +50,13 @@ npm start
 9. **Repeat** for next contestant / question
 
 ### Lifelines
+
 - **50:50** → Removes 2 wrong options from the display automatically
 - **Audience Poll** → First click "Use" to mark it used, then have audience raise hands, enter counts in the right panel → click 📊 Show Poll
 - **Phone a Friend** → Shows a phone overlay on the display screen
 
 ### Rounds
+
 - Each round in `questions.json` is a separate difficulty tier
 - Use "🏁 End Current Round" to show the round end screen
 - Mark winners with 🏅, then start next round
@@ -60,27 +67,27 @@ npm start
 
 ```json
 {
-  "rounds": [
-    {
-      "roundName": "Round 1 - Warm Up",
-      "prizeLevel": "₹10,000",
-      "timeLimit": 30,
-      "questions": [
-        {
-          "id": 1,
-          "question": "Your question here?",
-          "options": {
-            "A": "Option A",
-            "B": "Option B",
-            "C": "Option C",
-            "D": "Option D"
-          },
-          "correct": "B",
-          "difficulty": "easy"
-        }
-      ]
-    }
-  ]
+	"rounds": [
+		{
+			"roundName": "Round 1 - Warm Up",
+			"prizeLevel": "₹10,000",
+			"timeLimit": 30,
+			"questions": [
+				{
+					"id": 1,
+					"question": "Your question here?",
+					"options": {
+						"A": "Option A",
+						"B": "Option B",
+						"C": "Option C",
+						"D": "Option D"
+					},
+					"correct": "B",
+					"difficulty": "easy"
+				}
+			]
+		}
+	]
 }
 ```
 
@@ -90,6 +97,7 @@ npm start
 - Add as many rounds and questions as you need!
 
 ### Hot Reload Questions
+
 If you edit `questions.json` while the server is running, click **🔄 Reload Questions** in the Admin panel — no restart needed.
 
 ---
@@ -117,7 +125,7 @@ Final Round → Game Over screen
 
 ```
 kbc/
-├── server.js              ← Node.js + Socket.IO server
+├── server.js              ← Node.js + Express + SSE pub/sub server
 ├── package.json
 ├── data/
 │   └── questions.json     ← ✏️ Edit this with your questions

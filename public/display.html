@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Koun Banega Codepathi – Display</title>
-		<script src="/socket.io/socket.io.js"></script>
+		<script src="/assets/pubsub.js"></script>
 		<link
 			href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap"
 			rel="stylesheet" />
@@ -1827,7 +1827,7 @@
 		</div>
 
 		<script>
-			const socket = io();
+			const pubsub = createPubSubClient();
 			let currentState = null;
 			let maxTime = 45;
 			let lastIntroTrigger = -1;
@@ -1866,7 +1866,7 @@
 				}
 			}
 
-			socket.on("play-sound", ({ sound }) => {
+			pubsub.on("play-sound", ({ sound }) => {
 				playSound(sound);
 			});
 
@@ -1966,7 +1966,7 @@
 			}
 
 			// ── Render State ──────────────────────────────────────────────────────────────
-			socket.on("state", (state) => {
+			pubsub.on("state", (state) => {
 				const previousPhase = currentState?.phase;
 				const previousTimerValue = Number(currentState?.timerValue || 0);
 				const previousIntroTrigger = Number(currentState?.introTrigger || 0);
@@ -2014,7 +2014,7 @@
 				}
 			});
 
-			socket.on("questions-meta", (meta) => {
+			pubsub.on("questions-meta", (meta) => {
 				window.roundsMeta = meta.rounds || null;
 			});
 

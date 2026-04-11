@@ -8,7 +8,7 @@ Here's the full context dump:
 
 **Stack:**
 
-- Backend: Node.js + Express + Socket.IO (`server.js`)
+- Backend: Node.js + Express + SSE pub/sub (`server.js`)
 - Frontend: Vanilla HTML/CSS/JS (two static files served by Express)
 - No database, no build step
 
@@ -52,7 +52,7 @@ Here's the full context dump:
 
 ---
 
-## Socket.IO Events (Admin → Server → Display)
+## Pub/Sub Events (Admin → Server → Display)
 
 | Event                  | Payload                         | What it does                                        |
 | ---------------------- | ------------------------------- | --------------------------------------------------- |

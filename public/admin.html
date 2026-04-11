@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>KBC Admin Panel</title>
-		<script src="/socket.io/socket.io.js"></script>
+		<script src="/assets/pubsub.js"></script>
 		<link
 			href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Cinzel:wght@700&display=swap"
 			rel="stylesheet" />
@@ -649,12 +649,12 @@
 							</button>
 							<button
 								class="btn btn-gold"
-								onclick="socket.emit('reveal-all-options')">
+								onclick="pubsub.emit('reveal-all-options')">
 								Reveal options
 							</button>
 							<button
 								class="btn btn-green"
-								onclick="socket.emit('reveal-answer')">
+								onclick="pubsub.emit('reveal-answer')">
 								Reveal correct
 							</button>
 						</div>
@@ -689,17 +689,17 @@
 						<div class="btn-row">
 							<button
 								class="btn btn-gold"
-								onclick="socket.emit('start-timer', {})">
+								onclick="pubsub.emit('start-timer', {})">
 								Start timer
 							</button>
 							<button
 								class="btn btn-outline"
-								onclick="socket.emit('pause-timer')">
+								onclick="pubsub.emit('pause-timer')">
 								Pause
 							</button>
 							<button
 								class="btn btn-outline"
-								onclick="socket.emit('reset-timer')">
+								onclick="pubsub.emit('reset-timer')">
 								Reset
 							</button>
 						</div>
@@ -775,10 +775,10 @@
 							<button class="btn btn-accent" onclick="introParticipant()">
 								Intro
 							</button>
-							<button class="btn btn-gold" onclick="socket.emit('round-end')">
+							<button class="btn btn-gold" onclick="pubsub.emit('round-end')">
 								End round
 							</button>
-							<button class="btn btn-accent" onclick="socket.emit('game-over')">
+							<button class="btn btn-accent" onclick="pubsub.emit('game-over')">
 								End game
 							</button>
 							<button
@@ -873,19 +873,19 @@
 		<div id="toast"></div>
 
 		<script>
-			const socket = io();
+			const pubsub = createPubSubClient();
 			let gameState = null;
 			let questionsMeta = null;
 			let activeContestantId = null;
 			let lastConfigSignature = "";
 			let selectedLifeline = null;
 
-			socket.on("state", (state) => {
+			pubsub.on("state", (state) => {
 				gameState = state;
 				renderAdmin(state);
 			});
 
-			socket.on("questions-meta", (meta) => {
+			pubsub.on("questions-meta", (meta) => {
 				questionsMeta = meta;
 				renderQuestionStats();
 				renderQuestionMeta();
@@ -919,7 +919,7 @@
 			function startGame() {
 				const name = document.getElementById("participant-name").value.trim();
 				if (!name) return toast("Enter participant name!");
-				socket.emit("setup-game", {
+				pubsub.emit("setup-game", {
 					contestants: [name],
 					config: collectGameConfigInput(),
 				});
@@ -932,13 +932,13 @@
 					gameState?.contestants?.find((c) => c.active) ||
 					gameState?.contestants?.[0];
 				if (!active) return toast("Set a participant first");
-				socket.emit("intro-contestant", { contestantId: active.id });
+				pubsub.emit("intro-contestant", { contestantId: active.id });
 				toast(`Intro started: ${active.name}`);
 			}
 
 			function applyGameConfig() {
 				const config = collectGameConfigInput();
-				socket.emit("set-game-config", config, (res) => {
+				pubsub.emit("set-game-config", config, (res) => {
 					toast(
 						res?.ok
 							? "Question plan updated"
@@ -949,7 +949,7 @@
 
 			function loadNextQuestion() {
 				const difficulty = document.getElementById("difficulty-select").value;
-				socket.emit("load-next-question", { difficulty }, (res) => {
+				pubsub.emit("load-next-question", { difficulty }, (res) => {
 					toast(
 						res?.ok
 							? "Next question loaded"
@@ -959,7 +959,7 @@
 			}
 
 			function triggerSound(sound) {
-				socket.emit("play-sound", { sound });
+				pubsub.emit("play-sound", { sound });
 				toast(`Sound sent: ${sound}`);
 			}
 
@@ -1130,17 +1130,17 @@
 			}
 
 			function revealOption(opt) {
-				socket.emit("reveal-option", { option: opt });
+				pubsub.emit("reveal-option", { option: opt });
 			}
 
 			function lockAnswer(opt) {
-				socket.emit("lock-answer", { answer: opt });
+				pubsub.emit("lock-answer", { answer: opt });
 				toast(`Answer locked: ${opt}`);
 			}
 
 			function useFiftyFifty() {
 				if (!activeContestantId) return;
-				socket.emit("lifeline-fifty-fifty", {
+				pubsub.emit("lifeline-fifty-fifty", {
 					contestantId: activeContestantId,
 				});
 				toast("50:50 lifeline used!");
@@ -1149,7 +1149,7 @@
 			function useAudiencePoll() {
 				if (!activeContestantId) return;
 				selectedLifeline = "audience-poll";
-				socket.emit("lifeline-audience", { contestantId: activeContestantId });
+				pubsub.emit("lifeline-audience", { contestantId: activeContestantId });
 				toast("Audience Poll activated!");
 				renderAudiencePollPanel(gameState || {});
 				renderLifelines(gameState || {});
@@ -1162,7 +1162,7 @@
 					C: parseInt(document.getElementById("poll-C").value, 10) || 0,
 					D: parseInt(document.getElementById("poll-D").value, 10) || 0,
 				};
-				socket.emit("submit-audience-poll", { counts });
+				pubsub.emit("submit-audience-poll", { counts });
 				toast("Audience poll submitted!");
 				selectedLifeline = null;
 				["A", "B", "C", "D"].forEach((opt) => {
@@ -1178,7 +1178,7 @@
 					10,
 				);
 				if (!secs || secs < 1) return;
-				socket.emit("start-timer", { seconds: secs });
+				pubsub.emit("start-timer", { seconds: secs });
 				toast(`Timer started: ${secs}s`);
 			}
 
@@ -1191,7 +1191,7 @@
 			function resetQuestionDb() {
 				if (!confirm("Reset SQLite question tracking for the whole event?"))
 					return;
-				socket.emit("reset-question-tracking", (res) => {
+				pubsub.emit("reset-question-tracking", (res) => {
 					toast(res?.message || "Question DB reset");
 				});
 			}
@@ -1201,7 +1201,7 @@
 				if (name === null) return;
 				const trimmed = name.trim();
 				if (!trimmed) return toast("Reset cancelled: name is required");
-				socket.emit("reset-for-next-participant", { name: trimmed });
+				pubsub.emit("reset-for-next-participant", { name: trimmed });
 				toast(`Ready for next participant: ${trimmed}`);
 			}
 
