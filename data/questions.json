@@ -1,133 +1,236 @@
 {
-	"rounds": [
+	"gameConfig": {
+		"rounds": [
+			{
+				"label": "Round 1 - Fundamentals",
+				"prize": "Rs 10,000",
+				"timeLimit": 30
+			},
+			{
+				"label": "Round 2 - Applied Logic",
+				"prize": "Rs 40,000",
+				"timeLimit": 40
+			},
+			{
+				"label": "Round 3 - Systems and Data",
+				"prize": "Rs 1,20,000",
+				"timeLimit": 50
+			},
+			{
+				"label": "Round 4 - Final Stretch",
+				"prize": "Rs 3,00,000",
+				"timeLimit": 60
+			}
+		]
+	},
+	"questions": [
 		{
-			"roundName": "Round 1 - Warm Up",
-			"prizeLevel": "₹10,000",
-			"timeLimit": 30,
-			"questions": [
-				{
-					"id": 1,
-					"question": "Which data structure follows the LIFO (Last In, First Out) principle?",
-					"options": {
-						"A": "Queue",
-						"B": "Stack",
-						"C": "Linked List",
-						"D": "Tree"
-					},
-					"correct": "B",
-					"difficulty": "easy"
-				},
-				{
-					"id": 2,
-					"question": "Which SQL command is used to retrieve data from a table?",
-					"options": {
-						"A": "INSERT",
-						"B": "UPDATE",
-						"C": "SELECT",
-						"D": "DELETE"
-					},
-					"correct": "C",
-					"difficulty": "easy"
-				},
-				{
-					"id": 3,
-					"question": "In JavaScript, which keyword declares a block-scoped variable?",
-					"options": {
-						"A": "var",
-						"B": "let",
-						"C": "define",
-						"D": "constvar"
-					},
-					"correct": "B",
-					"difficulty": "easy"
-				}
-			]
+			"id": 101,
+			"levels": [1],
+			"question": "Which keyword is used to declare a constant in JavaScript?",
+			"options": {
+				"A": "var",
+				"B": "let",
+				"C": "const",
+				"D": "static"
+			},
+			"correct": "C",
+			"difficulty": "easy"
 		},
 		{
-			"roundName": "Round 2 - Getting Hot",
-			"prizeLevel": "₹50,000",
-			"timeLimit": 45,
-			"questions": [
-				{
-					"id": 4,
-					"question": "What is the time complexity of binary search on a sorted array?",
-					"options": {
-						"A": "O(n)",
-						"B": "O(log n)",
-						"C": "O(n log n)",
-						"D": "O(1)"
-					},
-					"correct": "B",
-					"difficulty": "medium"
-				},
-				{
-					"id": 5,
-					"question": "Which HTTP method is typically used for partial updates to a resource?",
-					"options": {
-						"A": "GET",
-						"B": "PUT",
-						"C": "PATCH",
-						"D": "OPTIONS"
-					},
-					"correct": "C",
-					"difficulty": "medium"
-				},
-				{
-					"id": 6,
-					"question": "In Git, which command creates a new branch and switches to it in one step?",
-					"options": {
-						"A": "git branch -d feature",
-						"B": "git checkout -b feature",
-						"C": "git merge feature",
-						"D": "git reset --hard feature"
-					},
-					"correct": "B",
-					"difficulty": "medium"
-				}
-			]
+			"id": 102,
+			"levels": [1, 2],
+			"question": "What does HTTP stand for?",
+			"options": {
+				"A": "HyperText Transfer Protocol",
+				"B": "High Transfer Text Process",
+				"C": "Hyper Terminal Transport Process",
+				"D": "Host Transfer Template Protocol"
+			},
+			"correct": "A",
+			"difficulty": "easy"
 		},
 		{
-			"roundName": "Final Round - Codepathi!",
-			"prizeLevel": "₹1,00,000",
-			"timeLimit": 60,
-			"questions": [
-				{
-					"id": 7,
-					"question": "Which ACID property guarantees that a transaction is all-or-nothing?",
-					"options": {
-						"A": "Consistency",
-						"B": "Isolation",
-						"C": "Atomicity",
-						"D": "Durability"
-					},
-					"correct": "C",
-					"difficulty": "hard"
-				},
-				{
-					"id": 8,
-					"question": "In operating systems, what is the primary purpose of a mutex?",
-					"options": {
-						"A": "To increase CPU clock speed",
-						"B": "To prevent concurrent access to shared resources",
-						"C": "To encrypt data in memory",
-						"D": "To schedule network packets"
-					},
-					"correct": "B",
-					"difficulty": "hard"
-				},
-				{
-					"id": 9,
-					"question": "Which indexing strategy is generally best for high-cardinality exact-match lookups in relational databases?",
-					"options": {
-						"A": "B-tree index on the lookup column",
-						"B": "No index",
-						"C": "Only full table scan",
-						"D": "Randomized row order"
-					},
-					"correct": "A",
-					"difficulty": "hard"
-				}
-			]
+			"id": 103,
+			"levels": [1],
+			"question": "In SQL, which command removes all rows from a table but keeps the table?",
+			"options": {
+				"A": "DROP",
+				"B": "DELETE",
+				"C": "TRUNCATE",
+				"D": "REMOVE"
+			},
+			"correct": "C",
+			"difficulty": "easy"
+		},
+		{
+			"id": 104,
+			"levels": [1],
+			"question": "Which data structure is best for FIFO behavior?",
+			"options": {
+				"A": "Stack",
+				"B": "Queue",
+				"C": "Tree",
+				"D": "Graph"
+			},
+			"correct": "B",
+			"difficulty": "easy"
+		},
+		{
+			"id": 201,
+			"levels": [2],
+			"question": "What is the average time complexity of hash table lookup?",
+			"options": {
+				"A": "O(1)",
+				"B": "O(log n)",
+				"C": "O(n)",
+				"D": "O(n log n)"
+			},
+			"correct": "A",
+			"difficulty": "medium"
+		},
+		{
+			"id": 202,
+			"levels": [2, 3],
+			"question": "Which git command creates and switches to a new branch?",
+			"options": {
+				"A": "git branch --switch feature",
+				"B": "git checkout -b feature",
+				"C": "git branch -m feature",
+				"D": "git switch --new origin/feature"
+			},
+			"correct": "B",
+			"difficulty": "medium"
+		},
+		{
+			"id": 203,
+			"levels": [2],
+			"question": "Which status code means resource not found?",
+			"options": {
+				"A": "200",
+				"B": "301",
+				"C": "404",
+				"D": "500"
+			},
+			"correct": "C",
+			"difficulty": "medium"
+		},
+		{
+			"id": 204,
+			"levels": [2],
+			"question": "In OOP, what is it called when one class derives from another?",
+			"options": {
+				"A": "Encapsulation",
+				"B": "Abstraction",
+				"C": "Inheritance",
+				"D": "Polymorphism"
+			},
+			"correct": "C",
+			"difficulty": "medium"
+		},
+		{
+			"id": 301,
+			"levels": [3],
+			"question": "Which ACID property ensures all-or-nothing transaction behavior?",
+			"options": {
+				"A": "Isolation",
+				"B": "Atomicity",
+				"C": "Consistency",
+				"D": "Durability"
+			},
+			"correct": "B",
+			"difficulty": "hard"
+		},
+		{
+			"id": 302,
+			"levels": [3, 4],
+			"question": "What is the primary job of an operating system scheduler?",
+			"options": {
+				"A": "Encrypt disk blocks",
+				"B": "Manage CPU time across processes",
+				"C": "Compile source code",
+				"D": "Render graphics frames"
+			},
+			"correct": "B",
+			"difficulty": "hard"
+		},
+		{
+			"id": 303,
+			"levels": [3],
+			"question": "Which index is usually preferred for range queries in relational databases?",
+			"options": {
+				"A": "Bitmap",
+				"B": "B-tree",
+				"C": "Hash only",
+				"D": "No index"
+			},
+			"correct": "B",
+			"difficulty": "hard"
+		},
+		{
+			"id": 304,
+			"levels": [3],
+			"question": "Which protocol is commonly used to secure web traffic?",
+			"options": {
+				"A": "FTP",
+				"B": "SMTP",
+				"C": "TLS",
+				"D": "SSH"
+			},
+			"correct": "C",
+			"difficulty": "hard"
+		},
+		{
+			"id": 401,
+			"levels": [4],
+			"question": "If a deadlock occurs, which condition must be present?",
+			"options": {
+				"A": "No mutual exclusion",
+				"B": "Preemption always enabled",
+				"C": "Circular wait",
+				"D": "Single process system"
+			},
+			"correct": "C",
+			"difficulty": "hard"
+		},
+		{
+			"id": 402,
+			"levels": [4],
+			"question": "Which CAP theorem tradeoff is typical for strongly consistent databases during partitions?",
+			"options": {
+				"A": "Choose availability over consistency",
+				"B": "Choose consistency over availability",
+				"C": "Guarantee all three always",
+				"D": "Ignore partition tolerance"
+			},
+			"correct": "B",
+			"difficulty": "hard"
+		},
+		{
+			"id": 403,
+			"levels": [4],
+			"question": "What is the purpose of a mutex in concurrent programs?",
+			"options": {
+				"A": "Improve network throughput",
+				"B": "Prevent race conditions on shared data",
+				"C": "Compress memory pages",
+				"D": "Restart failed threads"
+			},
+			"correct": "B",
+			"difficulty": "hard"
+		},
+		{
+			"id": 404,
+			"levels": [4],
+			"question": "Which strategy helps reduce API latency in distributed systems?",
+			"options": {
+				"A": "Synchronous chained calls everywhere",
+				"B": "Caching hot responses near clients",
+				"C": "Adding more logging in request path",
+				"D": "Increasing payload size"
+			},
+			"correct": "B",
+			"difficulty": "hard"
 		}
 	]
 }

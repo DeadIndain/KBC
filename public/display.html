@@ -23,15 +23,26 @@
 				--text: #e8eeff;
 			}
 
+			body {
+				background: var(--deep-blue);
+				font-family: "Rajdhani", sans-serif;
+				color: var(--text);
+				width: 100vw;
+				min-height: 100vh;
+				overflow: hidden;
+				position: relative;
+			}
+
 			* {
 				margin: 0;
 				padding: 0;
 				box-sizing: border-box;
-				body.question-mode .game-sidebar,
-				body.question-mode .phone-overlay,
-				body.question-mode .message-overlay {
-					display: none !important;
-				}
+			}
+
+			.bg {
+				position: fixed;
+				inset: 0;
+				z-index: 0;
 				background:
 					radial-gradient(
 						ellipse at 20% 50%,
@@ -39,6 +50,7 @@
 						transparent 60%
 					),
 					radial-gradient(
+						ellipse at 80% 20%,
 						rgba(0, 212, 255, 0.1) 0%,
 						transparent 50%
 					),
@@ -740,13 +752,15 @@
 				filter: grayscale(1);
 			}
 			.option-card.selected {
-				border-color: var(--gold);
+				border-color: #ffe27a;
 				background: linear-gradient(
 					180deg,
-					rgba(37, 96, 206, 0.96),
-					rgba(12, 42, 120, 0.98)
+					rgba(255, 235, 150, 0.98),
+					rgba(245, 200, 66, 0.96)
 				);
-				box-shadow: 0 0 24px rgba(245, 200, 66, 0.42);
+				box-shadow:
+					0 0 28px rgba(245, 200, 66, 0.56),
+					inset 0 0 16px rgba(255, 255, 255, 0.2);
 			}
 			.option-card.correct {
 				border-color: var(--correct);
@@ -953,6 +967,7 @@
 
 			/* ── Round End / Game Over ── */
 			#screen-round-end,
+			#screen-walkout,
 			#screen-game-over {
 				text-align: center;
 				gap: 24px;
@@ -972,6 +987,12 @@
 				color: var(--accent);
 				letter-spacing: 4px;
 				text-transform: uppercase;
+			}
+
+			#walkout-subtitle,
+			#game-over-winner {
+				text-transform: none;
+				letter-spacing: 1px;
 			}
 			.winners-list {
 				display: flex;
@@ -1096,7 +1117,7 @@
 
 			/* ── Sample question mode ─────────────────────────────────────────────── */
 			body.question-mode {
-				background: #1a1a2e;
+				background: var(--deep-blue);
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -1111,6 +1132,7 @@
 			body.question-mode .intro-stage,
 			body.question-mode #screen-lobby,
 			body.question-mode #screen-round-end,
+			body.question-mode #screen-walkout,
 			body.question-mode #screen-game-over,
 			body.question-mode .game-sidebar,
 			body.question-mode .phone-overlay,
@@ -1154,14 +1176,6 @@
 				height: 100vh;
 				padding: 0;
 				z-index: 5;
-			}
-
-			body.question-mode .bg {
-				position: fixed;
-				inset: 0;
-				background: radial-gradient(ellipse 80% 60% at 50% 40%, #0d1b4b 0%, #060c26 60%, #000 100%);
-				z-index: 0;
-						display: block;
 			}
 
 			body.question-mode .bg::before {
@@ -1591,6 +1605,32 @@
 				text-shadow: 0 1px 3px rgba(0, 0, 40, 0.7);
 			}
 
+			body.question-mode .opt.selected .opt-outer {
+				background: linear-gradient(
+					180deg,
+					#ffe98c 0%,
+					#c99505 40%,
+					#f5c842 60%,
+					#ffe98c 100%
+				);
+				filter: drop-shadow(0 0 16px rgba(245, 200, 66, 0.95));
+			}
+
+			body.question-mode .opt.selected .opt-inner {
+				background: linear-gradient(180deg, #fff1b5 0%, #f0bf2a 50%, #fff1b5 100%);
+			}
+
+			body.question-mode .opt.selected .opt-text,
+			body.question-mode .opt.selected .opt-letter {
+				color: #04133f;
+				text-shadow: none;
+			}
+
+			body.question-mode .opt.selected .opt-diamond {
+				background: linear-gradient(135deg, #fff8cf, #d59600);
+				box-shadow: 0 0 8px rgba(245, 200, 66, 0.9);
+			}
+
 			body.question-mode .opt.correct .opt-outer {
 				background: linear-gradient(
 					180deg,
@@ -1811,9 +1851,14 @@
 
 		<!-- GAME OVER -->
 		<div class="screen" id="screen-game-over">
-			<div class="end-title">🏆 Koun Banega Codepathi? 🏆</div>
+			<div class="end-title" id="game-over-title">Koun Banega Codepathi</div>
 			<div class="end-subtitle" id="game-over-winner"></div>
-			<div class="winners-list" id="game-over-list"></div>
+		</div>
+
+		<!-- WALKOUT -->
+		<div class="screen" id="screen-walkout">
+			<div class="end-title" id="walkout-title">Koun Banega Codepathi</div>
+			<div class="end-subtitle" id="walkout-subtitle"></div>
 		</div>
 
 		<!-- PHONE FRIEND OVERLAY -->
@@ -1845,7 +1890,7 @@
 				suspense2: new Audio("/sounds/Suspense 2.mp3"),
 				suspense3: new Audio("/sounds/Suspense 3.mp3"),
 				suspense4: new Audio("/sounds/Suspense 4.mp3"),
-				lock: new Audio("/sounds/Lock.mp3"),
+				lock: new Audio("/sounds/lock.mp3"),
 				correct: new Audio("/sounds/Correct.mp3"),
 				wrong: new Audio("/sounds/Wrong.mp3"),
 				fastest: new Audio("/sounds/Fastest Fingers.mp3"),
@@ -1870,8 +1915,22 @@
 				}
 			}
 
+			function pauseSound(name) {
+				const audio = sounds[name];
+				if (!audio) return;
+				try {
+					audio.pause();
+				} catch (_error) {
+					/* ignore playback issues */
+				}
+			}
+
 			pubsub.on("play-sound", ({ sound }) => {
 				playSound(sound);
+			});
+
+			pubsub.on("pause-sound", ({ sound }) => {
+				pauseSound(sound);
 			});
 
 			function readyGame() {
@@ -2076,6 +2135,9 @@
 				} else if (state.phase === "round-end") {
 					showScreen("round-end");
 					renderRoundEnd(state);
+				} else if (state.phase === "walkout") {
+					showScreen("walkout");
+					renderWalkout(state);
 				} else if (state.phase === "game-over") {
 					showScreen("game-over");
 					renderGameOver(state);
@@ -2171,6 +2233,7 @@
 				).length;
 				const optionsVisible =
 					state.phase !== "question" ||
+					!!state.selectedAnswer ||
 					(state.revealedOptions || []).length >= activeOptionCount;
 				if (optionsRow) {
 					optionsRow.classList.toggle("options-hidden", !optionsVisible);
@@ -2242,7 +2305,7 @@
 						(c.eliminated ? " eliminated" : "");
 					div.innerHTML = `
       <span class="score-name">${c.active ? "▶ " : ""}${c.name}</span>
-      <span class="score-val">${state.scores[c.id] || 0}</span>
+      <span class="score-val">${state.scores[c.id] || 0} rounds</span>
     `;
 					container.appendChild(div);
 				});
@@ -2250,10 +2313,15 @@
 
 			function renderRoundEnd(state) {
 				const rm = window.roundsMeta;
+				const completedIndex =
+					state.lastCompletedRoundIndex !== undefined &&
+					state.lastCompletedRoundIndex !== null
+						? state.lastCompletedRoundIndex
+						: Math.max(Number(state.currentRoundIndex) - 1, 0);
 				const rName =
-					rm && rm[state.currentRoundIndex]
-						? rm[state.currentRoundIndex].roundName
-						: "Question";
+					rm && rm[completedIndex]
+						? rm[completedIndex].label || rm[completedIndex].roundName
+						: "Round";
 				document.getElementById("round-end-title").textContent =
 					rName + " Complete!";
 				document.getElementById("round-end-subtitle").textContent =
@@ -2267,20 +2335,36 @@
 			}
 
 			function renderGameOver(state) {
-				// Find top scorer
-				const ranked = [...state.contestants].sort(
-					(a, b) => (state.scores[b.id] || 0) - (state.scores[a.id] || 0),
-				);
-				const winner = ranked[0];
-				document.getElementById("game-over-winner").textContent = winner
-					? `🎉 Winner: ${winner.name}! 🎉`
-					: "";
-				document.getElementById("game-over-list").innerHTML = ranked
-					.map(
-						(c, i) =>
-							`<div class="winner-chip">${i === 0 ? "🥇" : i === 1 ? "🥈" : "🥉"} ${c.name} — ${state.scores[c.id] || 0} pts</div>`,
-					)
-					.join("");
+				const rm = window.roundsMeta;
+				const finalRoundIndex = Math.max((rm?.length || 1) - 1, 0);
+				const fallbackPrize = rm?.[finalRoundIndex]?.prize || "Rs 0";
+				const outcome = state.lastOutcome || {};
+				const winnerName =
+					outcome.name ||
+					state.contestants.find((c) => c.active)?.name ||
+					state.contestants[0]?.name ||
+					"Participant";
+				const prize = outcome.prize || fallbackPrize;
+
+				document.getElementById("game-over-title").textContent =
+					"Koun Banega Codepathi";
+				document.getElementById("game-over-winner").textContent =
+					`${winnerName} won ${prize}`;
+			}
+
+			function renderWalkout(state) {
+				const outcome = state.lastOutcome || {};
+				const name =
+					outcome.name ||
+					state.contestants.find((c) => c.eliminated)?.name ||
+					state.contestants[0]?.name ||
+					"Participant";
+				const prize = outcome.prize || "Rs 0";
+
+				document.getElementById("walkout-title").textContent =
+					"Koun Banega Codepathi";
+				document.getElementById("walkout-subtitle").textContent =
+					`${name} walks out with ${prize}`;
 			}
 		</script>
 	</body>

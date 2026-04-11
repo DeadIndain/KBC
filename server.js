@@ -11,22 +11,20 @@ const bus = new EventEmitter();
 const pubsubClients = new Set();
 const commandHandlers = new Map();
 
+const PORT = 3000;
+const DB_PATH = path.join(__dirname, "data", "event_questions.sqlite");
+const QUESTIONS_FILE_PATH = path.join(__dirname, "data", "questions.json");
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
-const DB_PATH = path.join(__dirname, "data", "event_questions.sqlite");
 const db = new sqlite3.Database(DB_PATH);
-const ADMIN_SETTINGS_KEY = "game_config";
 
-// ─── Load Questions ───────────────────────────────────────────────────────────
-let questionsData = JSON.parse(
-	fs.readFileSync("./data/questions.json", "utf-8"),
-);
+let questionsData = JSON.parse(fs.readFileSync(QUESTIONS_FILE_PATH, "utf-8"));
 let allQuestions = buildQuestionBank(questionsData);
 
-// ─── Game State ───────────────────────────────────────────────────────────────
 let gameState = {
-	phase: "lobby", // lobby | contestant-intro | question | answer-reveal | lifeline-poll | lifeline-phone | round-end | game-over
+	phase: "lobby",
 	contestants: [],
 	currentContestantIndex: 0,
 	currentRoundIndex: 0,
@@ -48,33 +46,18 @@ let gameState = {
 	introTrigger: 0,
 	scores: {},
 	roundWinners: [],
-	questionsAnswered: 0,
-	gameConfig: {
-		totalQuestionsToWin: 5,
-		prizes: ["₹10,000", "₹20,000", "₹40,000", "₹80,000", "₹1,60,000"],
-	},
+	roundsCompleted: 0,
+	lastCompletedRoundIndex: null,
+	lastOutcome: null,
+	gameConfig: buildGameConfig(questionsData),
 	prizeMoneyLadder: [],
 };
 
+gameState.prizeMoneyLadder = buildPrizeLadder(gameState.gameConfig);
+setActivePrizeIndex(0);
+
 let timerInterval = null;
 
-function sendSseEvent(res, event, payload) {
-	res.write(`event: ${event}\n`);
-	res.write(`data: ${JSON.stringify(payload)}\n\n`);
-}
-
-function publish(event, payload) {
-	bus.emit(event, payload);
-	for (const res of pubsubClients) {
-		sendSseEvent(res, event, payload);
-	}
-}
-
-function registerCommand(name, handler) {
-	commandHandlers.set(name, handler);
-}
-
-// ─── DB Helpers ───────────────────────────────────────────────────────────────
 function runDb(sql, params = []) {
 	return new Promise((resolve, reject) => {
 		db.run(sql, params, function onRun(err) {
@@ -117,48 +100,6 @@ async function initQuestionDb() {
 	await runDb(
 		"CREATE INDEX IF NOT EXISTS idx_question_tracking_solved_asked ON question_tracking (solved, asked_count)",
 	);
-
-	for (const q of allQuestions) {
-		await runDb(
-			"INSERT OR IGNORE INTO question_tracking (question_id) VALUES (?)",
-			[q.trackingId],
-		);
-	}
-}
-
-async function initAdminSettingsDb() {
-	await runDb(`
-		CREATE TABLE IF NOT EXISTS admin_settings (
-			setting_key TEXT PRIMARY KEY,
-			setting_value TEXT NOT NULL,
-			updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-		)
-	`);
-}
-
-async function loadPersistedGameConfig() {
-	const row = await getDb(
-		"SELECT setting_value FROM admin_settings WHERE setting_key = ?",
-		[ADMIN_SETTINGS_KEY],
-	);
-	if (!row?.setting_value) return;
-
-	try {
-		gameState.gameConfig = normalizeGameConfig(JSON.parse(row.setting_value));
-	} catch (_error) {
-		// Ignore malformed persisted config and keep defaults.
-	}
-}
-
-async function savePersistedGameConfig(config) {
-	await runDb(
-		`INSERT INTO admin_settings (setting_key, setting_value, updated_at)
-		 VALUES (?, ?, CURRENT_TIMESTAMP)
-		 ON CONFLICT(setting_key) DO UPDATE SET
-		   setting_value = excluded.setting_value,
-		   updated_at = CURRENT_TIMESTAMP`,
-		[ADMIN_SETTINGS_KEY, JSON.stringify(config)],
-	);
 }
 
 async function ensureTrackingRows() {
@@ -171,43 +112,158 @@ async function ensureTrackingRows() {
 }
 
 async function resetQuestionTracking() {
-	await runDb(
-		`UPDATE question_tracking
-		 SET asked_count = 0,
-		     wrong_count = 0,
-		     solved = 0,
-		     last_result = NULL,
-		     updated_at = CURRENT_TIMESTAMP`,
-	);
+	await runDb(`
+    UPDATE question_tracking
+    SET asked_count = 0,
+        wrong_count = 0,
+        solved = 0,
+        last_result = NULL,
+        updated_at = CURRENT_TIMESTAMP
+  `);
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+function sendSseEvent(res, event, payload) {
+	res.write(`event: ${event}\n`);
+	res.write(`data: ${JSON.stringify(payload)}\n\n`);
+}
+
+function publish(event, payload) {
+	bus.emit(event, payload);
+	for (const res of pubsubClients) {
+		sendSseEvent(res, event, payload);
+	}
+}
+
+function broadcast() {
+	publish("state", gameState);
+}
+
+function registerCommand(name, handler) {
+	commandHandlers.set(name, handler);
+}
+
 function normalizeDifficulty(value) {
 	const d = String(value || "medium").toLowerCase();
 	if (d === "easy" || d === "medium" || d === "hard") return d;
 	return "medium";
 }
 
+function normalizeRoundConfig(round, index) {
+	return {
+		level: index + 1,
+		label:
+			String(round?.label || round?.roundName || round?.name || "").trim() ||
+			`Round ${index + 1}`,
+		prize: String(round?.prize || round?.prizeLevel || "").trim(),
+		timeLimit: Math.max(1, Number(round?.timeLimit) || 45),
+	};
+}
+
+function normalizeLevelList(value, fallbackLevel = 1) {
+	const rawLevels = Array.isArray(value)
+		? value
+		: value === undefined || value === null || value === ""
+			? [fallbackLevel]
+			: [value];
+	const levels = rawLevels
+		.map((item) => Number(item))
+		.filter((item) => Number.isInteger(item) && item > 0);
+	return Array.from(new Set(levels.length ? levels : [fallbackLevel]));
+}
+
+function getConfiguredRounds(data = questionsData) {
+	if (Array.isArray(data?.gameConfig?.rounds)) {
+		return data.gameConfig.rounds.map((round, index) =>
+			normalizeRoundConfig(round, index),
+		);
+	}
+
+	if (Array.isArray(data?.rounds) && data.rounds.length) {
+		if (Array.isArray(data.rounds[0]?.questions)) {
+			return data.rounds.map((round, index) =>
+				normalizeRoundConfig(
+					{
+						label: round.roundName,
+						prize: round.prizeLevel,
+						timeLimit: round.timeLimit,
+					},
+					index,
+				),
+			);
+		}
+		return data.rounds.map((round, index) =>
+			normalizeRoundConfig(round, index),
+		);
+	}
+
+	return [];
+}
+
+function buildGameConfig(data = questionsData) {
+	const rounds = getConfiguredRounds(data);
+	return { totalRounds: rounds.length, rounds };
+}
+
 function buildQuestionBank(data) {
+	const rounds = getConfiguredRounds(data);
+	const roundCount = rounds.length;
 	const bank = [];
-	data.rounds.forEach((round, roundIndex) => {
-		round.questions.forEach((q, questionIndex) => {
+
+	if (Array.isArray(data?.questions)) {
+		data.questions.forEach((q, questionIndex) => {
+			const id = q.id ?? questionIndex + 1;
+			const levels = normalizeLevelList(q.levels ?? q.rounds ?? q.level, 1)
+				.filter((level) => !roundCount || level <= roundCount)
+				.sort((a, b) => a - b);
+
 			bank.push({
-				trackingId: `r${roundIndex + 1}-q${q.id || questionIndex + 1}-${questionIndex}`,
-				id: q.id,
+				trackingId: `q-${id}`,
+				id,
 				question: q.question,
-				options: q.options,
+				options: q.options || {},
 				correct: q.correct,
 				difficulty: normalizeDifficulty(q.difficulty),
-				roundIndex,
-				questionIndex,
-				roundName: round.roundName,
-				prizeLevel: round.prizeLevel,
-				timeLimit: Number(round.timeLimit) || 45,
+				levels,
 			});
 		});
-	});
+		return bank;
+	}
+
+	if (Array.isArray(data?.rounds)) {
+		data.rounds.forEach((round, roundIndex) => {
+			const entries = Array.isArray(round?.questions) ? round.questions : [];
+			entries.forEach((q, questionIndex) => {
+				const id = q.id ?? questionIndex + 1;
+				bank.push({
+					trackingId: `r${roundIndex + 1}-q${id}-${questionIndex}`,
+					id,
+					question: q.question,
+					options: q.options || {},
+					correct: q.correct,
+					difficulty: normalizeDifficulty(q.difficulty),
+					levels: [roundIndex + 1],
+				});
+			});
+		});
+	}
+
 	return bank;
+}
+
+function buildPrizeLadder(config) {
+	return (config.rounds || []).map((round, index) => ({
+		round: index + 1,
+		name: round.label || `Round ${index + 1}`,
+		prize: round.prize || `Prize ${index + 1}`,
+		active: false,
+	}));
+}
+
+function setActivePrizeIndex(index) {
+	gameState.prizeMoneyLadder = gameState.prizeMoneyLadder.map((item, i) => ({
+		...item,
+		active: i === index,
+	}));
 }
 
 function getContestantById(id) {
@@ -220,44 +276,13 @@ function getActiveContestant() {
 	);
 }
 
-function normalizeGameConfig(rawConfig = {}) {
-	const totalQuestionsToWin = Math.max(
-		1,
-		Math.min(20, Number(rawConfig.totalQuestionsToWin) || 5),
-	);
-
-	const inputPrizes = Array.isArray(rawConfig.prizes)
-		? rawConfig.prizes
-		: String(rawConfig.prizes || "")
-				.split(/\n|,/)
-				.map((p) => p.trim())
-				.filter(Boolean);
-
-	const prizes = Array.from({ length: totalQuestionsToWin }, (_, i) => {
-		return inputPrizes[i] || `Prize ${i + 1}`;
-	});
-
-	return { totalQuestionsToWin, prizes };
+function getRoundConfigAt(index) {
+	return gameState.gameConfig.rounds?.[index] || null;
 }
 
-function buildPrizeLadder(config) {
-	return Array.from({ length: config.totalQuestionsToWin }, (_, i) => ({
-		round: i + 1,
-		name: `Question ${i + 1}`,
-		prize: config.prizes[i],
-		active: false,
-	}));
-}
-
-function setActivePrizeIndex(index) {
-	gameState.prizeMoneyLadder = gameState.prizeMoneyLadder.map((item, i) => ({
-		...item,
-		active: i === index,
-	}));
-}
-
-function broadcast() {
-	publish("state", gameState);
+function getRoundPrizeAt(index) {
+	if (!Number.isInteger(index) || index < 0) return "Rs 0";
+	return getRoundConfigAt(index)?.prize || "Rs 0";
 }
 
 function stopTimer() {
@@ -280,7 +305,6 @@ function startTimer(seconds) {
 		gameState.timerValue -= 1;
 		if (gameState.timerValue <= 0) {
 			stopTimer();
-			gameState.timerRunning = false;
 			gameState.timerValue = 0;
 			gameState.phase = "answer-reveal";
 			gameState.highlightCorrect = true;
@@ -309,50 +333,51 @@ async function getTrackingMap() {
 
 async function getQuestionsMetaPayload() {
 	const trackingMap = await getTrackingMap();
-	const difficultyKeys = ["easy", "medium", "hard"];
+	const rounds = (gameState.gameConfig.rounds || []).map((round, index) => {
+		const roundNumber = index + 1;
+		const questions = allQuestions
+			.filter((q) => (q.levels || []).includes(roundNumber))
+			.map((q) => {
+				const tracking = trackingMap.get(q.trackingId) || { asked_count: 0 };
+				return {
+					id: q.id,
+					question: q.question,
+					levels: q.levels,
+					available: Number(tracking.asked_count) === 0,
+				};
+			});
 
-	const totals = { easy: 0, medium: 0, hard: 0, any: allQuestions.length };
-	const available = { easy: 0, medium: 0, hard: 0, any: 0 };
-
-	allQuestions.forEach((q) => {
-		totals[q.difficulty] += 1;
-		const t = trackingMap.get(q.trackingId) || {
-			asked_count: 0,
-			solved: false,
+		return {
+			roundIndex: index,
+			roundNumber,
+			label: round.label,
+			prize: round.prize,
+			timeLimit: round.timeLimit,
+			questionCount: questions.length,
+			availableCount: questions.filter((q) => q.available).length,
+			questions,
 		};
-		if (!t.solved && t.asked_count < 3) {
-			available[q.difficulty] += 1;
-			available.any += 1;
-		}
 	});
 
-	const solvedCount = allQuestions.filter((q) => {
-		const t = trackingMap.get(q.trackingId);
-		return t && t.solved;
-	}).length;
-
-	const exhaustedCount = allQuestions.filter((q) => {
-		const t = trackingMap.get(q.trackingId);
-		return t && !t.solved && t.asked_count >= 3;
+	const availableCount = allQuestions.filter((q) => {
+		const tracking = trackingMap.get(q.trackingId) || { asked_count: 0 };
+		return Number(tracking.asked_count) === 0;
 	}).length;
 
 	return {
-		totals,
-		available,
-		solvedCount,
-		exhaustedCount,
 		questionCount: allQuestions.length,
-		difficulties: [...difficultyKeys, "any"],
+		availableCount,
+		totalRounds: rounds.length,
+		rounds,
+		currentRoundIndex: gameState.currentRoundIndex,
+		roundsCompleted: gameState.roundsCompleted,
 	};
 }
 
 async function emitQuestionsMeta(targetSocket = null) {
 	const payload = await getQuestionsMetaPayload();
-	if (targetSocket) {
-		sendSseEvent(targetSocket, "questions-meta", payload);
-	} else {
-		publish("questions-meta", payload);
-	}
+	if (targetSocket) sendSseEvent(targetSocket, "questions-meta", payload);
+	else publish("questions-meta", payload);
 }
 
 function pickRandom(list) {
@@ -360,26 +385,24 @@ function pickRandom(list) {
 	return list[Math.floor(Math.random() * list.length)];
 }
 
-async function selectNextQuestion(difficulty) {
+async function selectNextQuestion(roundIndex, questionId = null) {
 	const trackingMap = await getTrackingMap();
-	const wantedDifficulty = String(difficulty || "any").toLowerCase();
+	const targetRoundIndex = Number.isInteger(roundIndex)
+		? roundIndex
+		: Math.max(Number(gameState.currentRoundIndex) || 0, 0);
+	const targetRoundNumber = targetRoundIndex + 1;
 
 	const eligible = allQuestions.filter((q) => {
-		const t = trackingMap.get(q.trackingId) || {
-			asked_count: 0,
-			solved: false,
-		};
-		const difficultyMatch =
-			wantedDifficulty === "any" ? true : q.difficulty === wantedDifficulty;
-		return difficultyMatch && !t.solved && t.asked_count < 3;
+		const tracking = trackingMap.get(q.trackingId) || { asked_count: 0 };
+		return (
+			(q.levels || []).includes(targetRoundNumber) &&
+			Number(tracking.asked_count) === 0
+		);
 	});
 
-	const neverAsked = eligible.filter((q) => {
-		const t = trackingMap.get(q.trackingId) || { asked_count: 0 };
-		return t.asked_count === 0;
-	});
-
-	const selected = pickRandom(neverAsked.length ? neverAsked : eligible);
+	const selected = questionId
+		? eligible.find((q) => String(q.id) === String(questionId))
+		: pickRandom(eligible);
 	if (!selected) return null;
 
 	await runDb(
@@ -395,9 +418,15 @@ async function selectNextQuestion(difficulty) {
 		"SELECT asked_count FROM question_tracking WHERE question_id = ?",
 		[selected.trackingId],
 	);
+	const roundConfig = getRoundConfigAt(targetRoundIndex);
 
 	return {
 		...selected,
+		roundIndex: targetRoundIndex,
+		roundNumber: targetRoundNumber,
+		roundName: roundConfig?.label || `Round ${targetRoundNumber}`,
+		prizeLevel: roundConfig?.prize || "",
+		timeLimit: roundConfig?.timeLimit || 45,
 		askedCount: Number(updated?.asked_count) || 1,
 	};
 }
@@ -426,12 +455,12 @@ async function markCurrentQuestionResult(isCorrect) {
 	}
 }
 
-function resetParticipantState(name, keepConfig = true) {
-	const nextName = (name || "").trim() || "Participant";
+function resetParticipantState(name, preserveRound = false) {
 	const contestantId = "c0";
-	const config = keepConfig
-		? normalizeGameConfig(gameState.gameConfig)
-		: normalizeGameConfig();
+	const nextName = (name || "").trim() || "Participant";
+	const currentRoundIndex = preserveRound
+		? Math.max(0, Number(gameState.currentRoundIndex) || 0)
+		: 0;
 
 	gameState = {
 		...gameState,
@@ -446,7 +475,7 @@ function resetParticipantState(name, keepConfig = true) {
 			},
 		],
 		currentContestantIndex: 0,
-		currentRoundIndex: 0,
+		currentRoundIndex,
 		currentQuestionIndex: 0,
 		currentQuestion: null,
 		currentQuestionTrackingId: null,
@@ -471,15 +500,14 @@ function resetParticipantState(name, keepConfig = true) {
 		introTrigger: 0,
 		scores: { [contestantId]: 0 },
 		roundWinners: [],
-		questionsAnswered: 0,
-		gameConfig: config,
-		prizeMoneyLadder: buildPrizeLadder(config),
+		lastOutcome: null,
+		gameConfig: gameState.gameConfig,
+		prizeMoneyLadder: buildPrizeLadder(gameState.gameConfig),
 	};
 
-	setActivePrizeIndex(0);
+	setActivePrizeIndex(currentRoundIndex);
 }
 
-// ─── Pub/Sub Transport ───────────────────────────────────────────────────────
 app.get("/events", async (req, res) => {
 	res.writeHead(200, {
 		"Content-Type": "text/event-stream",
@@ -490,10 +518,7 @@ app.get("/events", async (req, res) => {
 	res.write(": connected\n\n");
 	pubsubClients.add(res);
 
-	const cleanup = () => {
-		pubsubClients.delete(res);
-	};
-
+	const cleanup = () => pubsubClients.delete(res);
 	req.on("close", cleanup);
 	req.on("aborted", cleanup);
 
@@ -513,7 +538,6 @@ app.post("/api/command/:name", async (req, res) => {
 
 	try {
 		const result = await handler(req.body || {});
-		if (res.headersSent) return;
 		if (result === undefined) {
 			res.json({ ok: true });
 			return;
@@ -524,19 +548,17 @@ app.post("/api/command/:name", async (req, res) => {
 	}
 });
 
-registerCommand("setup-game", async ({ contestants, config }) => {
+registerCommand("setup-game", async ({ contestants } = {}) => {
 	stopTimer();
 	const firstName =
 		Array.isArray(contestants) && contestants.length
 			? String(contestants[0]).trim()
 			: "Participant";
 
-	if (config) {
-		gameState.gameConfig = normalizeGameConfig(config);
-	}
-
-	resetParticipantState(firstName || "Participant", true);
-	gameState.phase = "setup"; // Stay in setup, don't trigger intro yet
+	resetParticipantState(firstName, false);
+	gameState.roundsCompleted = 0;
+	gameState.lastCompletedRoundIndex = null;
+	gameState.phase = "setup";
 	gameState.message = "";
 	broadcast();
 	await emitQuestionsMeta();
@@ -544,7 +566,6 @@ registerCommand("setup-game", async ({ contestants, config }) => {
 });
 
 registerCommand("ready-game", async () => {
-	// Move to contestant-intro and trigger sound
 	gameState.phase = "contestant-intro";
 	gameState.introTrigger = Number(gameState.introTrigger || 0) + 1;
 	gameState.message = "";
@@ -553,36 +574,10 @@ registerCommand("ready-game", async () => {
 	return { ok: true, message: "Game started" };
 });
 
-registerCommand("set-game-config", async ({ totalQuestionsToWin, prizes }) => {
-	try {
-		const config = normalizeGameConfig({ totalQuestionsToWin, prizes });
-		gameState.gameConfig = config;
-		gameState.prizeMoneyLadder = buildPrizeLadder(config);
-		savePersistedGameConfig(config).catch((error) => {
-			console.error("Failed to persist game config:", error);
-		});
-
-		const nextActiveIndex = Math.min(
-			gameState.questionsAnswered,
-			Math.max(config.totalQuestionsToWin - 1, 0),
-		);
-		setActivePrizeIndex(nextActiveIndex);
-
-		broadcast();
-		return { ok: true, message: "Game config updated" };
-	} catch (error) {
-		return { ok: false, message: error.message };
-	}
-});
-
 registerCommand("reset-question-tracking", async () => {
-	try {
-		await resetQuestionTracking();
-		await emitQuestionsMeta();
-		return { ok: true, message: "Question tracking reset" };
-	} catch (error) {
-		return { ok: false, message: error.message };
-	}
+	await resetQuestionTracking();
+	await emitQuestionsMeta();
+	return { ok: true, message: "Question tracking reset" };
 });
 
 registerCommand("intro-contestant", async ({ contestantId }) => {
@@ -600,21 +595,25 @@ registerCommand("intro-contestant", async ({ contestantId }) => {
 	return { ok: true };
 });
 
-registerCommand("load-next-question", async ({ difficulty }) => {
-	try {
+registerCommand(
+	"load-next-question",
+	async ({ roundIndex, questionId } = {}) => {
 		stopTimer();
-		const question = await selectNextQuestion(difficulty);
+		publish("pause-sound", { sound: "timer45" });
+		const nextRoundIndex = Number.isInteger(roundIndex)
+			? roundIndex
+			: Math.max(Number(gameState.currentRoundIndex) || 0, 0);
 
+		const question = await selectNextQuestion(nextRoundIndex, questionId);
 		if (!question) {
 			return {
 				ok: false,
-				message:
-					"No eligible questions left for this difficulty (all solved or reached 3 attempts).",
+				message: "No available questions left for this round.",
 			};
 		}
 
 		gameState.currentRoundIndex = question.roundIndex;
-		gameState.currentQuestionIndex = question.questionIndex;
+		gameState.currentQuestionIndex = question.id;
 		gameState.currentQuestionTrackingId = question.trackingId;
 		gameState.currentQuestion = {
 			id: question.id,
@@ -625,7 +624,8 @@ registerCommand("load-next-question", async ({ difficulty }) => {
 			prizeLevel: question.prizeLevel,
 			timeLimit: question.timeLimit,
 			attemptNumber: question.askedCount,
-			maxAttempts: 3,
+			roundIndex: question.roundIndex,
+			roundNumber: question.roundNumber,
 		};
 
 		gameState.correctAnswer = question.correct;
@@ -636,21 +636,20 @@ registerCommand("load-next-question", async ({ difficulty }) => {
 		gameState.highlightWrong = false;
 		gameState.audiencePollData = null;
 		gameState.removedOptions = [];
+		gameState.timerRunning = false;
+		gameState.timerValue = 0;
 		gameState.phase = "question";
 		gameState.message = "";
-
-		const activeIndex = Math.min(
-			gameState.questionsAnswered,
-			Math.max(gameState.gameConfig.totalQuestionsToWin - 1, 0),
-		);
-		setActivePrizeIndex(activeIndex);
+		setActivePrizeIndex(gameState.currentRoundIndex);
 
 		broadcast();
 		await emitQuestionsMeta();
 		return { ok: true, message: "Question loaded" };
-	} catch (error) {
-		return { ok: false, message: error.message };
-	}
+	},
+);
+
+registerCommand("load-question", async ({ roundIndex, questionId } = {}) => {
+	return commandHandlers.get("load-next-question")({ roundIndex, questionId });
 });
 
 registerCommand("reveal-option", async ({ option }) => {
@@ -672,9 +671,9 @@ registerCommand("reveal-all-options", async () => {
 });
 
 registerCommand("start-timer", async ({ seconds }) => {
-	const duration =
-		Number(seconds) || Number(gameState.currentQuestion?.timeLimit) || 45;
-	startTimer(duration);
+	startTimer(
+		Number(seconds) || Number(gameState.currentQuestion?.timeLimit) || 45,
+	);
 	publish("play-sound", { sound: "timer45" });
 	return { ok: true };
 });
@@ -695,40 +694,54 @@ registerCommand("reset-timer", async () => {
 registerCommand("lock-answer", async ({ answer }) => {
 	stopTimer();
 	gameState.selectedAnswer = answer;
-	gameState.phase = "answer-reveal";
+	publish("pause-sound", { sound: "timer45" });
+	publish("play-sound", { sound: "lock" });
 	broadcast();
 	return { ok: true };
 });
 
 registerCommand("reveal-answer", async () => {
-	if (gameState.answerEvaluated) {
-		return { ok: true };
-	}
+	if (gameState.answerEvaluated) return { ok: true };
 
+	gameState.phase = "answer-reveal";
 	gameState.highlightCorrect = true;
 	const isCorrect = gameState.selectedAnswer === gameState.correctAnswer;
 	gameState.highlightWrong = !isCorrect;
 
 	const active = getActiveContestant();
 	if (active && isCorrect) {
-		gameState.scores[active.id] = (gameState.scores[active.id] || 0) + 1;
-		active.score = gameState.scores[active.id];
-		gameState.questionsAnswered = active.score;
+		gameState.roundsCompleted = (gameState.roundsCompleted || 0) + 1;
+		gameState.scores[active.id] = gameState.roundsCompleted;
+		active.score = gameState.roundsCompleted;
+		gameState.lastCompletedRoundIndex = gameState.currentRoundIndex;
+
+		const nextRoundIndex = gameState.currentRoundIndex + 1;
+		if (nextRoundIndex >= (gameState.gameConfig.rounds || []).length) {
+			gameState.phase = "game-over";
+			gameState.lastOutcome = {
+				type: "grand-prize",
+				name: active.name,
+				prize: getRoundPrizeAt(gameState.currentRoundIndex),
+			};
+		} else {
+			gameState.currentRoundIndex = nextRoundIndex;
+			gameState.phase = "round-end";
+			gameState.lastOutcome = null;
+		}
+	} else if (active && !isCorrect) {
+		active.eliminated = true;
+		active.active = false;
+		gameState.phase = "walkout";
+		gameState.lastOutcome = {
+			type: "walkout",
+			name: active.name,
+			prize: getRoundPrizeAt(gameState.lastCompletedRoundIndex),
+		};
 	}
 
 	gameState.answerEvaluated = true;
 	await markCurrentQuestionResult(isCorrect);
-
-	if (gameState.questionsAnswered >= gameState.gameConfig.totalQuestionsToWin) {
-		gameState.phase = "game-over";
-	}
-
-	const nextActiveIndex = Math.min(
-		gameState.questionsAnswered,
-		Math.max(gameState.gameConfig.totalQuestionsToWin - 1, 0),
-	);
-	setActivePrizeIndex(nextActiveIndex);
-
+	setActivePrizeIndex(gameState.currentRoundIndex);
 	broadcast();
 	await emitQuestionsMeta();
 	return { ok: true };
@@ -778,14 +791,14 @@ registerCommand("submit-audience-poll", async ({ counts }) => {
 	const activeOptions = ["A", "B", "C", "D"].filter(
 		(o) => !gameState.removedOptions.includes(o),
 	);
-	const total = activeOptions.reduce((sum, k) => sum + (counts[k] || 0), 0);
+	const total = activeOptions.reduce((sum, key) => sum + (counts[key] || 0), 0);
 	const percentages = {};
-	activeOptions.forEach((k) => {
-		percentages[k] =
-			total > 0 ? Math.round(((counts[k] || 0) / total) * 100) : 0;
+	activeOptions.forEach((key) => {
+		percentages[key] =
+			total > 0 ? Math.round(((counts[key] || 0) / total) * 100) : 0;
 	});
 
-	const sum = activeOptions.reduce((s, k) => s + percentages[k], 0);
+	const sum = activeOptions.reduce((s, key) => s + percentages[key], 0);
 	if (sum !== 100 && activeOptions.length > 0) {
 		percentages[activeOptions[0]] += 100 - sum;
 	}
@@ -802,16 +815,16 @@ registerCommand("show-message", async ({ message }) => {
 	return { ok: true };
 });
 
+registerCommand("clear-message", async () => {
+	gameState.message = "";
+	broadcast();
+	return { ok: true };
+});
+
 registerCommand("play-sound", async ({ sound }) => {
 	const safeSound = String(sound || "").trim();
 	if (!safeSound) return { ok: false, message: "Sound name required" };
 	publish("play-sound", { sound: safeSound });
-	return { ok: true };
-});
-
-registerCommand("clear-message", async () => {
-	gameState.message = "";
-	broadcast();
 	return { ok: true };
 });
 
@@ -831,7 +844,7 @@ registerCommand("game-over", async () => {
 
 registerCommand("reset-game", async () => {
 	stopTimer();
-	resetParticipantState("Participant", true);
+	resetParticipantState("Participant", false);
 	gameState.contestants = [];
 	gameState.message = "";
 	broadcast();
@@ -849,14 +862,14 @@ registerCommand("reset-for-next-participant", async ({ name }) => {
 	return { ok: true };
 });
 
-// ─── Reload Questions endpoint ────────────────────────────────────────────────
 app.get("/reload-questions", async (req, res) => {
 	try {
-		questionsData = JSON.parse(
-			fs.readFileSync("./data/questions.json", "utf-8"),
-		);
+		questionsData = JSON.parse(fs.readFileSync(QUESTIONS_FILE_PATH, "utf-8"));
 		allQuestions = buildQuestionBank(questionsData);
 		await ensureTrackingRows();
+		gameState.gameConfig = buildGameConfig(questionsData);
+		gameState.prizeMoneyLadder = buildPrizeLadder(gameState.gameConfig);
+		setActivePrizeIndex(gameState.currentRoundIndex);
 		await emitQuestionsMeta();
 		res.json({ success: true, message: "Questions reloaded!" });
 	} catch (e) {
@@ -864,14 +877,11 @@ app.get("/reload-questions", async (req, res) => {
 	}
 });
 
-// ─── Start Server ─────────────────────────────────────────────────────────────
-const PORT = 3000;
-
 (async () => {
 	try {
 		await initQuestionDb();
-		await initAdminSettingsDb();
-		await loadPersistedGameConfig();
+		await ensureTrackingRows();
+		gameState.gameConfig = buildGameConfig(questionsData);
 		gameState.prizeMoneyLadder = buildPrizeLadder(gameState.gameConfig);
 		setActivePrizeIndex(0);
 

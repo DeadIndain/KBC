@@ -284,6 +284,62 @@
 				line-height: 1.5;
 			}
 
+			.question-bank {
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+				max-height: 340px;
+				overflow: auto;
+			}
+
+			.question-bank-item {
+				display: flex;
+				align-items: flex-start;
+				justify-content: space-between;
+				gap: 12px;
+				padding: 12px;
+				border-radius: 10px;
+				border: 1px solid var(--border);
+				background: rgba(255, 255, 255, 0.02);
+			}
+
+			.question-bank-item.used {
+				opacity: 0.48;
+			}
+
+			.question-bank-copy {
+				display: flex;
+				flex-direction: column;
+				gap: 6px;
+				min-width: 0;
+			}
+
+			.question-bank-text {
+				font-size: 14px;
+				line-height: 1.35;
+				color: var(--text);
+			}
+
+			.question-bank-tags {
+				display: flex;
+				gap: 6px;
+				flex-wrap: wrap;
+			}
+
+			.round-tag {
+				display: inline-flex;
+				align-items: center;
+				padding: 4px 8px;
+				border-radius: 999px;
+				background: rgba(245, 200, 66, 0.08);
+				border: 1px solid rgba(245, 200, 66, 0.2);
+				color: var(--gold);
+				font-size: 11px;
+				font-weight: 700;
+				letter-spacing: 1px;
+				text-transform: uppercase;
+			}
+
 			.settings-details {
 				border: 1px solid var(--border);
 				border-radius: 10px;
@@ -391,6 +447,12 @@
 				opacity: 0.3;
 				cursor: not-allowed;
 				text-decoration: line-through;
+			}
+
+			.opt-btn.selected {
+				border-color: var(--gold);
+				color: var(--gold);
+				background: rgba(255, 193, 7, 0.12);
 			}
 
 			.lifeline-list {
@@ -575,37 +637,12 @@
 				</div>
 
 				<div class="card">
-					<div class="card-header">Settings</div>
+					<div class="card-header">Available Questions</div>
 					<div class="card-body">
-						<details class="settings-details">
-							<summary>Question plan</summary>
-							<div style="display: flex; flex-direction: column; gap: 10px">
-								<label>Questions to win</label>
-								<input
-									type="number"
-									id="total-questions-input"
-									min="1"
-									max="20"
-									value="5" />
-								<label>Prize values</label>
-								<textarea
-									id="prize-lines"
-									rows="5"
-									placeholder="₹10,000&#10;₹20,000&#10;₹40,000"></textarea>
-								<div class="btn-row">
-									<button class="btn btn-gold" onclick="applyGameConfig()">
-										Save Plan
-									</button>
-									<div
-										id="progress-info"
-										style="
-											font-size: 13px;
-											color: var(--muted);
-											align-self: center;
-										"></div>
-								</div>
-							</div>
-						</details>
+						<div class="question-preview" id="round-summary">
+							Waiting for question stats...
+						</div>
+						<div class="question-bank" id="question-bank"></div>
 					</div>
 				</div>
 			</div>
@@ -635,55 +672,51 @@
 							No question loaded yet.
 						</div>
 						<div class="question-actions">
-							<select id="difficulty-select">
-								<option value="any">Any</option>
-								<option value="easy">Easy</option>
-								<option value="medium">Medium</option>
-								<option value="hard">Hard</option>
-							</select>
 							<button
 								class="btn btn-accent"
 								id="load-question-btn"
 								onclick="loadNextQuestion()">
-								Re-roll question
+								Randomize question
 							</button>
 							<button
 								class="btn btn-gold"
+								id="reveal-options-btn"
+								style="display: none"
 								onclick="pubsub.emit('reveal-all-options')">
 								Reveal options
 							</button>
 							<button
 								class="btn btn-green"
+								id="next-round-btn"
+								style="display: none"
 								onclick="pubsub.emit('reveal-answer')">
 								Reveal correct
 							</button>
 						</div>
-						<div class="option-grid" id="opt-reveal-row">
-							<button class="opt-btn" id="revbtn-A" onclick="revealOption('A')">
+						<div class="option-grid" id="opt-reveal-row" style="display: none">
+							<button
+								class="opt-btn"
+								id="revbtn-A"
+								onclick="handleOptionClick('A')">
 								A: —
 							</button>
-							<button class="opt-btn" id="revbtn-B" onclick="revealOption('B')">
+							<button
+								class="opt-btn"
+								id="revbtn-B"
+								onclick="handleOptionClick('B')">
 								B: —
 							</button>
-							<button class="opt-btn" id="revbtn-C" onclick="revealOption('C')">
+							<button
+								class="opt-btn"
+								id="revbtn-C"
+								onclick="handleOptionClick('C')">
 								C: —
 							</button>
-							<button class="opt-btn" id="revbtn-D" onclick="revealOption('D')">
+							<button
+								class="opt-btn"
+								id="revbtn-D"
+								onclick="handleOptionClick('D')">
 								D: —
-							</button>
-						</div>
-						<div class="btn-row" id="lock-answer-row">
-							<button class="btn btn-outline btn-sm" onclick="lockAnswer('A')">
-								Lock A
-							</button>
-							<button class="btn btn-outline btn-sm" onclick="lockAnswer('B')">
-								Lock B
-							</button>
-							<button class="btn btn-outline btn-sm" onclick="lockAnswer('C')">
-								Lock C
-							</button>
-							<button class="btn btn-outline btn-sm" onclick="lockAnswer('D')">
-								Lock D
 							</button>
 						</div>
 						<div class="btn-row">
@@ -903,25 +936,11 @@
 				document.getElementById("setup-modal").classList.add("hidden");
 			}
 
-			function collectGameConfigInput() {
-				const total =
-					parseInt(
-						document.getElementById("total-questions-input").value,
-						10,
-					) || 5;
-				const prizes = (document.getElementById("prize-lines").value || "")
-					.split(/\n|,/)
-					.map((value) => value.trim())
-					.filter(Boolean);
-				return { totalQuestionsToWin: total, prizes };
-			}
-
 			function startGame() {
 				const name = document.getElementById("participant-name").value.trim();
 				if (!name) return toast("Enter participant name!");
 				pubsub.emit("setup-game", {
 					contestants: [name],
-					config: collectGameConfigInput(),
 				});
 				closeSetupModal();
 				toast(`Participant ready: ${name}`);
@@ -936,23 +955,29 @@
 				toast(`Intro started: ${active.name}`);
 			}
 
-			function applyGameConfig() {
-				const config = collectGameConfigInput();
-				pubsub.emit("set-game-config", config, (res) => {
+			function loadNextQuestion() {
+				const roundIndex = Math.max(
+					Number(gameState?.currentRoundIndex) || 0,
+					0,
+				);
+				pubsub.emit("load-next-question", { roundIndex }, (res) => {
 					toast(
 						res?.ok
-							? "Question plan updated"
-							: res?.message || "Failed to save plan",
+							? "Question loaded"
+							: res?.message || "No question available",
 					);
 				});
 			}
 
-			function loadNextQuestion() {
-				const difficulty = document.getElementById("difficulty-select").value;
-				pubsub.emit("load-next-question", { difficulty }, (res) => {
+			function useQuestion(questionId) {
+				const roundIndex = Math.max(
+					Number(gameState?.currentRoundIndex) || 0,
+					0,
+				);
+				pubsub.emit("load-question", { roundIndex, questionId }, (res) => {
 					toast(
 						res?.ok
-							? "Next question loaded"
+							? "Question loaded"
 							: res?.message || "No question available",
 					);
 				});
@@ -968,9 +993,9 @@
 					.toUpperCase()
 					.replace(/-/g, " ");
 				renderQuestionStats();
-				renderConfigInputs(state);
 				renderQuestionMeta();
 				renderCurrentQuestion(state);
+				renderQuestionBank(state);
 				renderLifelines(state);
 				renderAudiencePollPanel(state);
 			}
@@ -984,78 +1009,132 @@
 				if (!questionsMeta) {
 					usedEl.textContent = "0";
 					remainingEl.textContent = "0";
-					pillEl.textContent = "Used 0 · Remaining 0";
+					pillEl.textContent = "Round 0 / 0 · Remaining 0";
 					return;
 				}
-				const remaining = Number(questionsMeta.available?.any) || 0;
+				const remaining = Number(questionsMeta.availableCount) || 0;
 				const total = Number(questionsMeta.questionCount) || 0;
 				const used = Math.max(total - remaining, 0);
+				const currentRound =
+					Math.max(Number(questionsMeta.currentRoundIndex) || 0, 0) + 1;
+				const totalRounds = Number(questionsMeta.totalRounds) || 0;
 				usedEl.textContent = String(used);
 				remainingEl.textContent = String(remaining);
-				pillEl.textContent = `Used ${used} · Remaining ${remaining}`;
-			}
-
-			function renderConfigInputs(state) {
-				if (!state?.gameConfig) return;
-				const signature = JSON.stringify(state.gameConfig);
-				if (signature === lastConfigSignature) return;
-				document.getElementById("total-questions-input").value =
-					state.gameConfig.totalQuestionsToWin || 5;
-				document.getElementById("prize-lines").value = (
-					state.gameConfig.prizes || []
-				).join("\n");
-				lastConfigSignature = signature;
+				pillEl.textContent = `Round ${currentRound} / ${totalRounds || 0} · Remaining ${remaining}`;
 			}
 
 			function renderQuestionMeta() {
 				const el = document.getElementById("question-meta-info");
 				const flowEl = document.getElementById("flow-info");
+				const roundSummaryEl = document.getElementById("round-summary");
 				if (!questionsMeta) {
 					el.textContent = "Waiting for question stats...";
 					flowEl.textContent = "Waiting for question stats...";
+					roundSummaryEl.textContent = "Waiting for question stats...";
 					return;
 				}
-				const solved = Number(questionsMeta.solvedCount) || 0;
-				const exhausted = Number(questionsMeta.exhaustedCount) || 0;
-				const remaining = Number(questionsMeta.available?.any) || 0;
-				const text = `Total ${questionsMeta.questionCount} | Remaining ${remaining} | Solved ${solved} | Exhausted ${exhausted}`;
+				const currentRoundIndex = Math.max(
+					Number(questionsMeta.currentRoundIndex) || 0,
+					0,
+				);
+				const round = questionsMeta.rounds?.[currentRoundIndex];
+				const remaining =
+					Number(round?.availableCount ?? questionsMeta.availableCount) || 0;
+				const text = round
+					? `${round.label} | Prize ${round.prize || "—"} | ${remaining} available`
+					: `Total ${questionsMeta.questionCount} | Remaining ${remaining}`;
 				el.textContent = text;
 				flowEl.textContent = text;
+				roundSummaryEl.textContent = round
+					? `${round.label} · Prize ${round.prize || "—"} · ${round.availableCount}/${round.questionCount} available`
+					: "No round data available.";
+			}
+
+			function renderQuestionBank(state) {
+				const bankEl = document.getElementById("question-bank");
+				if (!bankEl) return;
+				if (!questionsMeta?.rounds?.length) {
+					bankEl.innerHTML =
+						'<div style="color: var(--muted); font-size: 13px">Waiting for question stats...</div>';
+					return;
+				}
+
+				const roundIndex = Math.max(Number(state?.currentRoundIndex) || 0, 0);
+				const round =
+					questionsMeta.rounds[roundIndex] || questionsMeta.rounds[0];
+				const questions = round?.questions || [];
+				bankEl.innerHTML = questions.length
+					? questions
+							.map((q) => {
+								const levelTags = (q.levels || [])
+									.map(
+										(level) => `<span class="round-tag">Level ${level}</span>`,
+									)
+									.join("");
+								return `
+								<div class="question-bank-item ${q.available ? "" : "used"}">
+									<div class="question-bank-copy">
+										<div class="question-bank-text">${escapeHtml(q.question)}</div>
+										<div class="question-bank-tags">${levelTags}</div>
+									</div>
+									<button class="btn btn-outline btn-sm" onclick="useQuestion(${q.id})" ${q.available ? "" : "disabled"}>Use</button>
+								</div>`;
+							})
+							.join("")
+					: '<div style="color: var(--muted); font-size: 13px">No questions available in this round.</div>';
 			}
 
 			function renderCurrentQuestion(state) {
 				const q = state.currentQuestion;
 				const loadQuestionBtn = document.getElementById("load-question-btn");
+				const revealOptionsBtn = document.getElementById("reveal-options-btn");
+				const optionsRow = document.getElementById("opt-reveal-row");
 				const correctBadge = document.getElementById("correct-answer-badge");
+				const revealCorrectBtn = document.getElementById("reveal-correct-btn");
 				const roundNameEl = document.getElementById("current-round-name");
 				const roundMetaEl = document.getElementById("current-round-meta");
 				const questionEl = document.getElementById("current-q-display");
 				const timerChip = document.getElementById("timer-display-chip");
-				const timerRows = document.querySelectorAll("#lock-answer-row .btn");
+				const timerLabel =
+					state.timerValue === null || state.timerValue === undefined
+						? "—"
+						: state.timerValue;
 
 				if (!q) {
 					if (loadQuestionBtn) loadQuestionBtn.textContent = "Load a question";
 					roundNameEl.textContent = "Waiting for question...";
-					roundMetaEl.textContent = "Load the next eligible question to begin.";
+					roundMetaEl.textContent =
+						"Randomize the next question from the current round.";
 					questionEl.textContent = "No question loaded yet.";
-					timerChip.textContent = `Timer: ${state.timerValue || "—"}`;
+					timerChip.textContent = `Timer: ${timerLabel}`;
 					correctBadge.style.display = "none";
-					timerRows.forEach((btn) => {
-						btn.style.borderColor = "";
-						btn.style.color = "";
-					});
+					if (revealOptionsBtn) revealOptionsBtn.style.display = "none";
+					if (optionsRow) optionsRow.style.display = "none";
+					if (revealCorrectBtn) revealCorrectBtn.style.display = "none";
 					return;
 				}
-
-				if (loadQuestionBtn) loadQuestionBtn.textContent = "Re-roll question";
+				if (loadQuestionBtn) loadQuestionBtn.textContent = "Randomize question";
+				if (revealOptionsBtn) revealOptionsBtn.style.display = "inline-flex";
+				if (optionsRow) {
+					optionsRow.style.display = state.revealedOptions?.length
+						? "grid"
+						: "none";
+				}
 
 				roundNameEl.textContent = q.roundName || "Current Round";
-				roundMetaEl.textContent = `Difficulty ${String(q.difficulty || "medium").toUpperCase()} | Attempt ${q.attemptNumber || 1}/${q.maxAttempts || 3}`;
-				questionEl.innerHTML = `<strong>${q.question}</strong>`;
-				timerChip.textContent = `Timer: ${state.timerValue || "—"}`;
-				correctBadge.style.display = state.correctAnswer
-					? "inline-block"
-					: "none";
+				roundMetaEl.textContent = `Level ${q.roundNumber || q.roundIndex + 1 || 1} | Prize ${q.prizeLevel || "—"}`;
+				questionEl.innerHTML = `<strong>${escapeHtml(q.question)}</strong>`;
+				timerChip.textContent = `Timer: ${timerLabel}`;
+				if (revealCorrectBtn) {
+					revealCorrectBtn.style.display =
+						state.selectedAnswer && !state.answerEvaluated
+							? "inline-flex"
+							: "none";
+				}
+				correctBadge.style.display =
+					state.answerEvaluated && state.correctAnswer
+						? "inline-block"
+						: "none";
 				correctBadge.textContent = state.correctAnswer
 					? `✅ ${state.correctAnswer}: ${q.options[state.correctAnswer]}`
 					: "";
@@ -1067,17 +1146,10 @@
 					if (state.revealedOptions.includes(opt))
 						btn.classList.add("revealed");
 					if (state.removedOptions.includes(opt)) btn.classList.add("removed");
-				});
-
-				timerRows.forEach((btn) => {
-					const opt = btn.textContent.replace("Lock ", "");
-					if (state.selectedAnswer === opt) {
-						btn.style.borderColor = "var(--gold)";
-						btn.style.color = "var(--gold)";
-					} else {
-						btn.style.borderColor = "";
-						btn.style.color = "";
-					}
+					if (state.selectedAnswer === opt) btn.classList.add("selected");
+					btn.disabled =
+						state.removedOptions.includes(opt) ||
+						Boolean(state.selectedAnswer && state.selectedAnswer !== opt);
 				});
 			}
 
@@ -1133,9 +1205,25 @@
 				pubsub.emit("reveal-option", { option: opt });
 			}
 
+			function handleOptionClick(opt) {
+				if (!gameState?.currentQuestion) return;
+				if (gameState.removedOptions?.includes(opt)) return;
+				if (!gameState.revealedOptions?.includes(opt)) {
+					revealOption(opt);
+					return;
+				}
+				if (gameState.selectedAnswer) return;
+				lockAnswer(opt);
+			}
+
 			function lockAnswer(opt) {
-				pubsub.emit("lock-answer", { answer: opt });
-				toast(`Answer locked: ${opt}`);
+				pubsub.emit("lock-answer", { answer: opt }, (res) => {
+					if (res?.ok === false) {
+						toast(res.message || "Could not lock answer");
+						return;
+					}
+					toast(`Answer locked: ${opt}`);
+				});
 			}
 
 			function useFiftyFifty() {
@@ -1210,6 +1298,15 @@
 				el.textContent = message;
 				el.classList.add("show");
 				setTimeout(() => el.classList.remove("show"), 2500);
+			}
+
+			function escapeHtml(value) {
+				return String(value || "")
+					.replace(/&/g, "&amp;")
+					.replace(/</g, "&lt;")
+					.replace(/>/g, "&gt;")
+					.replace(/\"/g, "&quot;")
+					.replace(/'/g, "&#39;");
 			}
 
 			setTimeout(() => {

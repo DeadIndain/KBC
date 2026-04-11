@@ -33,6 +33,10 @@
 			dispatch("play-sound", JSON.parse(event.data));
 		});
 
+		source.addEventListener("pause-sound", (event) => {
+			dispatch("pause-sound", JSON.parse(event.data));
+		});
+
 		source.addEventListener("error", (event) => {
 			dispatch("error", event);
 		});

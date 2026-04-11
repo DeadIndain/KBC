@@ -1,149 +1,92 @@
-# 🎯 Koun Banega Codepathi (KBC)
+# Koun Banega Codepathi (KBC)
 
-> A real-time game show app for college events. Runs fully on localhost.
+Real-time game show app for local events.
 
----
-
-## 🚀 Quick Start
-
-### 1. Install Dependencies
+## Quick Start
 
 ```bash
-cd kbc
 npm install
-```
-
-### 2. Start the Server
-
-```bash
 npm start
 ```
 
-### 3. Open the Two Screens
+- Display screen: http://localhost:3000/display.html
+- Admin panel: http://localhost:3000/admin.html
 
-| Screen      | URL                                | Purpose                        |
-| ----------- | ---------------------------------- | ------------------------------ |
-| **Display** | http://localhost:3000/display.html | Project this on the big screen |
-| **Admin**   | http://localhost:3000/admin.html   | You control from this tab      |
+## New Game Model
 
-> Tip: Open Display in full screen (F11), then switch to Admin tab to control.
+- One question = one round attempt.
+- Correct answer: current participant completes that round and game moves to next round.
+- Wrong answer: participant is eliminated.
+- Admin starts a new participant with Next participant.
+- No points system is required by game logic; admin flow is round-progress based.
 
----
+## Single Source of Round Count
 
-## 🎮 How to Run a Game
+Edit only [data/questions.json](data/questions.json) in gameConfig.rounds.
 
-### Before the Event
+- Number of entries in gameConfig.rounds = number of rounds.
+- Round money/prize is also defined there.
+- Admin panel no longer edits round count or prize plan.
 
-1. Edit `data/questions.json` with your actual questions (see format below)
-2. You can add as many rounds and questions as you want
-
-### Running the Show
-
-1. **Setup** → Click ⚙️ Setup on Admin → Enter contestant names → 🚀 Start Game
-2. **Intro a contestant** → Click 🎤 next to their name → Display shows their name dramatically
-3. **Load a question** → Click a question from the list in Admin → It appears on the display
-4. **Reveal options** → Click A, B, C, D buttons one by one for dramatic effect (or "Reveal All")
-5. **Start timer** → Click ▶ Start (uses the round's default time, or set a custom duration)
-6. **Lock answer** → When contestant decides, click "Lock A/B/C/D"
-7. **Reveal answer** → Click ✅ Reveal Correct Answer
-8. **Eliminate or Advance** → Click ❌ or 🏅 for the contestant
-9. **Repeat** for next contestant / question
-
-### Lifelines
-
-- **50:50** → Removes 2 wrong options from the display automatically
-- **Audience Poll** → First click "Use" to mark it used, then have audience raise hands, enter counts in the right panel → click 📊 Show Poll
-- **Phone a Friend** → Shows a phone overlay on the display screen
-
-### Rounds
-
-- Each round in `questions.json` is a separate difficulty tier
-- Use "🏁 End Current Round" to show the round end screen
-- Mark winners with 🏅, then start next round
-
----
-
-## 📝 Questions Format (`data/questions.json`)
+## Questions JSON Format
 
 ```json
 {
-	"rounds": [
+	"gameConfig": {
+		"rounds": [
+			{ "label": "Round 1", "prize": "₹10,000", "timeLimit": 30 },
+			{ "label": "Round 2", "prize": "₹50,000", "timeLimit": 45 }
+		]
+	},
+	"questions": [
 		{
-			"roundName": "Round 1 - Warm Up",
-			"prizeLevel": "₹10,000",
-			"timeLimit": 30,
-			"questions": [
-				{
-					"id": 1,
-					"question": "Your question here?",
-					"options": {
-						"A": "Option A",
-						"B": "Option B",
-						"C": "Option C",
-						"D": "Option D"
-					},
-					"correct": "B",
-					"difficulty": "easy"
-				}
-			]
+			"id": 1,
+			"levels": [1, 2],
+			"question": "Your question here?",
+			"options": {
+				"A": "Option A",
+				"B": "Option B",
+				"C": "Option C",
+				"D": "Option D"
+			},
+			"correct": "B"
 		}
 	]
 }
 ```
 
-- `timeLimit` is in seconds
-- `correct` is the key of the correct option: `"A"`, `"B"`, `"C"`, or `"D"`
-- `difficulty` can be `"easy"`, `"medium"`, or `"hard"` (affects badge color in admin)
-- Add as many rounds and questions as you need!
+Notes:
 
-### Hot Reload Questions
+- levels is an array so a question can appear in multiple rounds.
+- Question is eligible only if its level includes current round number.
+- A question is treated as used once loaded.
+- timeLimit is in seconds.
 
-If you edit `questions.json` while the server is running, click **🔄 Reload Questions** in the Admin panel — no restart needed.
+## Admin Flow
 
----
+1. Set participant.
+2. Intro participant.
+3. In Available Questions, either:
+   - click Use on a specific question, or
+   - click Randomize question.
+4. Reveal options, run timer, lock answer.
+5. Reveal answer.
+6. If wrong, click Next participant and continue from the same round.
+7. If correct, system advances to next round.
 
-## 🏆 Multiple Contestants / Rounds Flow
+## Reload Questions Without Restart
 
-```
-Setup (add all contestants)
-    ↓
-Round 1:
-  For each contestant:
-    Intro → Load question → Reveal options → Timer → Lock answer → Reveal → Advance/Eliminate
-    ↓
-  End Round → Show round winners
-    ↓
-Round 2 (with advancing contestants):
-  Repeat above
-    ↓
-Final Round → Game Over screen
-```
+After editing [data/questions.json](data/questions.json), click Reload Questions in admin.
 
----
+## Project Structure
 
-## 📁 Project Structure
-
-```
+```text
 kbc/
-├── server.js              ← Node.js + Express + SSE pub/sub server
+├── server.js
 ├── package.json
 ├── data/
-│   └── questions.json     ← ✏️ Edit this with your questions
+│   └── questions.json
 └── public/
-    ├── display.html       ← 📺 Project this on screen
-    └── admin.html         ← 🕹 Your control panel
+		├── display.html
+		└── admin.html
 ```
-
----
-
-## 💡 Tips for the Event
-
-- Test everything 30 minutes before the event
-- Keep Admin tab open on your laptop, Display tab full-screened
-- Use Message Overlay for dramatic moments ("Is that your final answer? 🔥")
-- The audience poll counts panel is on the right side of Admin — enter counts as hands go up
-- You can open Admin on your phone too (connect phone to same WiFi/hotspot as laptop)
-
----
-
-Made with ❤️ for college events. Good luck! 🎉
