@@ -966,8 +966,6 @@
 			}
 
 			/* ── Round End / Game Over ── */
-			#screen-round-end,
-			#screen-walkout,
 			#screen-game-over {
 				text-align: center;
 				gap: 24px;
@@ -989,7 +987,6 @@
 				text-transform: uppercase;
 			}
 
-			#walkout-subtitle,
 			#game-over-winner {
 				text-transform: none;
 				letter-spacing: 1px;
@@ -1131,8 +1128,6 @@
 			body.question-mode .particles,
 			body.question-mode .intro-stage,
 			body.question-mode #screen-lobby,
-			body.question-mode #screen-round-end,
-			body.question-mode #screen-walkout,
 			body.question-mode #screen-game-over,
 			body.question-mode .game-sidebar,
 			body.question-mode .phone-overlay,
@@ -1842,23 +1837,10 @@
 			</div>
 		</div>
 
-		<!-- ROUND END -->
-		<div class="screen" id="screen-round-end">
-			<div class="end-title" id="round-end-title">Round Complete!</div>
-			<div class="end-subtitle" id="round-end-subtitle"></div>
-			<div class="winners-list" id="round-winners-list"></div>
-		</div>
-
 		<!-- GAME OVER -->
 		<div class="screen" id="screen-game-over">
 			<div class="end-title" id="game-over-title">Koun Banega Codepathi</div>
 			<div class="end-subtitle" id="game-over-winner"></div>
-		</div>
-
-		<!-- WALKOUT -->
-		<div class="screen" id="screen-walkout">
-			<div class="end-title" id="walkout-title">Koun Banega Codepathi</div>
-			<div class="end-subtitle" id="walkout-subtitle"></div>
 		</div>
 
 		<!-- PHONE FRIEND OVERLAY -->
@@ -2128,16 +2110,12 @@
 						"answer-reveal",
 						"lifeline-poll",
 						"lifeline-phone",
+						"round-end",
+						"walkout",
 					].includes(state.phase)
 				) {
 					showScreen("question");
 					renderQuestion(state);
-				} else if (state.phase === "round-end") {
-					showScreen("round-end");
-					renderRoundEnd(state);
-				} else if (state.phase === "walkout") {
-					showScreen("walkout");
-					renderWalkout(state);
 				} else if (state.phase === "game-over") {
 					showScreen("game-over");
 					renderGameOver(state);
@@ -2311,29 +2289,6 @@
 				});
 			}
 
-			function renderRoundEnd(state) {
-				const rm = window.roundsMeta;
-				const completedIndex =
-					state.lastCompletedRoundIndex !== undefined &&
-					state.lastCompletedRoundIndex !== null
-						? state.lastCompletedRoundIndex
-						: Math.max(Number(state.currentRoundIndex) - 1, 0);
-				const rName =
-					rm && rm[completedIndex]
-						? rm[completedIndex].label || rm[completedIndex].roundName
-						: "Round";
-				document.getElementById("round-end-title").textContent =
-					rName + " Complete!";
-				document.getElementById("round-end-subtitle").textContent =
-					"Advancing to next round...";
-				const winners = state.contestants.filter((c) =>
-					state.roundWinners.includes(c.id),
-				);
-				document.getElementById("round-winners-list").innerHTML = winners
-					.map((w) => `<div class="winner-chip">🏅 ${w.name}</div>`)
-					.join("");
-			}
-
 			function renderGameOver(state) {
 				const rm = window.roundsMeta;
 				const finalRoundIndex = Math.max((rm?.length || 1) - 1, 0);
@@ -2350,21 +2305,6 @@
 					"Koun Banega Codepathi";
 				document.getElementById("game-over-winner").textContent =
 					`${winnerName} won ${prize}`;
-			}
-
-			function renderWalkout(state) {
-				const outcome = state.lastOutcome || {};
-				const name =
-					outcome.name ||
-					state.contestants.find((c) => c.eliminated)?.name ||
-					state.contestants[0]?.name ||
-					"Participant";
-				const prize = outcome.prize || "Rs 0";
-
-				document.getElementById("walkout-title").textContent =
-					"Koun Banega Codepathi";
-				document.getElementById("walkout-subtitle").textContent =
-					`${name} walks out with ${prize}`;
 			}
 		</script>
 	</body>

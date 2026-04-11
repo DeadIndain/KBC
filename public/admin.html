@@ -687,10 +687,17 @@
 							</button>
 							<button
 								class="btn btn-green"
-								id="next-round-btn"
+								id="reveal-correct-btn"
 								style="display: none"
 								onclick="pubsub.emit('reveal-answer')">
 								Reveal correct
+							</button>
+							<button
+								class="btn btn-gold"
+								id="next-round-btn"
+								style="display: none"
+								onclick="moveToNextRound()">
+								Next round
 							</button>
 						</div>
 						<div class="option-grid" id="opt-reveal-row" style="display: none">
@@ -969,6 +976,25 @@
 				});
 			}
 
+			function moveToNextRound() {
+				if (gameState?.phase !== "round-end") {
+					toast("Next round is available after reveal");
+					return;
+				}
+
+				const roundIndex = Math.max(
+					Number(gameState?.currentRoundIndex) || 0,
+					0,
+				);
+				pubsub.emit("load-next-question", { roundIndex }, (res) => {
+					toast(
+						res?.ok
+							? "Next round question loaded"
+							: res?.message || "No question available in next round",
+					);
+				});
+			}
+
 			function useQuestion(questionId) {
 				const roundIndex = Math.max(
 					Number(gameState?.currentRoundIndex) || 0,
@@ -1088,6 +1114,7 @@
 				const q = state.currentQuestion;
 				const loadQuestionBtn = document.getElementById("load-question-btn");
 				const revealOptionsBtn = document.getElementById("reveal-options-btn");
+				const nextRoundBtn = document.getElementById("next-round-btn");
 				const optionsRow = document.getElementById("opt-reveal-row");
 				const correctBadge = document.getElementById("correct-answer-badge");
 				const revealCorrectBtn = document.getElementById("reveal-correct-btn");
@@ -1111,10 +1138,15 @@
 					if (revealOptionsBtn) revealOptionsBtn.style.display = "none";
 					if (optionsRow) optionsRow.style.display = "none";
 					if (revealCorrectBtn) revealCorrectBtn.style.display = "none";
+					if (nextRoundBtn) nextRoundBtn.style.display = "none";
 					return;
 				}
 				if (loadQuestionBtn) loadQuestionBtn.textContent = "Randomize question";
 				if (revealOptionsBtn) revealOptionsBtn.style.display = "inline-flex";
+				if (nextRoundBtn) {
+					nextRoundBtn.style.display =
+						state.phase === "round-end" ? "inline-flex" : "none";
+				}
 				if (optionsRow) {
 					optionsRow.style.display = state.revealedOptions?.length
 						? "grid"
