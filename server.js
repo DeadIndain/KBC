@@ -536,11 +536,19 @@ registerCommand("setup-game", async ({ contestants, config }) => {
 	}
 
 	resetParticipantState(firstName || "Participant", true);
+	gameState.phase = "setup"; // Stay in setup, don't trigger intro yet
+	gameState.message = "";
+	broadcast();
+	await emitQuestionsMeta();
+	return { ok: true, message: "Game setup - ready to begin" };
+});
+
+registerCommand("ready-game", async () => {
+	// Move to contestant-intro and trigger sound
 	gameState.phase = "contestant-intro";
 	gameState.introTrigger = Number(gameState.introTrigger || 0) + 1;
 	gameState.message = "";
 	broadcast();
-	publish("play-sound", { sound: "introDramatic" });
 	await emitQuestionsMeta();
 	return { ok: true, message: "Game started" };
 });
@@ -657,6 +665,8 @@ registerCommand("reveal-all-options", async () => {
 	gameState.revealedOptions = ["A", "B", "C", "D"].filter(
 		(o) => !gameState.removedOptions.includes(o),
 	);
+	startTimer(Number(gameState.currentQuestion?.timeLimit) || 45);
+	publish("play-sound", { sound: "timer45" });
 	broadcast();
 	return { ok: true };
 });

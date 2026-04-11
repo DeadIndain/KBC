@@ -27,23 +27,11 @@
 				margin: 0;
 				padding: 0;
 				box-sizing: border-box;
-			}
-
-			body {
-				background: var(--deep-blue);
-				font-family: "Rajdhani", sans-serif;
-				color: var(--text);
-				width: 100vw;
-				height: 100vh;
-				overflow: hidden;
-				position: relative;
-			}
-
-			/* ── Animated background ── */
-			.bg-stars {
-				position: fixed;
-				inset: 0;
-				z-index: 0;
+				body.question-mode .game-sidebar,
+				body.question-mode .phone-overlay,
+				body.question-mode .message-overlay {
+					display: none !important;
+				}
 				background:
 					radial-gradient(
 						ellipse at 20% 50%,
@@ -51,7 +39,6 @@
 						transparent 60%
 					),
 					radial-gradient(
-						ellipse at 80% 20%,
 						rgba(0, 212, 255, 0.1) 0%,
 						transparent 50%
 					),
@@ -188,6 +175,56 @@
 				object-fit: cover;
 				display: block;
 				filter: saturate(1.06) contrast(1.06);
+				pointer-events: none;
+			}
+			.intro-controls {
+				position: absolute;
+				left: 50%;
+				bottom: 26px;
+				transform: translateX(-50%);
+				z-index: 2;
+				display: none;
+				flex-direction: column;
+				align-items: center;
+				gap: 10px;
+				padding: 12px 18px;
+				border-radius: 999px;
+				background: rgba(5, 10, 31, 0.66);
+				border: 1px solid rgba(245, 200, 66, 0.36);
+				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+				backdrop-filter: blur(12px);
+			}
+			.intro-controls.visible {
+				display: flex;
+			}
+			.ready-button {
+				appearance: none;
+				border: 0;
+				border-radius: 999px;
+				padding: 14px 28px;
+				font-family: "Cinzel", serif;
+				font-size: 22px;
+				font-weight: 700;
+				letter-spacing: 1.4px;
+				text-transform: uppercase;
+				color: #1a1200;
+				background: linear-gradient(135deg, #fff6c7, #f5c842 50%, #c8900a);
+				box-shadow:
+					0 0 0 1px rgba(255, 255, 255, 0.2),
+					0 10px 24px rgba(0, 0, 0, 0.3),
+					inset 0 1px 0 rgba(255, 255, 255, 0.4);
+				cursor: pointer;
+				transition:
+					transform 0.15s ease,
+					filter 0.15s ease,
+					box-shadow 0.15s ease;
+			}
+			.ready-button:hover {
+				transform: translateY(-1px) scale(1.01);
+				filter: brightness(1.05);
+			}
+			.ready-button:active {
+				transform: translateY(0) scale(0.99);
 			}
 			.intro-stage.active {
 				display: flex;
@@ -862,7 +899,7 @@
 				color: var(--accent);
 			}
 
-			/* ── Prize Ladder Sidebar ── */
+			/* Contestant scores in sidebar */
 			.sidebar-title {
 				font-size: 11px;
 				color: var(--accent);
@@ -873,40 +910,6 @@
 				border-bottom: 1px solid rgba(100, 150, 255, 0.2);
 				flex-shrink: 0;
 			}
-			.ladder-item {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				padding: 7px 10px;
-				border-radius: 6px;
-				font-size: 13px;
-				transition: all 0.3s;
-				flex-shrink: 0;
-			}
-			.ladder-item.active {
-				background: linear-gradient(
-					90deg,
-					rgba(245, 200, 66, 0.2),
-					rgba(245, 200, 66, 0.05)
-				);
-				border: 1px solid rgba(245, 200, 66, 0.5);
-			}
-			.ladder-round {
-				color: #888;
-				font-size: 11px;
-			}
-			.ladder-prize {
-				color: var(--gold);
-				font-weight: 700;
-			}
-			.ladder-item.active .ladder-prize {
-				color: white;
-			}
-			.ladder-item.active .ladder-round {
-				color: var(--gold);
-			}
-
-			/* Contestant scores in sidebar */
 			.sidebar-scores {
 				margin-top: auto;
 				padding-top: 12px;
@@ -1672,6 +1675,11 @@
 					playsinline
 					preload="auto"
 					muted></video>
+				<div class="intro-controls" id="intro-controls">
+					<button class="ready-button" id="ready-btn" type="button" onclick="readyGame()">
+						Ready
+					</button>
+				</div>
 			</div>
 		</div>
 
@@ -1789,13 +1797,7 @@
 						</button>
 					</div>
 				</div>
-			</div>
-			</div>
-
-			<!-- Sidebar -->
-			<div class="game-sidebar">
-				<div class="sidebar-title">Prize Ladder</div>
-				<div id="prize-ladder"></div>
+				</div>
 				<div class="sidebar-scores" id="sidebar-scores"></div>
 			</div>
 		</div>
@@ -1832,6 +1834,8 @@
 			let maxTime = 45;
 			let lastIntroTrigger = -1;
 			let handledTimeoutKey = "";
+			let introVideoPlayToken = 0;
+			let introGestureStarted = false;
 			const sounds = {
 				introDramatic: new Audio("/sounds/Dramatic Intro.mp3"),
 				intro: new Audio("/sounds/Intro.mp3"),
@@ -1869,6 +1873,26 @@
 			pubsub.on("play-sound", ({ sound }) => {
 				playSound(sound);
 			});
+
+			function readyGame() {
+				const introVideo = document.getElementById("intro-video");
+				if (introVideo) {
+					introGestureStarted = true;
+					introVideo.pause();
+					introVideo.currentTime = 0;
+					introVideo.muted = true;
+					introVideo.play().catch((error) => {
+						if (error?.name !== "AbortError") {
+							console.warn("Intro video failed to start", error);
+						}
+					});
+				}
+				playSound("introDramatic");
+				pubsub.emit("ready-game", {}, (res) => {
+					if (res?.ok) return;
+					console.warn(res?.message || "Failed to start intro");
+				});
+			}
 
 			function getQuestionTimeoutKey(state) {
 				if (!state || !state.currentQuestion) return "";
@@ -2036,7 +2060,7 @@
 				);
 
 				// ── Phase-based screen ──
-				if (state.phase === "lobby" || state.phase === "contestant-intro") {
+				if (state.phase === "lobby" || state.phase === "setup" || state.phase === "contestant-intro") {
 					showScreen("intro");
 					renderIntro(state);
 				} else if (
@@ -2071,12 +2095,18 @@
 
 			function restartIntroVideo(introVideo) {
 				if (!introVideo) return;
+				const playToken = ++introVideoPlayToken;
 				introVideo.pause();
 				introVideo.muted = true;
 				introVideo.currentTime = 0;
 
 				const attemptPlay = () => {
-					introVideo.play().catch(() => {});
+					if (playToken !== introVideoPlayToken) return;
+					introVideo.play().catch((error) => {
+						if (error?.name !== "AbortError") {
+							console.warn("Intro video playback failed", error);
+						}
+					});
 				};
 
 				if (introVideo.readyState < 2) {
@@ -2093,6 +2123,14 @@
 
 			function renderIntro(state) {
 				const introVideo = document.getElementById("intro-video");
+				const introControls = document.getElementById("intro-controls");
+				const readyBtn = document.getElementById("ready-btn");
+				if (introControls) {
+					introControls.classList.toggle("visible", state.phase === "setup");
+				}
+				if (readyBtn) {
+					readyBtn.disabled = state.phase !== "setup";
+				}
 				if (introVideo) {
 					if (!introVideo.dataset.endFreezeBound) {
 						introVideo.addEventListener("ended", () => {
@@ -2103,6 +2141,10 @@
 
 					if (state.phase === "contestant-intro") {
 						const trigger = Number(state.introTrigger || 0);
+						if (introGestureStarted && !introVideo.paused) {
+							lastIntroTrigger = trigger;
+							return;
+						}
 						if (trigger !== lastIntroTrigger) {
 							restartIntroVideo(introVideo);
 							lastIntroTrigger = trigger;
@@ -2112,6 +2154,8 @@
 					} else {
 						introVideo.pause();
 						introVideo.currentTime = 0;
+						introVideoPlayToken += 1;
+						introGestureStarted = false;
 						lastIntroTrigger = Number(state.introTrigger || 0);
 					}
 				}
@@ -2186,25 +2230,10 @@
 				});
 			}
 
-			function renderPrizeLadder(ladder) {
-				if (!ladder || !ladder.length) return;
-				const container = document.getElementById("prize-ladder");
-				container.innerHTML = "";
-				[...ladder].reverse().forEach((item) => {
-					const div = document.createElement("div");
-					div.className = "ladder-item" + (item.active ? " active" : "");
-					div.innerHTML = `
-      <span class="ladder-round">R${item.round}</span>
-      <span class="ladder-prize">${item.prize}</span>
-    `;
-					container.appendChild(div);
-				});
-			}
-
 			function renderSidebarScores(state) {
 				const container = document.getElementById("sidebar-scores");
 				container.innerHTML =
-					'<div class="sidebar-title" style="margin-top:0">Contestants</div>';
+					"<div class=\"sidebar-title\" style=\"margin-top:0\">Contestants</div>";
 				state.contestants.forEach((c) => {
 					const div = document.createElement("div");
 					div.className =
