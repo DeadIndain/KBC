@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Koun Banega Codepathi – Display</title>
+		<title>Koun Banega Codepati – Display</title>
 		<script src="/assets/pubsub.js"></script>
 		<link
 			href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap"
@@ -558,38 +558,51 @@
 				}
 			}
 			.lifeline-display {
-				position: absolute;
-				right: 0;
-				top: 50%;
-				transform: translateY(-50%);
+				position: fixed;
+				top: 16px;
+				left: 16px;
 				display: flex;
-				gap: 8px;
+				gap: 10px;
 				align-items: center;
+				z-index: 9;
+				pointer-events: none;
 			}
-			.lifeline-icon {
-				min-width: 46px;
-				height: 36px;
-				padding: 0 8px;
-				border-radius: 999px;
-				border: 1px solid rgba(245, 200, 66, 0.75);
+			.lifeline-card {
+				position: relative;
+				width: 112px;
+				height: 76px;
+				padding: 8px;
+				border-radius: 18px;
+				border: 1px solid rgba(245, 200, 66, 0.72);
+				background: linear-gradient(180deg, rgba(12, 44, 128, 0.95), rgba(6, 20, 68, 0.98));
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				font-size: 14px;
-				font-weight: 700;
-				color: #ffe8a3;
-				background: linear-gradient(
-					180deg,
-					rgba(22, 65, 159, 0.95),
-					rgba(8, 28, 82, 0.96)
-				);
-				box-shadow: 0 0 14px rgba(245, 200, 66, 0.15);
-				transition: all 0.3s;
+				box-shadow: 0 0 18px rgba(245, 200, 66, 0.16);
+				overflow: hidden;
+				transition: all 0.2s ease;
 			}
-			.lifeline-icon.used {
-				opacity: 0.2;
-				border-color: #444;
+			.lifeline-card img {
+				max-width: 100%;
+				max-height: 100%;
+				object-fit: contain;
+				display: block;
+			}
+			.lifeline-card.used {
+				opacity: 0.38;
 				filter: grayscale(1);
+			}
+			.lifeline-cross {
+				position: absolute;
+				inset: 0;
+				width: 100%;
+				height: 100%;
+				opacity: 0;
+				transition: opacity 0.2s ease;
+				pointer-events: none;
+			}
+			.lifeline-card.used .lifeline-cross {
+				opacity: 1;
 			}
 
 			/* ── Question Box ── */
@@ -819,98 +832,35 @@
 				}
 			}
 
-			/* ── Audience Poll ── */
-			.audience-poll {
-				display: none;
-				gap: 12px;
-				padding: 16px;
-				background: rgba(0, 212, 255, 0.05);
-				border: 1px solid rgba(0, 212, 255, 0.3);
-				border-radius: 12px;
-				flex-shrink: 0;
-			}
-			.audience-poll.visible {
-				display: flex;
-				flex-direction: column;
-			}
-			.poll-title {
-				font-size: 14px;
-				color: var(--accent);
-				letter-spacing: 3px;
-				text-transform: uppercase;
-				text-align: center;
-			}
-			.poll-bars {
-				display: grid;
-				grid-template-columns: repeat(4, 1fr);
-				gap: 10px;
-				align-items: end;
-				height: 80px;
-			}
-			.poll-bar-wrap {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				gap: 4px;
-				height: 100%;
-				justify-content: flex-end;
-			}
-			.poll-pct {
-				font-size: 16px;
-				font-weight: 700;
-				color: var(--gold);
-			}
-			.poll-bar {
-				width: 100%;
-				background: linear-gradient(180deg, var(--accent), var(--blue-glow));
-				border-radius: 4px 4px 0 0;
-				transition: height 1s cubic-bezier(0.34, 1.56, 0.64, 1);
-				min-height: 4px;
-			}
-			.poll-lbl {
-				font-size: 14px;
-				color: #aaa;
-				font-weight: 600;
-			}
-
-			/* ── Phone Friend ── */
-			.phone-overlay {
+			/* ── Lifeline Popups ── */
+			.lifeline-popup {
 				position: fixed;
 				inset: 0;
 				z-index: 100;
 				background: rgba(0, 0, 0, 0.85);
 				display: none;
-				flex-direction: column;
 				align-items: center;
 				justify-content: center;
-				gap: 24px;
 				backdrop-filter: blur(8px);
 			}
-			.phone-overlay.visible {
+			.lifeline-popup.visible {
 				display: flex;
 			}
-			.phone-icon {
-				font-size: 80px;
-				animation: phoneRing 0.5s ease-in-out infinite;
+			.lifeline-popup img {
+				width: min(72vw, 560px);
+				height: auto;
+				max-height: 72vh;
+				object-fit: contain;
+				filter: drop-shadow(0 0 28px rgba(245, 200, 66, 0.25));
+				animation: popupPulse 1.1s ease-in-out infinite alternate;
 			}
-			@keyframes phoneRing {
-				0%,
-				100% {
-					transform: rotate(-15deg);
+			@keyframes popupPulse {
+				from {
+					transform: scale(0.96);
 				}
-				50% {
-					transform: rotate(15deg);
+				to {
+					transform: scale(1.02);
 				}
-			}
-			.phone-title {
-				font-family: "Cinzel", serif;
-				font-size: 36px;
-				color: var(--gold);
-				letter-spacing: 4px;
-			}
-			.phone-desc {
-				font-size: 20px;
-				color: var(--accent);
 			}
 
 			/* Contestant scores in sidebar */
@@ -1130,7 +1080,7 @@
 			body.question-mode #screen-lobby,
 			body.question-mode #screen-game-over,
 			body.question-mode .game-sidebar,
-			body.question-mode .phone-overlay,
+			body.question-mode .lifeline-popup,
 			body.question-mode .message-overlay {
 				display: none !important;
 			}
@@ -1672,6 +1622,14 @@
 				pointer-events: none;
 			}
 
+			body.question-mode .opt.removed .opt-text {
+				visibility: hidden;
+			}
+
+			body.question-mode .opt.removed .opt-letter {
+				visibility: hidden;
+			}
+
 			body.question-mode .opt.correct .opt-outer {
 				animation: flashGreen 0.6s ease-in-out 2;
 			}
@@ -1695,7 +1653,7 @@
 
 		<!-- LOBBY -->
 		<div class="screen" id="screen-lobby">
-			<div class="lobby-logo">Koun Banega<br />Codepathi?</div>
+			<div class="lobby-logo">Koun Banega<br />Codepati?</div>
 			<div class="lobby-tagline">The Ultimate Coding Showdown</div>
 			<div class="lobby-contestants" id="lobby-contestants"></div>
 		</div>
@@ -1839,15 +1797,15 @@
 
 		<!-- GAME OVER -->
 		<div class="screen" id="screen-game-over">
-			<div class="end-title" id="game-over-title">Koun Banega Codepathi</div>
+			<div class="end-title" id="game-over-title">Koun Banega Codepati</div>
 			<div class="end-subtitle" id="game-over-winner"></div>
 		</div>
 
-		<!-- PHONE FRIEND OVERLAY -->
-		<div class="phone-overlay" id="phone-overlay">
-			<div class="phone-icon">📞</div>
-			<div class="phone-title">Phone a Friend</div>
-			<div class="phone-desc">Calling your lifeline...</div>
+			<div class="lifeline-display" id="lifeline-display"></div>
+
+		<!-- LIFELINE POPUP -->
+		<div class="lifeline-popup" id="lifeline-popup">
+			<img id="lifeline-popup-image" alt="Lifeline" />
 		</div>
 
 		<!-- MESSAGE OVERLAY -->
@@ -1872,6 +1830,7 @@
 				suspense2: new Audio("/sounds/Suspense 2.mp3"),
 				suspense3: new Audio("/sounds/Suspense 3.mp3"),
 				suspense4: new Audio("/sounds/Suspense 4.mp3"),
+				lifeline: new Audio("/sounds/lifeline.mp3"),
 				lock: new Audio("/sounds/lock.mp3"),
 				correct: new Audio("/sounds/Correct.mp3"),
 				wrong: new Audio("/sounds/Wrong.mp3"),
@@ -1905,6 +1864,79 @@
 				} catch (_error) {
 					/* ignore playback issues */
 				}
+			}
+
+			function getActiveContestantLifelines(state) {
+				const activeContestant = state?.contestants?.find((c) => c.active);
+				if (!activeContestant) return {};
+				return state.lifelines?.[activeContestant.id] || {};
+			}
+
+			function renderLifelineTray(state) {
+				const container = document.getElementById("lifeline-display");
+				if (!container) return;
+
+				// Only show lifelines during question phases
+				const isQuestionPhase = [
+					"question",
+					"answer-reveal",
+					"lifeline-poll",
+					"lifeline-phone",
+					"round-end",
+					"walkout",
+				].includes(state.phase);
+
+				if (!isQuestionPhase) {
+					container.innerHTML = "";
+					return;
+				}
+
+				const lifelines = getActiveContestantLifelines(state);
+				const items = [
+					{
+						key: "fiftyFifty",
+						label: "50/50",
+						image: "/assets/50-50.png",
+					},
+					{
+						key: "callFriend",
+						label: "Call a friend",
+						image: "/assets/Phone%20a%20friend.png",
+					},
+					{
+						key: "audiencePoll",
+						label: "Audience poll",
+						image: "/assets/Audience%20Poll.png",
+					},
+				];
+
+				container.innerHTML = items
+					.map((item) => {
+						const used = lifelines[item.key] === false;
+						return `
+							<div class="lifeline-card ${used ? "used" : "available"}" aria-label="${item.label} ${used ? "used" : "available"}">
+								<img src="${item.image}" alt="${item.label}" />
+								<img class="lifeline-cross" src="/assets/cross.png" alt="used" />
+							</div>`;
+					})
+					.join("");
+			}
+
+			function renderLifelinePopup(state) {
+				const popup = document.getElementById("lifeline-popup");
+				const popupImage = document.getElementById("lifeline-popup-image");
+				if (!popup || !popupImage) return;
+
+				let imageSrc = "";
+				if (state.phase === "lifeline-phone") {
+					imageSrc = "/assets/Phone%20a%20friend.png";
+				} else if (state.phase === "lifeline-poll") {
+					imageSrc = "/assets/Audience%20Poll.png";
+				}
+
+				popup.classList.toggle("visible", Boolean(imageSrc));
+				popupImage.src = imageSrc;
+				popupImage.alt = state.phase === "lifeline-phone" ? "Call a friend" : "Audience poll";
 			}
 
 			pubsub.on("play-sound", ({ sound }) => {
@@ -2055,7 +2087,6 @@
 								: "wrong",
 						);
 					}
-					if (state.phase === "lifeline-phone") playSound("fastest");
 				}
 
 				const timeoutKey = getQuestionTimeoutKey(state);
@@ -2094,11 +2125,8 @@
 					msgOverlay.classList.remove("visible");
 				}
 
-				const phoneOverlay = document.getElementById("phone-overlay");
-				phoneOverlay.classList.toggle(
-					"visible",
-					state.phase === "lifeline-phone",
-				);
+				renderLifelinePopup(state);
+				renderLifelineTray(state);
 
 				// ── Phase-based screen ──
 				if (state.phase === "lobby" || state.phase === "setup" || state.phase === "contestant-intro") {
@@ -2225,12 +2253,15 @@
 				["A", "B", "C", "D"].forEach((opt) => {
 					const card = document.getElementById("opt" + opt);
 					const textEl = document.getElementById("opt" + opt + "-text");
-					textEl.textContent = state.currentQuestion.options[opt] || "";
+					const optionText = state.currentQuestion.options[opt] || "";
+					textEl.textContent = state.removedOptions.includes(opt)
+						? ""
+						: optionText;
 
 					card.className = "opt";
 
 					if (state.removedOptions.includes(opt)) {
-						card.classList.add("dimmed");
+						card.classList.add("removed");
 					}
 
 					if (state.highlightCorrect && opt === state.correctAnswer) {
@@ -2302,7 +2333,7 @@
 				const prize = outcome.prize || fallbackPrize;
 
 				document.getElementById("game-over-title").textContent =
-					"Koun Banega Codepathi";
+					"Koun Banega Codepati";
 				document.getElementById("game-over-winner").textContent =
 					`${winnerName} won ${prize}`;
 			}

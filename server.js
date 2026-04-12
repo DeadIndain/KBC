@@ -38,7 +38,6 @@ let gameState = {
 	timerRunning: false,
 	timerValue: 0,
 	lifelines: {},
-	audiencePollData: null,
 	removedOptions: [],
 	highlightCorrect: false,
 	highlightWrong: false,
@@ -57,6 +56,7 @@ gameState.prizeMoneyLadder = buildPrizeLadder(gameState.gameConfig);
 setActivePrizeIndex(0);
 
 let timerInterval = null;
+let lifelineOverlayTimer = null;
 
 function runDb(sql, params = []) {
 	return new Promise((resolve, reject) => {
@@ -266,6 +266,39 @@ function setActivePrizeIndex(index) {
 	}));
 }
 
+function clearLifelineOverlayTimer() {
+	if (lifelineOverlayTimer) {
+		clearTimeout(lifelineOverlayTimer);
+		lifelineOverlayTimer = null;
+	}
+}
+
+function getContestantLifelines(contestantId = null) {
+	const activeId = contestantId || getActiveContestant()?.id;
+	if (!activeId) return null;
+	if (!gameState.lifelines[activeId]) {
+		gameState.lifelines[activeId] = {
+			fiftyFifty: true,
+			callFriend: true,
+			audiencePoll: true,
+		};
+	}
+	return gameState.lifelines[activeId];
+}
+
+function showTemporaryLifelineOverlay(phase, durationMs = 5000) {
+	clearLifelineOverlayTimer();
+	gameState.phase = phase;
+	broadcast();
+	lifelineOverlayTimer = setTimeout(() => {
+		if (gameState.phase === phase) {
+			gameState.phase = "question";
+			broadcast();
+		}
+		lifelineOverlayTimer = null;
+	}, durationMs);
+}
+
 function getContestantById(id) {
 	return gameState.contestants.find((c) => c.id === id);
 }
@@ -456,6 +489,7 @@ async function markCurrentQuestionResult(isCorrect) {
 }
 
 function resetParticipantState(name, preserveRound = false) {
+	clearLifelineOverlayTimer();
 	const contestantId = "c0";
 	const nextName = (name || "").trim() || "Participant";
 	const currentRoundIndex = preserveRound
@@ -488,11 +522,10 @@ function resetParticipantState(name, preserveRound = false) {
 		lifelines: {
 			[contestantId]: {
 				fiftyFifty: true,
+				callFriend: true,
 				audiencePoll: true,
-				phoneFriend: true,
 			},
 		},
-		audiencePollData: null,
 		removedOptions: [],
 		highlightCorrect: false,
 		highlightWrong: false,
@@ -550,6 +583,7 @@ app.post("/api/command/:name", async (req, res) => {
 
 registerCommand("setup-game", async ({ contestants } = {}) => {
 	stopTimer();
+	clearLifelineOverlayTimer();
 	const firstName =
 		Array.isArray(contestants) && contestants.length
 			? String(contestants[0]).trim()
@@ -566,6 +600,7 @@ registerCommand("setup-game", async ({ contestants } = {}) => {
 });
 
 registerCommand("ready-game", async () => {
+	clearLifelineOverlayTimer();
 	gameState.phase = "contestant-intro";
 	gameState.introTrigger = Number(gameState.introTrigger || 0) + 1;
 	gameState.message = "";
@@ -582,6 +617,7 @@ registerCommand("reset-question-tracking", async () => {
 
 registerCommand("intro-contestant", async ({ contestantId }) => {
 	stopTimer();
+	clearLifelineOverlayTimer();
 	gameState.contestants.forEach((c) => {
 		c.active = false;
 	});
@@ -599,6 +635,7 @@ registerCommand(
 	"load-next-question",
 	async ({ roundIndex, questionId } = {}) => {
 		stopTimer();
+		clearLifelineOverlayTimer();
 		publish("pause-sound", { sound: "timer45" });
 		const nextRoundIndex = Number.isInteger(roundIndex)
 			? roundIndex
@@ -634,7 +671,6 @@ registerCommand(
 		gameState.answerEvaluated = false;
 		gameState.highlightCorrect = false;
 		gameState.highlightWrong = false;
-		gameState.audiencePollData = null;
 		gameState.removedOptions = [];
 		gameState.timerRunning = false;
 		gameState.timerValue = 0;
@@ -702,10 +738,12 @@ registerCommand("lock-answer", async ({ answer }) => {
 
 registerCommand("reveal-answer", async () => {
 	if (gameState.answerEvaluated) return { ok: true };
+	clearLifelineOverlayTimer();
 
 	gameState.phase = "answer-reveal";
 	gameState.highlightCorrect = true;
 	const isCorrect = gameState.selectedAnswer === gameState.correctAnswer;
+	const resultSound = isCorrect ? "correct" : "wrong";
 	gameState.highlightWrong = !isCorrect;
 
 	const active = getActiveContestant();
@@ -742,70 +780,68 @@ registerCommand("reveal-answer", async () => {
 	gameState.answerEvaluated = true;
 	await markCurrentQuestionResult(isCorrect);
 	setActivePrizeIndex(gameState.currentRoundIndex);
+
+	// If the phase already moved past answer reveal, emit result audio explicitly.
+	if (gameState.phase !== "answer-reveal") {
+		publish("play-sound", { sound: resultSound });
+	}
+
 	broadcast();
 	await emitQuestionsMeta();
 	return { ok: true };
 });
 
 registerCommand("lifeline-fifty-fifty", async ({ contestantId }) => {
-	if (!gameState.lifelines[contestantId]?.fiftyFifty) return { ok: true };
-	gameState.lifelines[contestantId].fiftyFifty = false;
+	const lifelines = getContestantLifelines(contestantId);
+	if (!lifelines?.fiftyFifty) return { ok: true };
+	lifelines.fiftyFifty = false;
 
+	const trackingId = gameState.currentQuestionTrackingId;
 	const correct = gameState.correctAnswer;
 	const allOptions = ["A", "B", "C", "D"];
-	const wrong = allOptions.filter((o) => o !== correct);
-	const toRemove = wrong.sort(() => Math.random() - 0.5).slice(0, 2);
-	gameState.removedOptions = toRemove;
-	gameState.revealedOptions = gameState.revealedOptions.filter(
-		(o) => !toRemove.includes(o),
+	const wrong = allOptions.filter(
+		(o) => o !== correct && !gameState.removedOptions.includes(o),
 	);
-
+	const toRemove = wrong.sort(() => Math.random() - 0.5).slice(0, 2);
+	publish("play-sound", { sound: "lifeline" });
+	publish("play-sound", { sound: "suspense4" });
 	broadcast();
+	setTimeout(() => {
+		if (gameState.currentQuestionTrackingId !== trackingId) return;
+		const currentWrong = ["A", "B", "C", "D"].filter(
+			(o) =>
+				o !== gameState.correctAnswer && !gameState.removedOptions.includes(o),
+		);
+		const nextRemoved = currentWrong
+			.sort(() => Math.random() - 0.5)
+			.slice(0, 2);
+		gameState.removedOptions = Array.from(
+			new Set([...gameState.removedOptions, ...nextRemoved]),
+		);
+		gameState.revealedOptions = gameState.revealedOptions.filter(
+			(o) => !nextRemoved.includes(o),
+		);
+		broadcast();
+	}, 6000);
+
 	return { ok: true };
 });
 
 registerCommand("lifeline-phone", async ({ contestantId }) => {
-	if (!gameState.lifelines[contestantId]?.phoneFriend) return { ok: true };
-	gameState.lifelines[contestantId].phoneFriend = false;
-	gameState.phase = "lifeline-phone";
-	broadcast();
-	return { ok: true };
-});
-
-registerCommand("end-lifeline-phone", async () => {
-	gameState.phase = "question";
-	broadcast();
+	const lifelines = getContestantLifelines(contestantId);
+	if (!lifelines?.callFriend) return { ok: true };
+	lifelines.callFriend = false;
+	publish("play-sound", { sound: "lifeline" });
+	showTemporaryLifelineOverlay("lifeline-phone", 5000);
 	return { ok: true };
 });
 
 registerCommand("lifeline-audience", async ({ contestantId }) => {
-	if (!gameState.lifelines[contestantId]?.audiencePoll) return { ok: true };
-	gameState.lifelines[contestantId].audiencePoll = false;
-	gameState.phase = "lifeline-poll";
-	gameState.audiencePollData = null;
-	broadcast();
-	return { ok: true };
-});
-
-registerCommand("submit-audience-poll", async ({ counts }) => {
-	const activeOptions = ["A", "B", "C", "D"].filter(
-		(o) => !gameState.removedOptions.includes(o),
-	);
-	const total = activeOptions.reduce((sum, key) => sum + (counts[key] || 0), 0);
-	const percentages = {};
-	activeOptions.forEach((key) => {
-		percentages[key] =
-			total > 0 ? Math.round(((counts[key] || 0) / total) * 100) : 0;
-	});
-
-	const sum = activeOptions.reduce((s, key) => s + percentages[key], 0);
-	if (sum !== 100 && activeOptions.length > 0) {
-		percentages[activeOptions[0]] += 100 - sum;
-	}
-
-	gameState.audiencePollData = percentages;
-	gameState.phase = "question";
-	broadcast();
+	const lifelines = getContestantLifelines(contestantId);
+	if (!lifelines?.audiencePoll) return { ok: true };
+	lifelines.audiencePoll = false;
+	publish("play-sound", { sound: "lifeline" });
+	showTemporaryLifelineOverlay("lifeline-poll", 5000);
 	return { ok: true };
 });
 
@@ -830,6 +866,7 @@ registerCommand("play-sound", async ({ sound }) => {
 
 registerCommand("round-end", async () => {
 	stopTimer();
+	clearLifelineOverlayTimer();
 	gameState.phase = "round-end";
 	broadcast();
 	return { ok: true };
@@ -837,6 +874,7 @@ registerCommand("round-end", async () => {
 
 registerCommand("game-over", async () => {
 	stopTimer();
+	clearLifelineOverlayTimer();
 	gameState.phase = "game-over";
 	broadcast();
 	return { ok: true };
@@ -844,6 +882,7 @@ registerCommand("game-over", async () => {
 
 registerCommand("reset-game", async () => {
 	stopTimer();
+	clearLifelineOverlayTimer();
 	resetParticipantState("Participant", false);
 	gameState.contestants = [];
 	gameState.message = "";
@@ -853,6 +892,7 @@ registerCommand("reset-game", async () => {
 
 registerCommand("reset-for-next-participant", async ({ name }) => {
 	stopTimer();
+	clearLifelineOverlayTimer();
 	resetParticipantState(name, true);
 	gameState.phase = "contestant-intro";
 	gameState.introTrigger = Number(gameState.introTrigger || 0) + 1;
@@ -886,7 +926,7 @@ app.get("/reload-questions", async (req, res) => {
 		setActivePrizeIndex(0);
 
 		server.listen(PORT, () => {
-			console.log("\n🎯 Koun Banega Codepathi is LIVE!");
+			console.log("\n🎯 Koun Banega Codepati is LIVE!");
 			console.log(
 				`\n   Display Screen : http://localhost:${PORT}/display.html`,
 			);

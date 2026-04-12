@@ -477,6 +477,11 @@
 				background: rgba(245, 200, 66, 0.08);
 			}
 
+			.lifeline-row button:disabled {
+				opacity: 0.35;
+				cursor: not-allowed;
+			}
+
 			.lifeline-name {
 				font-size: 14px;
 				font-weight: 700;
@@ -779,35 +784,6 @@
 					</div>
 				</div>
 
-				<div class="card hidden" id="audience-poll-card">
-					<div class="card-header">Audience Poll</div>
-					<div class="card-body">
-						<div class="count-grid" id="poll-inputs">
-							<div style="display: flex; flex-direction: column; gap: 4px">
-								<label>A count</label>
-								<input type="number" id="poll-A" min="0" value="0" />
-							</div>
-							<div style="display: flex; flex-direction: column; gap: 4px">
-								<label>B count</label>
-								<input type="number" id="poll-B" min="0" value="0" />
-							</div>
-							<div style="display: flex; flex-direction: column; gap: 4px">
-								<label>C count</label>
-								<input type="number" id="poll-C" min="0" value="0" />
-							</div>
-							<div style="display: flex; flex-direction: column; gap: 4px">
-								<label>D count</label>
-								<input type="number" id="poll-D" min="0" value="0" />
-							</div>
-						</div>
-						<button
-							class="btn btn-accent btn-full"
-							onclick="submitAudiencePoll()">
-							Show poll on screen
-						</button>
-					</div>
-				</div>
-
 				<div class="card">
 					<div class="card-header">Game Flow</div>
 					<div class="card-body">
@@ -918,7 +894,6 @@
 			let questionsMeta = null;
 			let activeContestantId = null;
 			let lastConfigSignature = "";
-			let selectedLifeline = null;
 
 			pubsub.on("state", (state) => {
 				gameState = state;
@@ -1023,7 +998,6 @@
 				renderCurrentQuestion(state);
 				renderQuestionBank(state);
 				renderLifelines(state);
-				renderAudiencePollPanel(state);
 			}
 
 			function renderQuestionStats() {
@@ -1179,9 +1153,7 @@
 						btn.classList.add("revealed");
 					if (state.removedOptions.includes(opt)) btn.classList.add("removed");
 					if (state.selectedAnswer === opt) btn.classList.add("selected");
-					btn.disabled =
-						state.removedOptions.includes(opt) ||
-						Boolean(state.selectedAnswer && state.selectedAnswer !== opt);
+					btn.disabled = state.removedOptions.includes(opt);
 				});
 			}
 
@@ -1204,33 +1176,26 @@
 				container.innerHTML = `
 					<div class="lifeline-row">
 						<div>
-							<div class="lifeline-name">50:50</div>
+							<div class="lifeline-name">50/50</div>
 							<div class="lifeline-status">${ll.fiftyFifty ? "Available" : "Used"}</div>
 						</div>
-						<button class="btn btn-outline btn-sm" onclick="useFiftyFifty()" ${ll.fiftyFifty ? "" : "disabled"}>Use</button>
+						<button class="btn btn-outline btn-sm" onclick="useFiftyFifty()" ${ll.fiftyFifty ? "" : "disabled"}>${ll.fiftyFifty ? "Use" : "Used"}</button>
 					</div>
 					<div class="lifeline-row">
 						<div>
-							<div class="lifeline-name">Audience Poll</div>
+							<div class="lifeline-name">Call a friend</div>
+							<div class="lifeline-status">${ll.callFriend ? "Available" : "Used"}</div>
+						</div>
+						<button class="btn btn-outline btn-sm" onclick="useCallFriend()" ${ll.callFriend ? "" : "disabled"}>${ll.callFriend ? "Use" : "Used"}</button>
+					</div>
+					<div class="lifeline-row">
+						<div>
+							<div class="lifeline-name">Audience poll</div>
 							<div class="lifeline-status">${ll.audiencePoll ? "Available" : "Used"}</div>
 						</div>
-						<button class="btn btn-outline btn-sm" onclick="useAudiencePoll()" ${ll.audiencePoll ? "" : "disabled"}>Use</button>
+						<button class="btn btn-outline btn-sm" onclick="useAudiencePoll()" ${ll.audiencePoll ? "" : "disabled"}>${ll.audiencePoll ? "Use" : "Used"}</button>
 					</div>
 				`;
-
-				const audienceRow = container.querySelectorAll(".lifeline-row")[1];
-				audienceRow?.classList.toggle(
-					"selected",
-					selectedLifeline === "audience-poll",
-				);
-			}
-
-			function renderAudiencePollPanel(state) {
-				const panel = document.getElementById("audience-poll-card");
-				const visible =
-					selectedLifeline === "audience-poll" ||
-					state.phase === "lifeline-poll";
-				panel.classList.toggle("hidden", !visible);
 			}
 
 			function revealOption(opt) {
@@ -1244,7 +1209,6 @@
 					revealOption(opt);
 					return;
 				}
-				if (gameState.selectedAnswer) return;
 				lockAnswer(opt);
 			}
 
@@ -1266,30 +1230,16 @@
 				toast("50:50 lifeline used!");
 			}
 
-			function useAudiencePoll() {
+			function useCallFriend() {
 				if (!activeContestantId) return;
-				selectedLifeline = "audience-poll";
-				pubsub.emit("lifeline-audience", { contestantId: activeContestantId });
-				toast("Audience Poll activated!");
-				renderAudiencePollPanel(gameState || {});
-				renderLifelines(gameState || {});
+				pubsub.emit("lifeline-phone", { contestantId: activeContestantId });
+				toast("Call a friend activated!");
 			}
 
-			function submitAudiencePoll() {
-				const counts = {
-					A: parseInt(document.getElementById("poll-A").value, 10) || 0,
-					B: parseInt(document.getElementById("poll-B").value, 10) || 0,
-					C: parseInt(document.getElementById("poll-C").value, 10) || 0,
-					D: parseInt(document.getElementById("poll-D").value, 10) || 0,
-				};
-				pubsub.emit("submit-audience-poll", { counts });
-				toast("Audience poll submitted!");
-				selectedLifeline = null;
-				["A", "B", "C", "D"].forEach((opt) => {
-					document.getElementById(`poll-${opt}`).value = 0;
-				});
-				renderAudiencePollPanel(gameState || {});
-				renderLifelines(gameState || {});
+			function useAudiencePoll() {
+				if (!activeContestantId) return;
+				pubsub.emit("lifeline-audience", { contestantId: activeContestantId });
+				toast("Audience poll activated!");
 			}
 
 			function startCustomTimer() {

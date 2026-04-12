@@ -1,7 +1,7 @@
 {
-	"name": "koun-banega-codepathi",
+	"name": "koun-banega-codepati",
 	"version": "1.0.0",
-	"description": "KBC - Koun Banega Codepathi | College Event Game Show",
+	"description": "KBC - Koun Banega codepati | College Event Game Show",
 	"main": "server.js",
 	"scripts": {
 		"start": "node server.js",

@@ -2,7 +2,7 @@ Here's the full context dump:
 
 ---
 
-## Project: Koun Banega Codepathi (KBC)
+## Project: Koun Banega codepati (KBC)
 
 **Type:** Real-time game show app for a college event. Runs fully on localhost, no hosting, no auth needed.
 

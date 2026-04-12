@@ -1,4 +1,4 @@
-# Koun Banega Codepathi (KBC)
+# Koun Banega codepati (KBC)
 
 Real-time game show app for local events.
 
