@@ -62,6 +62,48 @@ Notes:
 - A question is treated as used once loaded.
 - timeLimit is in seconds.
 
+### Optional media per question
+
+You can attach local media to any question with a `media` field.
+
+```json
+{
+	"id": 10,
+	"levels": [1],
+	"question": "Identify this logo",
+	"options": {
+		"A": "Node.js",
+		"B": "Docker",
+		"C": "Kubernetes",
+		"D": "Redis"
+	},
+	"correct": "B",
+	"media": [
+		{
+			"type": "image",
+			"src": "/assets/logo.jpg",
+			"caption": "Look at the visual clue"
+		},
+		{
+			"type": "audio",
+			"src": "/sounds/Intro.mp3",
+			"controls": true
+		},
+		{
+			"type": "video",
+			"src": "/assets/kbc.mp4",
+			"controls": true
+		}
+	]
+}
+```
+
+Rules:
+
+- Use local paths served from `public/` (for example `/media/question1.png` maps to `public/media/question1.png`).
+- GIF files are supported as `type: "image"` (or by using a `.gif` file path).
+- `media` can be a single object, a string path, or an array.
+
 ## Admin Flow
 
 1. Set participant.

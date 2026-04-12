@@ -326,6 +326,65 @@
 				flex-wrap: wrap;
 			}
 
+			.media-tag {
+				display: inline-flex;
+				align-items: center;
+				padding: 4px 8px;
+				border-radius: 999px;
+				background: rgba(0, 212, 255, 0.1);
+				border: 1px solid rgba(0, 212, 255, 0.35);
+				color: var(--accent);
+				font-size: 11px;
+				font-weight: 700;
+				letter-spacing: 1px;
+				text-transform: uppercase;
+			}
+
+			.question-media-preview {
+				display: none;
+				grid-template-columns: 1fr;
+				gap: 10px;
+				padding: 10px;
+				border: 1px solid rgba(245, 200, 66, 0.2);
+				border-radius: 10px;
+				background: rgba(255, 255, 255, 0.02);
+			}
+
+			.question-media-preview.has-media {
+				display: grid;
+			}
+
+			.question-media-item {
+				display: flex;
+				flex-direction: column;
+				gap: 6px;
+				padding: 8px;
+				border-radius: 8px;
+				background: rgba(13, 17, 23, 0.8);
+				border: 1px solid var(--border);
+			}
+
+			.question-media-item img,
+			.question-media-item video {
+				display: block;
+				width: 100%;
+				max-height: 200px;
+				object-fit: contain;
+				border-radius: 6px;
+			}
+
+			.question-media-item audio {
+				width: 100%;
+			}
+
+			.question-media-label {
+				font-size: 12px;
+				font-weight: 700;
+				letter-spacing: 1px;
+				color: var(--muted);
+				text-transform: uppercase;
+			}
+
 			.round-tag {
 				display: inline-flex;
 				align-items: center;
@@ -676,6 +735,7 @@
 						<div class="question-preview" id="current-q-display">
 							No question loaded yet.
 						</div>
+						<div class="question-media-preview" id="current-q-media"></div>
 						<div class="question-actions">
 							<button
 								class="btn btn-accent"
@@ -1071,11 +1131,14 @@
 										(level) => `<span class="round-tag">Level ${level}</span>`,
 									)
 									.join("");
+								const mediaTag = q.mediaCount
+									? `<span class="media-tag">Media ${q.mediaCount}</span>`
+									: "";
 								return `
 								<div class="question-bank-item ${q.available ? "" : "used"}">
 									<div class="question-bank-copy">
 										<div class="question-bank-text">${escapeHtml(q.question)}</div>
-										<div class="question-bank-tags">${levelTags}</div>
+										<div class="question-bank-tags">${levelTags}${mediaTag}</div>
 									</div>
 									<button class="btn btn-outline btn-sm" onclick="useQuestion(${q.id})" ${q.available ? "" : "disabled"}>Use</button>
 								</div>`;
@@ -1095,6 +1158,7 @@
 				const roundNameEl = document.getElementById("current-round-name");
 				const roundMetaEl = document.getElementById("current-round-meta");
 				const questionEl = document.getElementById("current-q-display");
+				const questionMediaEl = document.getElementById("current-q-media");
 				const timerChip = document.getElementById("timer-display-chip");
 				const timerLabel =
 					state.timerValue === null || state.timerValue === undefined
@@ -1107,6 +1171,10 @@
 					roundMetaEl.textContent =
 						"Randomize the next question from the current round.";
 					questionEl.textContent = "No question loaded yet.";
+					if (questionMediaEl) {
+						questionMediaEl.innerHTML = "";
+						questionMediaEl.classList.remove("has-media");
+					}
 					timerChip.textContent = `Timer: ${timerLabel}`;
 					correctBadge.style.display = "none";
 					if (revealOptionsBtn) revealOptionsBtn.style.display = "none";
@@ -1130,6 +1198,7 @@
 				roundNameEl.textContent = q.roundName || "Current Round";
 				roundMetaEl.textContent = `Level ${q.roundNumber || q.roundIndex + 1 || 1} | Prize ${q.prizeLevel || "—"}`;
 				questionEl.innerHTML = `<strong>${escapeHtml(q.question)}</strong>`;
+				renderQuestionMediaPreview(questionMediaEl, q.media);
 				timerChip.textContent = `Timer: ${timerLabel}`;
 				if (revealCorrectBtn) {
 					revealCorrectBtn.style.display =
@@ -1155,6 +1224,60 @@
 					if (state.selectedAnswer === opt) btn.classList.add("selected");
 					btn.disabled = state.removedOptions.includes(opt);
 				});
+			}
+
+			function renderQuestionMediaPreview(container, mediaList) {
+				if (!container) return;
+				container.innerHTML = "";
+				const items = Array.isArray(mediaList) ? mediaList : [];
+				if (!items.length) {
+					container.classList.remove("has-media");
+					return;
+				}
+
+				items.forEach((item, index) => {
+					if (!item || !item.src) return;
+					const card = document.createElement("div");
+					card.className = "question-media-item";
+
+					const label = document.createElement("div");
+					label.className = "question-media-label";
+					label.textContent = `${String(item.type || "image").toUpperCase()} ${index + 1}`;
+					card.appendChild(label);
+
+					const mediaType = String(item.type || "image").toLowerCase();
+					if (mediaType === "audio") {
+						const audio = document.createElement("audio");
+						audio.src = item.src;
+						audio.controls = true;
+						audio.preload = "metadata";
+						card.appendChild(audio);
+					} else if (mediaType === "video") {
+						const video = document.createElement("video");
+						video.src = item.src;
+						video.controls = true;
+						video.preload = "metadata";
+						card.appendChild(video);
+					} else {
+						const image = document.createElement("img");
+						image.src = item.src;
+						image.alt = item.alt || `Question media ${index + 1}`;
+						image.loading = "lazy";
+						card.appendChild(image);
+					}
+
+					if (item.caption) {
+						const caption = document.createElement("div");
+						caption.style.fontSize = "13px";
+						caption.style.color = "var(--muted)";
+						caption.textContent = String(item.caption);
+						card.appendChild(caption);
+					}
+
+					container.appendChild(card);
+				});
+
+				container.classList.toggle("has-media", container.children.length > 0);
 			}
 
 			function renderLifelines(state) {

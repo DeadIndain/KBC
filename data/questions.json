@@ -27,7 +27,12 @@
 		{
 			"id": 101,
 			"levels": [1],
-			"question": "Which keyword is used to declare a constant in JavaScript?",
+			"question": "Mock Media Q1: Which keyword declares a constant in JavaScript?",
+			"media": {
+				"type": "image",
+				"src": "/media/images/logo.jpg",
+				"caption": "Image test: logo.jpg"
+			},
 			"options": {
 				"A": "var",
 				"B": "let",
@@ -40,7 +45,12 @@
 		{
 			"id": 102,
 			"levels": [1, 2],
-			"question": "What does HTTP stand for?",
+			"question": "Mock Media Q2: What does HTTP stand for?",
+			"media": {
+				"type": "image",
+				"src": "/media/images/fifty-fifty.png",
+				"caption": "Image test: fifty-fifty.png"
+			},
 			"options": {
 				"A": "HyperText Transfer Protocol",
 				"B": "High Transfer Text Process",
@@ -53,7 +63,13 @@
 		{
 			"id": 103,
 			"levels": [1],
-			"question": "In SQL, which command removes all rows from a table but keeps the table?",
+			"question": "Mock Media Q3: In SQL, which command removes all rows but keeps the table?",
+			"media": {
+				"type": "audio",
+				"src": "/media/audio/intro.mp3",
+				"controls": true,
+				"caption": "Audio test: intro.mp3"
+			},
 			"options": {
 				"A": "DROP",
 				"B": "DELETE",
@@ -66,7 +82,12 @@
 		{
 			"id": 104,
 			"levels": [1],
-			"question": "Which data structure is best for FIFO behavior?",
+			"question": "Mock Media Q4: Which data structure is best for FIFO behavior?",
+			"media": {
+				"type": "image",
+				"src": "/media/images/audience-poll.png",
+				"caption": "Image test: audience-poll.png"
+			},
 			"options": {
 				"A": "Stack",
 				"B": "Queue",
@@ -79,7 +100,13 @@
 		{
 			"id": 201,
 			"levels": [2],
-			"question": "What is the average time complexity of hash table lookup?",
+			"question": "Mock Media Q5: What is average lookup complexity of a hash table?",
+			"media": {
+				"type": "audio",
+				"src": "/media/audio/next-question.mp3",
+				"controls": true,
+				"caption": "Audio test: next-question.mp3"
+			},
 			"options": {
 				"A": "O(1)",
 				"B": "O(log n)",
@@ -92,7 +119,19 @@
 		{
 			"id": 202,
 			"levels": [2, 3],
-			"question": "Which git command creates and switches to a new branch?",
+			"question": "Mock Media Q6: Which git command creates and switches to a new branch?",
+			"media": [
+				{
+					"type": "image",
+					"src": "/media/images/phone-a-friend.png",
+					"caption": "Image + audio combined test"
+				},
+				{
+					"type": "audio",
+					"src": "/media/audio/timer.mp3",
+					"controls": true
+				}
+			],
 			"options": {
 				"A": "git branch --switch feature",
 				"B": "git checkout -b feature",
@@ -105,7 +144,12 @@
 		{
 			"id": 203,
 			"levels": [2],
-			"question": "Which status code means resource not found?",
+			"question": "Mock Media Q7: Which status code means resource not found?",
+			"media": {
+				"type": "image",
+				"src": "/media/images/cross.png",
+				"caption": "Image test: cross.png"
+			},
 			"options": {
 				"A": "200",
 				"B": "301",
@@ -118,7 +162,13 @@
 		{
 			"id": 204,
 			"levels": [2],
-			"question": "In OOP, what is it called when one class derives from another?",
+			"question": "Mock Media Q8: In OOP, one class deriving from another is called?",
+			"media": {
+				"type": "video",
+				"src": "/media/video/kbc.mp4",
+				"controls": true,
+				"muted": true
+			},
 			"options": {
 				"A": "Encapsulation",
 				"B": "Abstraction",
@@ -131,7 +181,12 @@
 		{
 			"id": 301,
 			"levels": [3],
-			"question": "Which ACID property ensures all-or-nothing transaction behavior?",
+			"question": "Mock Media Q9: Which ACID property ensures all-or-nothing behavior?",
+			"media": {
+				"type": "image",
+				"src": "/media/images/logo.jpg",
+				"caption": "Reuse image to validate repeated media"
+			},
 			"options": {
 				"A": "Isolation",
 				"B": "Atomicity",
@@ -144,7 +199,12 @@
 		{
 			"id": 302,
 			"levels": [3, 4],
-			"question": "What is the primary job of an operating system scheduler?",
+			"question": "Mock Media Q10: Primary job of an OS scheduler?",
+			"media": {
+				"type": "video",
+				"src": "/media/video/kbc.mp4",
+				"controls": true
+			},
 			"options": {
 				"A": "Encrypt disk blocks",
 				"B": "Manage CPU time across processes",
@@ -157,7 +217,12 @@
 		{
 			"id": 303,
 			"levels": [3],
-			"question": "Which index is usually preferred for range queries in relational databases?",
+			"question": "Mock Media Q11: Which index is preferred for range queries?",
+			"media": {
+				"type": "audio",
+				"src": "/media/audio/intro.mp3",
+				"controls": true
+			},
 			"options": {
 				"A": "Bitmap",
 				"B": "B-tree",
@@ -170,7 +235,12 @@
 		{
 			"id": 304,
 			"levels": [3],
-			"question": "Which protocol is commonly used to secure web traffic?",
+			"question": "Mock Media Q12: Which protocol secures web traffic?",
+			"media": {
+				"type": "image",
+				"src": "/media/images/phone-a-friend.png",
+				"caption": "Image test for another question"
+			},
 			"options": {
 				"A": "FTP",
 				"B": "SMTP",
@@ -183,7 +253,11 @@
 		{
 			"id": 401,
 			"levels": [4],
-			"question": "If a deadlock occurs, which condition must be present?",
+			"question": "Mock Media Q13: If deadlock occurs, which condition must be present?",
+			"media": {
+				"type": "image",
+				"src": "/media/images/audience-poll.png"
+			},
 			"options": {
 				"A": "No mutual exclusion",
 				"B": "Preemption always enabled",
@@ -196,7 +270,12 @@
 		{
 			"id": 402,
 			"levels": [4],
-			"question": "Which CAP theorem tradeoff is typical for strongly consistent databases during partitions?",
+			"question": "Mock Media Q14: CAP tradeoff for strongly consistent DB during partitions?",
+			"media": {
+				"type": "audio",
+				"src": "/media/audio/next-question.mp3",
+				"controls": true
+			},
 			"options": {
 				"A": "Choose availability over consistency",
 				"B": "Choose consistency over availability",
@@ -209,7 +288,13 @@
 		{
 			"id": 403,
 			"levels": [4],
-			"question": "What is the purpose of a mutex in concurrent programs?",
+			"question": "Mock Media Q15: Purpose of a mutex in concurrent programs?",
+			"media": {
+				"type": "video",
+				"src": "/media/video/kbc.mp4",
+				"controls": true,
+				"muted": true
+			},
 			"options": {
 				"A": "Improve network throughput",
 				"B": "Prevent race conditions on shared data",
@@ -222,7 +307,19 @@
 		{
 			"id": 404,
 			"levels": [4],
-			"question": "Which strategy helps reduce API latency in distributed systems?",
+			"question": "Mock Media Q16: Which strategy helps reduce API latency?",
+			"media": [
+				{
+					"type": "image",
+					"src": "/media/images/fifty-fifty.png",
+					"caption": "Multi-media mock question"
+				},
+				{
+					"type": "audio",
+					"src": "/media/audio/timer.mp3",
+					"controls": true
+				}
+			],
 			"options": {
 				"A": "Synchronous chained calls everywhere",
 				"B": "Caching hot responses near clients",

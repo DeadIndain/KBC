@@ -148,6 +148,81 @@ function normalizeDifficulty(value) {
 	return "medium";
 }
 
+function normalizeMediaType(value) {
+	const type = String(value || "")
+		.trim()
+		.toLowerCase();
+	if (type === "image" || type === "audio" || type === "video") return type;
+	return "";
+}
+
+function detectMediaTypeFromSrc(src) {
+	const cleanSrc = String(src || "")
+		.split("?")[0]
+		.toLowerCase();
+	if (/\.(png|jpe?g|gif|webp|svg)$/.test(cleanSrc)) return "image";
+	if (/\.(mp3|wav|ogg|m4a|aac)$/.test(cleanSrc)) return "audio";
+	if (/\.(mp4|webm|ogg|mov|m4v)$/.test(cleanSrc)) return "video";
+	return "";
+}
+
+function sanitizeLocalMediaSrc(value) {
+	const raw = String(value || "")
+		.trim()
+		.replace(/\\/g, "/");
+	if (!raw) return "";
+	if (/^[a-z]+:/i.test(raw)) return "";
+	if (raw.includes("..")) return "";
+	return raw.startsWith("/") ? raw : `/${raw}`;
+}
+
+function normalizeQuestionMedia(value) {
+	if (!value) return [];
+	const rawItems = Array.isArray(value) ? value : [value];
+	const normalized = rawItems
+		.map((item) => {
+			if (typeof item === "string") {
+				const src = sanitizeLocalMediaSrc(item);
+				if (!src) return null;
+				const type = detectMediaTypeFromSrc(src) || "image";
+				return {
+					src,
+					type,
+					alt: "",
+					caption: "",
+					autoplay: false,
+					loop: false,
+					muted: false,
+					controls: type !== "image",
+				};
+			}
+
+			if (!item || typeof item !== "object") return null;
+			const src = sanitizeLocalMediaSrc(item.src);
+			if (!src) return null;
+			const inferredType = detectMediaTypeFromSrc(src);
+			const type = normalizeMediaType(item.type) || inferredType || "image";
+			return {
+				src,
+				type,
+				alt: String(item.alt || ""),
+				caption: String(item.caption || ""),
+				autoplay: Boolean(item.autoplay),
+				loop: Boolean(item.loop),
+				muted: Boolean(item.muted),
+				controls:
+					type === "image"
+						? false
+						: item.controls !== undefined
+							? Boolean(item.controls)
+							: true,
+			};
+		})
+		.filter(Boolean);
+
+	return normalized;
+}
+
 function normalizeRoundConfig(round, index) {
 	return {
 		level: index + 1,
@@ -215,6 +290,7 @@ function buildQuestionBank(data) {
 			const levels = normalizeLevelList(q.levels ?? q.rounds ?? q.level, 1)
 				.filter((level) => !roundCount || level <= roundCount)
 				.sort((a, b) => a - b);
+			const media = normalizeQuestionMedia(q.media);
 
 			bank.push({
 				trackingId: `q-${id}`,
@@ -224,6 +300,7 @@ function buildQuestionBank(data) {
 				correct: q.correct,
 				difficulty: normalizeDifficulty(q.difficulty),
 				levels,
+				media,
 			});
 		});
 		return bank;
@@ -234,6 +311,7 @@ function buildQuestionBank(data) {
 			const entries = Array.isArray(round?.questions) ? round.questions : [];
 			entries.forEach((q, questionIndex) => {
 				const id = q.id ?? questionIndex + 1;
+				const media = normalizeQuestionMedia(q.media);
 				bank.push({
 					trackingId: `r${roundIndex + 1}-q${id}-${questionIndex}`,
 					id,
@@ -242,6 +320,7 @@ function buildQuestionBank(data) {
 					correct: q.correct,
 					difficulty: normalizeDifficulty(q.difficulty),
 					levels: [roundIndex + 1],
+					media,
 				});
 			});
 		});
@@ -376,6 +455,7 @@ async function getQuestionsMetaPayload() {
 					id: q.id,
 					question: q.question,
 					levels: q.levels,
+					mediaCount: Array.isArray(q.media) ? q.media.length : 0,
 					available: Number(tracking.asked_count) === 0,
 				};
 			});
@@ -657,6 +737,7 @@ registerCommand(
 			question: question.question,
 			options: question.options,
 			difficulty: question.difficulty,
+			media: question.media || [],
 			roundName: question.roundName,
 			prizeLevel: question.prizeLevel,
 			timeLimit: question.timeLimit,

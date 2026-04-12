@@ -691,6 +691,45 @@
 				text-shadow: 0 0 14px rgba(6, 18, 54, 0.8);
 			}
 
+			.question-media-wrap {
+				display: none;
+				width: 100%;
+				margin: 6px auto 10px;
+				justify-content: center;
+				gap: 12px;
+				flex-wrap: wrap;
+			}
+
+			.question-media-wrap.has-media {
+				display: flex;
+			}
+
+			.question-media-item {
+				display: flex;
+				flex-direction: column;
+				gap: 6px;
+				align-items: center;
+				padding: 8px;
+				border-radius: 10px;
+				background: rgba(3, 10, 32, 0.66);
+				border: 1px solid rgba(245, 200, 66, 0.25);
+				max-width: min(560px, 100%);
+			}
+
+			.question-media-item img,
+			.question-media-item video {
+				display: block;
+				width: min(540px, 100%);
+				max-height: 240px;
+				object-fit: contain;
+				border-radius: 8px;
+				background: #020614;
+			}
+
+			.question-media-item audio {
+				width: min(540px, 100%);
+			}
+
 			/* ── Options Grid ── */
 			.options-grid {
 				display: grid;
@@ -1376,6 +1415,16 @@
 				text-shadow: 0 1px 4px rgba(0, 0, 40, 0.8);
 			}
 
+			body.question-mode .question-media-wrap {
+				margin-top: 4px;
+				margin-bottom: 12px;
+			}
+
+			body.question-mode .question-media-item {
+				background: rgba(7, 17, 58, 0.92);
+				border-color: rgba(232, 200, 80, 0.35);
+			}
+
 			body.question-mode .options-row {
 				display: grid;
 				grid-template-columns: repeat(2, minmax(330px, 410px));
@@ -1735,6 +1784,8 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="question-media-wrap" id="question-media"></div>
 
 				<div class="options-row">
 					<div class="opt-line-wrap">
@@ -2230,7 +2281,10 @@
 			}
 
 			function renderQuestion(state) {
-				if (!state.currentQuestion) return;
+				if (!state.currentQuestion) {
+					renderQuestionMedia([]);
+					return;
+				}
 				maxTime = Number(state.currentQuestion.timeLimit) || 45;
 
 				const optionsRow = document.querySelector(".options-row");
@@ -2248,6 +2302,7 @@
 				// Question
 				document.getElementById("question-text").textContent =
 					state.currentQuestion.question;
+				renderQuestionMedia(state.currentQuestion.media);
 
 				// Options
 				["A", "B", "C", "D"].forEach((opt) => {
@@ -2283,6 +2338,53 @@
 				} else {
 					updateTimerCircle(0, maxTime);
 				}
+			}
+
+			function renderQuestionMedia(mediaList) {
+				const container = document.getElementById("question-media");
+				if (!container) return;
+				container.innerHTML = "";
+				const items = Array.isArray(mediaList) ? mediaList : [];
+				if (!items.length) {
+					container.classList.remove("has-media");
+					return;
+				}
+
+				items.forEach((item, index) => {
+					if (!item || !item.src) return;
+					const card = document.createElement("div");
+					card.className = "question-media-item";
+
+					const mediaType = String(item.type || "image").toLowerCase();
+					if (mediaType === "audio") {
+						const audio = document.createElement("audio");
+						audio.src = item.src;
+						audio.controls = item.controls !== false;
+						audio.preload = "metadata";
+						audio.loop = Boolean(item.loop);
+						audio.autoplay = Boolean(item.autoplay);
+						card.appendChild(audio);
+					} else if (mediaType === "video") {
+						const video = document.createElement("video");
+						video.src = item.src;
+						video.controls = item.controls !== false;
+						video.preload = "metadata";
+						video.loop = Boolean(item.loop);
+						video.muted = Boolean(item.muted);
+						video.autoplay = Boolean(item.autoplay);
+						card.appendChild(video);
+					} else {
+						const image = document.createElement("img");
+						image.src = item.src;
+						image.alt = item.alt || `Question media ${index + 1}`;
+						image.loading = "lazy";
+						card.appendChild(image);
+					}
+
+					container.appendChild(card);
+				});
+
+				container.classList.toggle("has-media", container.children.length > 0);
 			}
 
 			function renderPollBars(data, removed) {
