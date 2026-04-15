@@ -1011,6 +1011,34 @@
 				border-color: rgba(0, 230, 118, 0.85);
 				box-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
 			}
+			.rounds-card.checkpoint {
+				border-color: rgba(245, 200, 66, 0.95);
+				background: linear-gradient(
+					180deg,
+					rgba(92, 70, 8, 0.88),
+					rgba(58, 44, 8, 0.92)
+				);
+				box-shadow: 0 0 18px rgba(245, 200, 66, 0.26);
+			}
+			.rounds-card.checkpoint .rounds-label,
+			.rounds-card.checkpoint .rounds-time,
+			.rounds-card.checkpoint .rounds-prize {
+				color: #ffe089;
+			}
+			.rounds-card.all-or-nothing {
+				border-color: rgba(255, 86, 86, 0.96);
+				background: linear-gradient(
+					180deg,
+					rgba(122, 20, 20, 0.9),
+					rgba(72, 10, 10, 0.94)
+				);
+				box-shadow: 0 0 20px rgba(255, 86, 86, 0.3);
+			}
+			.rounds-card.all-or-nothing .rounds-label,
+			.rounds-card.all-or-nothing .rounds-time,
+			.rounds-card.all-or-nothing .rounds-prize {
+				color: #ffd2d2;
+			}
 			.rounds-line {
 				display: flex;
 				align-items: center;
@@ -2308,8 +2336,21 @@
 						const prize = round?.prize || "Rs 0";
 						const timeLimit = Number(round?.timeLimit) || 0;
 						const isActive = index === activeIndex;
+						const lowerLabel = label.toLowerCase();
+						const isCheckpoint = lowerLabel.includes("checkpoint");
+						const isAllOrNothing =
+							lowerLabel.includes("all or nothing") ||
+							lowerLabel.includes("all-or-nothing");
+						const cardClass = [
+							"rounds-card",
+							isActive ? "active" : "",
+							isCheckpoint ? "checkpoint" : "",
+							isAllOrNothing ? "all-or-nothing" : "",
+						]
+							.filter(Boolean)
+							.join(" ");
 						return `
-							<div class="rounds-card ${isActive ? "active" : ""}">
+							<div class="${cardClass}">
 								<div class="rounds-line">
 									<div class="rounds-left">
 										<div class="rounds-label">${label}</div>

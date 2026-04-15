@@ -2,57 +2,57 @@
 	"gameConfig": {
 		"rounds": [
 			{
-				"label": "Round 1 - Opening",
+				"label": "Question 1",
 				"prize": "Rs 10",
 				"timeLimit": 20
 			},
 			{
-				"label": "Round 2 - Warm Up",
+				"label": "Question 2",
 				"prize": "Rs 20",
 				"timeLimit": 20
 			},
 			{
-				"label": "Round 3 - Quick Logic",
+				"label": "Question 3",
 				"prize": "Rs 30",
 				"timeLimit": 20
 			},
 			{
-				"label": "Round 4 - Steady Climb",
+				"label": "Question 4 - Checkpoint 1",
 				"prize": "Rs 50",
 				"timeLimit": 30
 			},
 			{
-				"label": "Round 5 - Mid Challenge",
+				"label": "Question 5",
 				"prize": "Rs 80",
 				"timeLimit": 30
 			},
 			{
-				"label": "Round 6 - Focus Zone",
+				"label": "Question 6",
 				"prize": "Rs 120",
 				"timeLimit": 30
 			},
 			{
-				"label": "Round 7 - Pressure Test",
+				"label": "Question 7",
 				"prize": "Rs 180",
 				"timeLimit": 30
 			},
 			{
-				"label": "Round 8 - Fast Track",
+				"label": "Question 8 - Checkpoint 2",
 				"prize": "Rs 240",
 				"timeLimit": 45
 			},
 			{
-				"label": "Round 9 - Penultimate",
+				"label": "Question 9",
 				"prize": "Rs 400",
 				"timeLimit": 45
 			},
 			{
-				"label": "Round 10 - Final",
+				"label": "Question 10",
 				"prize": "Rs 500",
 				"timeLimit": 45
 			},
 			{
-				"label": "Round 11 - Gamble",
+				"label": "Question 11 - All or nothing",
 				"prize": "Rs 1,000",
 				"timeLimit": 45
 			}
