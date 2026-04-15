@@ -153,6 +153,9 @@ function normalizeMediaType(value) {
 		.trim()
 		.toLowerCase();
 	if (type === "image" || type === "audio" || type === "video") return type;
+	if (type.includes("audio")) return "audio";
+	if (type.includes("video")) return "video";
+	if (type.includes("image")) return "image";
 	return "";
 }
 
@@ -358,7 +361,6 @@ function getContestantLifelines(contestantId = null) {
 	if (!gameState.lifelines[activeId]) {
 		gameState.lifelines[activeId] = {
 			fiftyFifty: true,
-			callFriend: true,
 			audiencePoll: true,
 		};
 	}
@@ -602,7 +604,6 @@ function resetParticipantState(name, preserveRound = false) {
 		lifelines: {
 			[contestantId]: {
 				fiftyFifty: true,
-				callFriend: true,
 				audiencePoll: true,
 			},
 		},
@@ -908,15 +909,6 @@ registerCommand("lifeline-fifty-fifty", async ({ contestantId }) => {
 	return { ok: true };
 });
 
-registerCommand("lifeline-phone", async ({ contestantId }) => {
-	const lifelines = getContestantLifelines(contestantId);
-	if (!lifelines?.callFriend) return { ok: true };
-	lifelines.callFriend = false;
-	publish("play-sound", { sound: "lifeline" });
-	showTemporaryLifelineOverlay("lifeline-phone", 5000);
-	return { ok: true };
-});
-
 registerCommand("lifeline-audience", async ({ contestantId }) => {
 	const lifelines = getContestantLifelines(contestantId);
 	if (!lifelines?.audiencePoll) return { ok: true };
@@ -949,6 +941,14 @@ registerCommand("round-end", async () => {
 	stopTimer();
 	clearLifelineOverlayTimer();
 	gameState.phase = "round-end";
+	broadcast();
+	return { ok: true };
+});
+
+registerCommand("show-rounds", async () => {
+	stopTimer();
+	clearLifelineOverlayTimer();
+	gameState.phase = "rounds";
 	broadcast();
 	return { ok: true };
 });

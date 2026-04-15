@@ -851,6 +851,9 @@
 							<button class="btn btn-accent" onclick="introParticipant()">
 								Intro
 							</button>
+							<button class="btn btn-outline" onclick="showRounds()">
+								Show rounds
+							</button>
 							<button class="btn btn-gold" onclick="pubsub.emit('round-end')">
 								End round
 							</button>
@@ -995,6 +998,16 @@
 				if (!active) return toast("Set a participant first");
 				pubsub.emit("intro-contestant", { contestantId: active.id });
 				toast(`Intro started: ${active.name}`);
+			}
+
+			function showRounds() {
+				pubsub.emit("show-rounds", {}, (res) => {
+					if (res?.ok === false) {
+						toast(res.message || "Could not show rounds");
+						return;
+					}
+					toast("Rounds shown on display");
+				});
 			}
 
 			function loadNextQuestion() {
@@ -1242,10 +1255,10 @@
 
 					const label = document.createElement("div");
 					label.className = "question-media-label";
-					label.textContent = `${String(item.type || "image").toUpperCase()} ${index + 1}`;
+					label.textContent = `${resolveMediaType(item).toUpperCase()} ${index + 1}`;
 					card.appendChild(label);
 
-					const mediaType = String(item.type || "image").toLowerCase();
+					const mediaType = resolveMediaType(item);
 					if (mediaType === "audio") {
 						const audio = document.createElement("audio");
 						audio.src = item.src;
@@ -1280,6 +1293,25 @@
 				container.classList.toggle("has-media", container.children.length > 0);
 			}
 
+			function resolveMediaType(item) {
+				const type = String(item?.type || "")
+					.trim()
+					.toLowerCase();
+				if (type === "image" || type === "audio" || type === "video") {
+					return type;
+				}
+				if (type.includes("audio")) return "audio";
+				if (type.includes("video")) return "video";
+				if (type.includes("image")) return "image";
+
+				const src = String(item?.src || "")
+					.split("?")[0]
+					.toLowerCase();
+				if (/\.(mp3|wav|ogg|m4a|aac)$/.test(src)) return "audio";
+				if (/\.(mp4|webm|ogg|mov|m4v)$/.test(src)) return "video";
+				return "image";
+			}
+
 			function renderLifelines(state) {
 				const container = document.getElementById("lifeline-controls");
 				const active = state.contestants.find((c) => c.active);
@@ -1303,13 +1335,6 @@
 							<div class="lifeline-status">${ll.fiftyFifty ? "Available" : "Used"}</div>
 						</div>
 						<button class="btn btn-outline btn-sm" onclick="useFiftyFifty()" ${ll.fiftyFifty ? "" : "disabled"}>${ll.fiftyFifty ? "Use" : "Used"}</button>
-					</div>
-					<div class="lifeline-row">
-						<div>
-							<div class="lifeline-name">Call a friend</div>
-							<div class="lifeline-status">${ll.callFriend ? "Available" : "Used"}</div>
-						</div>
-						<button class="btn btn-outline btn-sm" onclick="useCallFriend()" ${ll.callFriend ? "" : "disabled"}>${ll.callFriend ? "Use" : "Used"}</button>
 					</div>
 					<div class="lifeline-row">
 						<div>
@@ -1351,12 +1376,6 @@
 					contestantId: activeContestantId,
 				});
 				toast("50:50 lifeline used!");
-			}
-
-			function useCallFriend() {
-				if (!activeContestantId) return;
-				pubsub.emit("lifeline-phone", { contestantId: activeContestantId });
-				toast("Call a friend activated!");
 			}
 
 			function useAudiencePoll() {

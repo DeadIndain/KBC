@@ -709,17 +709,19 @@
 				flex-direction: column;
 				gap: 6px;
 				align-items: center;
+				width: min(560px, 100%);
 				padding: 8px;
 				border-radius: 10px;
 				background: rgba(3, 10, 32, 0.66);
 				border: 1px solid rgba(245, 200, 66, 0.25);
-				max-width: min(560px, 100%);
+				max-width: 100%;
 			}
 
 			.question-media-item img,
 			.question-media-item video {
 				display: block;
-				width: min(540px, 100%);
+				width: 100%;
+				max-width: 540px;
 				max-height: 240px;
 				object-fit: contain;
 				border-radius: 8px;
@@ -727,7 +729,9 @@
 			}
 
 			.question-media-item audio {
-				width: min(540px, 100%);
+				display: block;
+				width: 100%;
+				max-width: 540px;
 			}
 
 			/* ── Options Grid ── */
@@ -958,6 +962,85 @@
 			#screen-game-over {
 				text-align: center;
 				gap: 24px;
+			}
+
+			/* ── Rounds Screen ── */
+			#screen-rounds {
+				padding: 48px 32px;
+				justify-content: flex-start;
+				overflow: hidden;
+			}
+			.rounds-wrap {
+				width: min(1100px, 96vw);
+				display: flex;
+				flex-direction: column;
+				gap: 18px;
+				max-height: calc(100vh - 96px);
+			}
+			.rounds-title {
+				font-family: "Cinzel", serif;
+				font-size: clamp(28px, 4vw, 54px);
+				font-weight: 900;
+				letter-spacing: 1px;
+				color: var(--gold);
+				text-align: center;
+			}
+			.rounds-subtitle {
+				text-align: center;
+				font-size: clamp(12px, 1.8vw, 18px);
+				color: var(--accent);
+				letter-spacing: 4px;
+				text-transform: uppercase;
+			}
+			.rounds-grid {
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+				overflow-y: auto;
+				padding-right: 8px;
+			}
+			.rounds-card {
+				padding: 12px 14px;
+				border-radius: 12px;
+				border: 1px solid rgba(245, 200, 66, 0.35);
+				background: linear-gradient(180deg, rgba(16, 45, 122, 0.82), rgba(8, 24, 74, 0.88));
+				box-shadow: 0 0 14px rgba(245, 200, 66, 0.12);
+				width: 100%;
+			}
+			.rounds-card.active {
+				border-color: rgba(0, 230, 118, 0.85);
+				box-shadow: 0 0 20px rgba(0, 230, 118, 0.2);
+			}
+			.rounds-line {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 12px;
+			}
+			.rounds-left {
+				display: inline-flex;
+				align-items: baseline;
+				gap: 10px;
+				min-width: 0;
+			}
+			.rounds-label {
+				font-size: 20px;
+				font-weight: 700;
+				color: #eef4ff;
+				line-height: 1.2;
+				min-width: 0;
+			}
+			.rounds-time {
+				font-size: 16px;
+				font-weight: 700;
+				color: var(--accent);
+				white-space: nowrap;
+			}
+			.rounds-prize {
+				font-size: 16px;
+				font-weight: 700;
+				color: var(--gold);
+				white-space: nowrap;
 			}
 			.end-title {
 				font-family: "Cinzel", serif;
@@ -1852,6 +1935,15 @@
 			<div class="end-subtitle" id="game-over-winner"></div>
 		</div>
 
+		<!-- ROUNDS -->
+		<div class="screen" id="screen-rounds">
+			<div class="rounds-wrap">
+				<div class="rounds-title">Round Ladder</div>
+				<div class="rounds-subtitle">Prize and Timer Overview</div>
+				<div class="rounds-grid" id="rounds-grid"></div>
+			</div>
+		</div>
+
 			<div class="lifeline-display" id="lifeline-display"></div>
 
 		<!-- LIFELINE POPUP -->
@@ -1932,7 +2024,6 @@
 					"question",
 					"answer-reveal",
 					"lifeline-poll",
-					"lifeline-phone",
 					"round-end",
 					"walkout",
 				].includes(state.phase);
@@ -1948,11 +2039,6 @@
 						key: "fiftyFifty",
 						label: "50/50",
 						image: "/assets/50-50.png",
-					},
-					{
-						key: "callFriend",
-						label: "Call a friend",
-						image: "/assets/Phone%20a%20friend.png",
 					},
 					{
 						key: "audiencePoll",
@@ -1979,15 +2065,13 @@
 				if (!popup || !popupImage) return;
 
 				let imageSrc = "";
-				if (state.phase === "lifeline-phone") {
-					imageSrc = "/assets/Phone%20a%20friend.png";
-				} else if (state.phase === "lifeline-poll") {
+				if (state.phase === "lifeline-poll") {
 					imageSrc = "/assets/Audience%20Poll.png";
 				}
 
 				popup.classList.toggle("visible", Boolean(imageSrc));
 				popupImage.src = imageSrc;
-				popupImage.alt = state.phase === "lifeline-phone" ? "Call a friend" : "Audience poll";
+				popupImage.alt = "Audience poll";
 			}
 
 			pubsub.on("play-sound", ({ sound }) => {
@@ -2188,7 +2272,6 @@
 						"question",
 						"answer-reveal",
 						"lifeline-poll",
-						"lifeline-phone",
 						"round-end",
 						"walkout",
 					].includes(state.phase)
@@ -2198,7 +2281,45 @@
 				} else if (state.phase === "game-over") {
 					showScreen("game-over");
 					renderGameOver(state);
+				} else if (state.phase === "rounds") {
+					showScreen("rounds");
+					renderRounds(state);
 				}
+			}
+
+			function renderRounds(state) {
+				const grid = document.getElementById("rounds-grid");
+				if (!grid) return;
+
+				const rounds = Array.isArray(state?.gameConfig?.rounds)
+					? state.gameConfig.rounds
+					: [];
+				const activeIndex = Math.max(Number(state?.currentRoundIndex) || 0, 0);
+
+				if (!rounds.length) {
+					grid.innerHTML =
+						'<div class="rounds-card"><div class="rounds-label">No rounds configured</div></div>';
+					return;
+				}
+
+				grid.innerHTML = rounds
+					.map((round, index) => {
+						const label = round?.label || `Round ${index + 1}`;
+						const prize = round?.prize || "Rs 0";
+						const timeLimit = Number(round?.timeLimit) || 0;
+						const isActive = index === activeIndex;
+						return `
+							<div class="rounds-card ${isActive ? "active" : ""}">
+								<div class="rounds-line">
+									<div class="rounds-left">
+										<div class="rounds-label">${label}</div>
+										<span class="rounds-time">${timeLimit}s</span>
+									</div>
+									<span class="rounds-prize">${prize}</span>
+								</div>
+							</div>`;
+					})
+					.join("");
 			}
 
 			function renderLobby(state) {
@@ -2355,7 +2476,7 @@
 					const card = document.createElement("div");
 					card.className = "question-media-item";
 
-					const mediaType = String(item.type || "image").toLowerCase();
+					const mediaType = resolveMediaType(item);
 					if (mediaType === "audio") {
 						const audio = document.createElement("audio");
 						audio.src = item.src;
@@ -2363,6 +2484,7 @@
 						audio.preload = "metadata";
 						audio.loop = Boolean(item.loop);
 						audio.autoplay = Boolean(item.autoplay);
+						audio.load();
 						card.appendChild(audio);
 					} else if (mediaType === "video") {
 						const video = document.createElement("video");
@@ -2385,6 +2507,23 @@
 				});
 
 				container.classList.toggle("has-media", container.children.length > 0);
+			}
+
+			function resolveMediaType(item) {
+				const type = String(item?.type || "").trim().toLowerCase();
+				if (type === "image" || type === "audio" || type === "video") {
+					return type;
+				}
+				if (type.includes("audio")) return "audio";
+				if (type.includes("video")) return "video";
+				if (type.includes("image")) return "image";
+
+				const src = String(item?.src || "")
+					.split("?")[0]
+					.toLowerCase();
+				if (/\.(mp3|wav|ogg|m4a|aac)$/.test(src)) return "audio";
+				if (/\.(mp4|webm|ogg|mov|m4v)$/.test(src)) return "video";
+				return "image";
 			}
 
 			function renderPollBars(data, removed) {

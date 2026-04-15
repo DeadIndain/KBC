@@ -70,8 +70,6 @@ Here's the full context dump:
 | `advance-contestant`   | `{ contestantId }`              | Marks contestant as round winner                    |
 | `lifeline-fifty-fifty` | `{ contestantId }`              | Removes 2 wrong options                             |
 | `lifeline-audience`    | `{ contestantId }`              | Marks lifeline used, switches phase                 |
-| `lifeline-phone`       | `{ contestantId }`              | Shows phone overlay on display                      |
-| `end-lifeline-phone`   | —                               | Dismisses phone overlay                             |
 | `submit-audience-poll` | `{ counts: {A,B,C,D} }`         | Converts raw hand counts → % → shows bar chart      |
 | `show-message`         | `{ message }`                   | Shows full-screen message overlay                   |
 | `clear-message`        | —                               | Dismisses message overlay                           |
@@ -90,7 +88,7 @@ Server also emits:
 
 ```js
 {
-  phase: 'lobby' | 'contestant-intro' | 'question' | 'answer-reveal' | 'lifeline-poll' | 'lifeline-phone' | 'round-end' | 'game-over',
+  phase: 'lobby' | 'contestant-intro' | 'question' | 'answer-reveal' | 'lifeline-poll' | 'round-end' | 'game-over',
   contestants: [
     { id: 'c0', name: 'Alice', active: true, eliminated: false, score: 2 }
   ],
@@ -112,7 +110,7 @@ Server also emits:
   timerRunning: true,
   timerValue: 23,
   lifelines: {
-    'c0': { fiftyFifty: true, audiencePoll: false, phoneFriend: true }
+    'c0': { fiftyFifty: true, audiencePoll: false }
   },
   audiencePollData: { A: 10, B: 65, C: 15, D: 10 }, // percentages, null if not active
   message: '',               // overlay message string
@@ -160,7 +158,6 @@ Server also emits:
 
 **Overlays (fixed, z-index above everything):**
 
-- Phone friend overlay — full screen with ringing phone animation
 - Message overlay — full screen with large text
 
 ---
