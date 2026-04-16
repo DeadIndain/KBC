@@ -924,6 +924,9 @@
 						<button class="audio-btn" onclick="triggerSound('timer')">
 							Timer
 						</button>
+						<button class="audio-btn" onclick="forceStopAllAudio()">
+							Mute (Kill All)
+						</button>
 					</div>
 				</div>
 			</div>
@@ -1060,6 +1063,12 @@
 			function triggerSound(sound) {
 				pubsub.emit("play-sound", { sound });
 				toast(`Sound sent: ${sound}`);
+			}
+
+			function forceStopAllAudio() {
+				pubsub.emit("stop-all-sounds", {}, (res) => {
+					toast(res?.ok ? "All audio force-stopped" : "Failed to stop audio");
+				});
 			}
 
 			function renderAdmin(state) {

@@ -704,6 +704,7 @@ registerCommand("intro-contestant", async ({ contestantId }) => {
 	});
 	const c = getContestantById(contestantId) || gameState.contestants[0];
 	if (c) c.active = true;
+	gameState.currentRoundIndex = 0;
 	gameState.phase = "contestant-intro";
 	gameState.introTrigger = Number(gameState.introTrigger || 0) + 1;
 	gameState.message = "";
@@ -937,6 +938,34 @@ registerCommand("play-sound", async ({ sound }) => {
 	return { ok: true };
 });
 
+registerCommand("stop-all-sounds", async () => {
+	const killTargets = [
+		"introDramatic",
+		"intro",
+		"firstQuestion",
+		"question",
+		"suspense1",
+		"suspense2",
+		"suspense3",
+		"suspense4",
+		"lifeline",
+		"lock",
+		"correct",
+		"wrong",
+		"fastest",
+		"audience",
+		"timer45",
+		"timer",
+	];
+
+	killTargets.forEach((sound) => {
+		publish("pause-sound", { sound });
+	});
+	publish("pause-sound", { sound: "*" });
+	publish("stop-all-sounds", { ts: Date.now() });
+	return { ok: true };
+});
+
 registerCommand("round-end", async () => {
 	stopTimer();
 	clearLifelineOverlayTimer();
@@ -974,7 +1003,7 @@ registerCommand("reset-game", async () => {
 registerCommand("reset-for-next-participant", async ({ name }) => {
 	stopTimer();
 	clearLifelineOverlayTimer();
-	resetParticipantState(name, true);
+	resetParticipantState(name, false);
 	gameState.phase = "contestant-intro";
 	gameState.introTrigger = Number(gameState.introTrigger || 0) + 1;
 	gameState.message = "";

@@ -1,3127 +1,3837 @@
 {
-	"gameConfig": {
-		"rounds": [
-			{
-				"label": "Question 1",
-				"prize": "Rs 10",
-				"timeLimit": 20
-			},
-			{
-				"label": "Question 2",
-				"prize": "Rs 20",
-				"timeLimit": 20
-			},
-			{
-				"label": "Question 3",
-				"prize": "Rs 30",
-				"timeLimit": 20
-			},
-			{
-				"label": "Question 4 - Checkpoint 1",
-				"prize": "Rs 50",
-				"timeLimit": 30
-			},
-			{
-				"label": "Question 5",
-				"prize": "Rs 80",
-				"timeLimit": 30
-			},
-			{
-				"label": "Question 6",
-				"prize": "Rs 120",
-				"timeLimit": 30
-			},
-			{
-				"label": "Question 7",
-				"prize": "Rs 180",
-				"timeLimit": 30
-			},
-			{
-				"label": "Question 8 - Checkpoint 2",
-				"prize": "Rs 240",
-				"timeLimit": 45
-			},
-			{
-				"label": "Question 9",
-				"prize": "Rs 400",
-				"timeLimit": 45
-			},
-			{
-				"label": "Question 10",
-				"prize": "Rs 500",
-				"timeLimit": 45
-			},
-			{
-				"label": "Question 11 - All or nothing",
-				"prize": "Rs 1,000",
-				"timeLimit": 45
-			}
-		]
-	},
-	"questions": [
-		{
-			"id": 1,
-			"levels": [1, 2],
-			"question": "Which chocolate brand launched the now-discontinued product “Bytes” in India?",
-			"options": {
-				"A": "Nestle",
-				"B": "Amul",
-				"C": "Cadbury",
-				"D": "Ferrero"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 2,
-			"levels": [1, 2],
-			"question": "Who is the creator of Doraemon?",
-			"options": {
-				"A": "Akira Toriyama",
-				"B": "Eiichiro Oda",
-				"C": "Fujiko F. Fujio",
-				"D": "Masashi Kishimoto"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 3,
-			"levels": [1, 2],
-			"question": "In Mr. Bean, which color car does Mr. Bean frequently crash into?",
-			"options": {
-				"A": "Blue",
-				"B": "Red",
-				"C": "Green",
-				"D": "Yellow"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 4,
-			"levels": [1, 2],
-			"question": "What are the names of the main characters in Bandbudh Aur Budbak?",
-			"options": {
-				"A": "Budhraj & Badri",
-				"B": "Badrinath & Budhdev",
-				"C": "Budhdev & Budhraj",
-				"D": "Budh & Budbak"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 5,
-			"levels": [1, 2],
-			"question": "Complete the iconic Frooti tagline: \"Fresh N ___",
-			"options": {
-				"A": "Tasty",
-				"B": "Cool",
-				"C": "Juicy",
-				"D": "Sweet"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 6,
-			"levels": [1, 2],
-			"question": "Which candy brand used the tagline \"Dimaag ki batti jala de\"?",
-			"options": {
-				"A": "Poppins",
-				"B": "Center Fresh",
-				"C": "Mango Bite",
-				"D": "Mentos"
-			},
-			"correct": "D",
-			"difficulty": "easy"
-		},
-		{
-			"id": 7,
-			"levels": [1, 2],
-			"question": "what is the name of the late night Japanese stunt show which aired on pogo",
-			"options": {
-				"A": "Wipeout",
-				"B": "takeshi's castle",
-				"C": "MXC",
-				"D": "Double dare"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 8,
-			"levels": [1, 2],
-			"question": "What is the vegetable that Shinchan hates to eat?",
-			"options": {
-				"A": "Bittergourd",
-				"B": "Capsicum",
-				"C": "Beans",
-				"D": "Carrot"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 9,
-			"levels": [1, 2],
-			"question": "What is the name of the song that Mickey and friends dance to at the end of every episode?",
-			"options": {
-				"A": "Mickey Mouse Clubhouse",
-				"B": "Hot dog",
-				"C": "Oh Mickey",
-				"D": "The Mickey Mouse March"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 10,
-			"levels": [1, 2],
-			"question": "What shows the mousekatools that are going to be needed in each show?",
-			"options": {
-				"A": "Youdles",
-				"B": "Mickey screen",
-				"C": "Toodles",
-				"D": "Scootles"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 11,
-			"levels": [1, 2],
-			"question": "Identify the brand associated with the advertisement shown.",
-			"options": {
-				"A": "Tide",
-				"B": "Rin",
-				"C": "Nirma",
-				"D": "Surf excel"
-			},
-			"correct": "C",
-			"difficulty": "easy",
-			"media": {
-				"type": "image",
-				"src": "/media/images/file_0000000060ac71fd9d4128ed182b6af3 - Kondour Prakarsha.jpg"
-			}
-		},
-		{
-			"id": 12,
-			"levels": [1, 2],
-			"question": "Identify the cartoon based on the theme music played.",
-			"options": {
-				"A": "Sylvester and Tweety",
-				"B": "Tom and Jerry",
-				"C": "Scooby-Doo",
-				"D": "The Pink Panther Show"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 13,
-			"levels": [1, 2],
-			"question": "Identify the cartoon based on the theme music played.",
-			"options": {
-				"A": "Sylvester and Tweety",
-				"B": "Scooby-Doo",
-				"C": "Tom and Jerry",
-				"D": "The Pink Panther Show"
-			},
-			"correct": "C",
-			"difficulty": "easy",
-			"media": {
-				"type": "audio",
-				"src": "/media/audio/tom_and_jerry_theme - Kondour Prakarsha.mp3",
-				"controls": true
-			}
-		},
-		{
-			"id": 14,
-			"levels": [1, 2],
-			"question": "Which Indian cartoon was set in Furfuri Nagar?",
-			"options": {
-				"A": "Motu Patlu",
-				"B": "Mighty Raju",
-				"C": "Roll No 21",
-				"D": "Shiva"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 15,
-			"levels": [1, 2],
-			"question": "What does the acronym \"GOAT\" stand for?",
-			"options": {
-				"A": "Greatest of All Time",
-				"B": "Good Ol' American Truck",
-				"C": "Goats on a Trip",
-				"D": "Girls of All Types"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 16,
-			"levels": [1, 2],
-			"question": "What does \"opp\" mean?",
-			"options": {
-				"A": "An exclamation, like \"oops!\"",
-				"B": "Only Pretties Permitted",
-				"C": "Opposite",
-				"D": "Opposition or opponent"
-			},
-			"correct": "D",
-			"difficulty": "easy"
-		},
-		{
-			"id": 17,
-			"levels": [1, 2],
-			"question": "What does “NPC behavior” refer to?",
-			"options": {
-				"A": "Someone acting robotic, predictable, or lacking originality",
-				"B": "Someone who plays games a lot",
-				"C": "Someone who talks too much",
-				"D": "Someone acting aggressively"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 18,
-			"levels": [1, 2],
-			"question": "f someone says “he’s in his villain arc,” what does it mean?",
-			"options": {
-				"A": "Being a menace to society",
-				"B": "focusing on himself",
-				"C": "He’s watching too many movies",
-				"D": "He’s becoming lazy"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 19,
-			"levels": [1, 2],
-			"question": "Complete the Boomer bubble gum tagline: \"Boom Boom ___\"",
-			"options": {
-				"A": "Blaster",
-				"B": "Bubble",
-				"C": "Blast Off!",
-				"D": "Boomer!"
-			},
-			"correct": "D",
-			"difficulty": "easy"
-		},
-		{
-			"id": 20,
-			"levels": [1, 2],
-			"question": "In Koi Mil Gaya, the friendly alien that Rohit befriends has a name. What is it?",
-			"options": {
-				"A": "Golu",
-				"B": "Munno",
-				"C": "Kalu",
-				"D": "Jadoo"
-			},
-			"correct": "D",
-			"difficulty": "easy"
-		},
-		{
-			"id": 21,
-			"levels": [1, 2],
-			"question": "In 3 Idiots, \"Rancho\" is a borrowed identity. What is Aamir Khan's character's actual birth name, revealed in the film's twist?",
-			"options": {
-				"A": "Ranchhoddas Shamaldas Chanchad",
-				"B": "Farhan Qureshi",
-				"C": "Phunsukh Wangdu",
-				"D": "Raju Rastogi"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 22,
-			"levels": [1, 2],
-			"question": "What is the name of this character",
-			"options": {
-				"A": "Kenichi",
-				"B": "Kenji",
-				"C": "Kenshin",
-				"D": "Kenzo"
-			},
-			"correct": "A",
-			"difficulty": "easy",
-			"media": {
-				"type": "image",
-				"src": "/media/images/images (1) - Tarang Harsola.jpeg"
-			}
-		},
-		{
-			"id": 23,
-			"levels": [1, 2],
-			"question": "Name of the person who made storm breaker for Thor",
-			"options": {
-				"A": "Odin",
-				"B": "Eitri",
-				"C": "Hela",
-				"D": "Nidavellir"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 24,
-			"levels": [1, 2],
-			"question": "Which game made the word “sus” mainstream?",
-			"options": {
-				"A": "Roblox",
-				"B": "Minecraft",
-				"C": "Among us",
-				"D": "Free fire"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 25,
-			"levels": [1, 2],
-			"question": "In S.S. Rajamouli's 2012 film Eega (released as Makkhi in Hindi), a murdered man is reincarnated as what creature to seek revenge on his killer?",
-			"options": {
-				"A": "A mosquito",
-				"B": "A housefly",
-				"C": "A cockroach",
-				"D": "A moth"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 26,
-			"levels": [1, 2],
-			"question": "What does “NPC energy” usually describe?",
-			"options": {
-				"A": "Someone who avoids social media completely",
-				"B": "Someone acting robotic or lacking originality",
-				"C": "Someone who plays too many video games",
-				"D": "Someone who posts only aesthetic content"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 27,
-			"levels": [1, 2],
-			"question": "What does “finsta” refer to?",
-			"options": {
-				"A": "A fake or private Instagram account for close friends",
-				"B": "A finance-related Instagram page",
-				"C": "A deleted account",
-				"D": "A verified influencer account"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 28,
-			"levels": [3, 4, 5],
-			"question": "What is the name of the iconic host of the TV show Art Attack?",
-			"options": {
-				"A": "Gaurav Juyal",
-				"B": "Manish Paul",
-				"C": "Karanvir Bohra",
-				"D": "Cyrus Broacha"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 29,
-			"levels": [3, 4, 5],
-			"question": "In Gen Z slang, what does the gesture of touching your thumb and index finger together (often shown in memes/reels) mean?",
-			"options": {
-				"A": "Mini claps",
-				"B": "Perfect / OK",
-				"C": "clock it",
-				"D": "Tiny amount"
-			},
-			"correct": "C",
-			"difficulty": "easy",
-			"media": {
-				"type": "video",
-				"src": "/media/video/VID-20260411-WA0010 - Kondour Prakarsha.mp4",
-				"controls": true
-			}
-		},
-		{
-			"id": 30,
-			"levels": [3, 4, 5],
-			"question": "What is the thing in this image called?",
-			"options": {
-				"A": "Super soaker",
-				"B": "Lazer blaster",
-				"C": "Flame Thrower",
-				"D": "Water Pistol"
-			},
-			"correct": "C",
-			"difficulty": "easy",
-			"media": {
-				"type": "image",
-				"src": "/media/images/Flame_thrower - Golla Bharath.webp"
-			}
-		},
-		{
-			"id": 31,
-			"levels": [3, 4, 5],
-			"question": "What brand does this AD belong to?",
-			"options": {
-				"A": "Indigo paints",
-				"B": "Bajaj paints",
-				"C": "Asian paints",
-				"D": "JSW paints"
-			},
-			"correct": "C",
-			"difficulty": "easy",
-			"media": {
-				"type": "video",
-				"src": "/media/video/VN20260414_231323 - Golla Bharath.mp4",
-				"controls": true
-			}
-		},
-		{
-			"id": 32,
-			"levels": [3, 4, 5],
-			"question": "Chhota Bheem is set in a fictional kingdom. What is that kingdom called?",
-			"options": {
-				"A": "Champakpur",
-				"B": "Dholakpur",
-				"C": "Rajgarh",
-				"D": "Hastinapur"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 33,
-			"levels": [3, 4, 5],
-			"question": "Shinchan is obsessed with a fictional superhero he constantly imitates and dresses up as. What is that superhero's name?",
-			"options": {
-				"A": "Ultra Ranger",
-				"B": "Action Kamen",
-				"C": "Power Mask",
-				"D": "Super Shin"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 34,
-			"levels": [3, 4, 5],
-			"question": "PUBG Mobile was banned in India in September 2020. When it relaunched under an Indian entity in July 2021, what was the new name?",
-			"options": {
-				"A": "PUBG India Reloaded",
-				"B": "Free Fire India",
-				"C": "Battlegrounds Mobile India",
-				"D": "PUBG New State India"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 35,
-			"levels": [3, 4, 5],
-			"question": "Parle ran a famous campaign with the slogan \"G maane Genius.\" But officially, the G in Parle-G actually stands for something else entirely. What does it officially stand for?",
-			"options": {
-				"A": "Glucose",
-				"B": "Great",
-				"C": "Genius",
-				"D": "Gold"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 36,
-			"levels": [3, 4, 5],
-			"question": "Professor Utonium accidentally created the Powerpuff Girls by mixing \"sugar, spice, and everything nice\" with one extra ingredient. What was it?",
-			"options": {
-				"A": "Chemical Z",
-				"B": "Chemical X",
-				"C": "danger",
-				"D": "evil"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 37,
-			"levels": [3, 4, 5],
-			"question": "Courage's family lives in \"the middle of Nowhere.\" That's not just a description — it's the actual name of the town. What is the town literally called?",
-			"options": {
-				"A": "Dustville",
-				"B": "Deadwood",
-				"C": "Lostville",
-				"D": "Nowhere"
-			},
-			"correct": "D",
-			"difficulty": "easy"
-		},
-		{
-			"id": 38,
-			"levels": [3, 4, 5],
-			"question": "In the show of Mickey mouse,What are the hands that help open the doors and do chores called?",
-			"options": {
-				"A": "Helping hands",
-				"B": "Handy helpers",
-				"C": "Handy hands",
-				"D": "Hands to help"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 39,
-			"levels": [3, 4, 5],
-			"question": "In Winnie the Pooh, which character is most closely known as Pooh’s best friend?",
-			"options": {
-				"A": "Piglet",
-				"B": "Christopher Robin",
-				"C": "Tigger",
-				"D": "Eeyore"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 40,
-			"levels": [3, 4, 5],
-			"question": "What city do the bear brothers live in?(We bare bears)",
-			"options": {
-				"A": "Tokyo",
-				"B": "San Francisco",
-				"C": "New york",
-				"D": "Chicago"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 41,
-			"levels": [3, 4, 5],
-			"question": "Which American composer wrote the theme song to \"The Pink Panther\"?",
-			"options": {
-				"A": "Samuel Barber",
-				"B": "George Gershwin",
-				"C": "Leonard Bernstein",
-				"D": "Henry Mancini"
-			},
-			"correct": "D",
-			"difficulty": "easy"
-		},
-		{
-			"id": 42,
-			"levels": [3, 4, 5],
-			"question": "Which tv channel aired Chota Bheem on TV?",
-			"options": {
-				"A": "Hungama",
-				"B": "Nickelodeon",
-				"C": "Pogo",
-				"D": "Cartoon Network"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 43,
-			"levels": [3, 4, 5],
-			"question": "What does \"Bussin'\" mean?",
-			"options": {
-				"A": "Bursting, overflowing",
-				"B": "Riding a bus",
-				"C": "Excellent or great",
-				"D": "To bust someone, like to catch them in the act."
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 44,
-			"levels": [3, 4, 5],
-			"question": "What was the connection needed to share files via \"SHAREIt\"",
-			"options": {
-				"A": "Wifi/Hotspot",
-				"B": "Bluetooth",
-				"C": "USB Cable",
-				"D": "Internet"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 45,
-			"levels": [3, 4, 5],
-			"question": "What cartoon is about a crazy scientist and his grandson?",
-			"options": {
-				"A": "SpongeBob SquarePants",
-				"B": "Adventure Time",
-				"C": "Rick and Morty",
-				"D": "The Simpsons"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 46,
-			"levels": [3, 4, 5],
-			"question": "What does “main character energy” mean?",
-			"options": {
-				"A": "Being selfish",
-				"B": "confident person",
-				"C": "Being dramatic all the time",
-				"D": "Following trends blindly"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 47,
-			"levels": [3, 4, 5],
-			"question": "Guess the meaning of 'swole.'",
-			"options": {
-				"A": "Fat",
-				"B": "smart",
-				"C": "Buff",
-				"D": "Beautiful"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 48,
-			"levels": [3, 4, 5],
-			"question": "What does “mogging” mean?",
-			"options": {
-				"A": "Losing badly in game",
-				"B": "Completely outshining someone",
-				"C": "Copying someone’s personality",
-				"D": "Ignoring someone on purpose"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 49,
-			"levels": [3, 4, 5],
-			"question": "In the 2011 World Cup Final, MS Dhoni hit the winning six off Nuwan Kulasekara. Which stadium hosted that historic moment?",
-			"options": {
-				"A": "Chepauk, Chennai",
-				"B": "Eden Gardens, Kolkata",
-				"C": "Narendra Modi Stadium, Ahmedabad",
-				"D": "Wankhede Stadium, Mumbai"
-			},
-			"correct": "D",
-			"difficulty": "easy"
-		},
-		{
-			"id": 50,
-			"levels": [3, 4, 5],
-			"question": "The battle between PewDiePie and T-Series for the most subscribed YouTube channel gripped the internet for over a year. Who ultimately won?",
-			"options": {
-				"A": "PewDiePie",
-				"B": "They tied permanently",
-				"C": "MrBeast (took both spots)",
-				"D": "T-Series"
-			},
-			"correct": "D",
-			"difficulty": "easy"
-		},
-		{
-			"id": 51,
-			"levels": [3, 4, 5],
-			"question": "Who went from being the most hated kid in the village... to the Leader everyone believed in ?",
-			"options": {
-				"A": "Naruto uzumaki",
-				"B": "Gojo satoru",
-				"C": "Shoyo hinata",
-				"D": "Monkey D.Luffy"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 52,
-			"levels": [3, 4, 5],
-			"question": "Where does Mr. Bean live ?",
-			"options": {
-				"A": "Paris",
-				"B": "New York City",
-				"C": "London",
-				"D": "Los Angeles"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 53,
-			"levels": [3, 4, 5],
-			"question": "Guess the company whose famous advertisement looked like the image",
-			"options": {
-				"A": "Vodafone",
-				"B": "Airtel",
-				"C": "TATA Docomo",
-				"D": "Idea"
-			},
-			"correct": "A",
-			"difficulty": "easy",
-			"media": {
-				"type": "image",
-				"src": "/media/images/Vodafone - Shishir Gella.jpg"
-			}
-		},
-		{
-			"id": 54,
-			"levels": [3, 4, 5],
-			"question": "In February 2015, a single photo of a dress broke the internet because people genuinely couldn't agree on what colors it was. What were the two opposing camps?",
-			"options": {
-				"A": "Purple & Gold vs Silver & White",
-				"B": "Black & Blue vs White & Gold",
-				"C": "Blue & Green vs Pink & Orange",
-				"D": "Red & Black vs Yellow & White"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 55,
-			"levels": [3, 4, 5],
-			"question": "\"Dumb Ways to Die\" is one of the most-awarded public service campaigns in history. What was it originally made to promote?",
-			"options": {
-				"A": "Road safety in Sydney",
-				"B": "Fire safety in Canada",
-				"C": "Melbourne's Metro train safety",
-				"D": "Electrical safety in the UK"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 56,
-			"levels": [3, 4, 5],
-			"question": "In Dexter's Laboratory, Dexter has an extremely annoying sister who constantly stumbles into his secret lab and ruins everything. What is her name?",
-			"options": {
-				"A": "Dee Dee",
-				"B": "Dede",
-				"C": "Dana",
-				"D": "donna"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 57,
-			"levels": [3, 4, 5],
-			"question": "In The Fairly OddParents, Timmy Turner is assigned two magical fairy godparents. What are their names?",
-			"options": {
-				"A": "Cosmo and Wanda",
-				"B": "Cosmo and Stella",
-				"C": "Poof and Wanda",
-				"D": "Poof and Cosmo"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 58,
-			"levels": [3, 4, 5],
-			"question": "Cadbury 5 Star's long-running \"Eaten by 5 Star\" Indian ad campaign features a lazy iconic duo who forget everything after eating a 5 Star. What are the two characters' names?",
-			"options": {
-				"A": "Pappu and Pintu",
-				"B": "Ramesh and Suresh",
-				"C": "Bunty and Babli",
-				"D": "Raja and Rani"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 59,
-			"levels": [3, 4, 5],
-			"question": "Baahubali: The Beginning released in 2015 and ended on a massive cliffhanger — \"Kattappa ne Baahubali ko kyun maara?\" How many years did audiences wait before The Conclusion answered the question?",
-			"options": {
-				"A": "1 year",
-				"B": "2 years",
-				"C": "3 years",
-				"D": "4 years"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 60,
-			"levels": [3, 4, 5],
-			"question": "Which term describes creating content specifically optimized to go viral?",
-			"options": {
-				"A": "Creating content aligned with trending topics and formats",
-				"B": "Designing content primarily to maximize reach and virality",
-				"C": "Posting content frequently to stay visible on feeds",
-				"D": "Adapting content style to match audience preferences"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 61,
-			"levels": [6, 7],
-			"question": "What are the names of the three cockroaches in the cartoon oggy and the cockroaches",
-			"options": {
-				"A": "Spike, Tyke, Butch",
-				"B": "Zig, Sharko, Marina",
-				"C": "Joey, Dee Dee, Marky",
-				"D": "Tom, Dick, Harry"
-			},
-			"correct": "C",
-			"difficulty": "medium"
-		},
-		{
-			"id": 62,
-			"levels": [6, 7],
-			"question": "What is the name of Kazama’s private tutor in the show of shinchan",
-			"options": {
-				"A": "Mr. Suzuki",
-				"B": "Mr. Tokuro",
-				"C": "Mr. Kuroiso",
-				"D": "Mr. Hattori"
-			},
-			"correct": "C",
-			"difficulty": "medium"
-		},
-		{
-			"id": 63,
-			"levels": [6, 7],
-			"question": "In which year did Apple Inc. launch its first iPhone?",
-			"options": {
-				"A": "2005",
-				"B": "2007",
-				"C": "2008",
-				"D": "2010"
-			},
-			"correct": "B",
-			"difficulty": "medium"
-		},
-		{
-			"id": 64,
-			"levels": [6, 7],
-			"question": "On which date did the Government of India announce the demonetisation of ₹500 and ₹1000 notes?",
-			"options": {
-				"A": "19 august 2016",
-				"B": "4 October 2016",
-				"C": "8 november 2016",
-				"D": "17 january 2017"
-			},
-			"correct": "C",
-			"difficulty": "medium"
-		},
-		{
-			"id": 65,
-			"levels": [6, 7],
-			"question": "In Grand Theft Auto: Vice City, who betrays Tommy Vercetti?",
-			"options": {
-				"A": "Sonny Forelli",
-				"B": "Ricardo Diaz",
-				"C": "Lance Vance",
-				"D": "Ken Rosenberg"
-			},
-			"correct": "C",
-			"difficulty": "medium"
-		},
-		{
-			"id": 66,
-			"levels": [6, 7],
-			"question": "In which year did WhatsApp launch?",
-			"options": {
-				"A": "2007",
-				"B": "2008",
-				"C": "2009",
-				"D": "2010"
-			},
-			"correct": "C",
-			"difficulty": "medium"
-		},
-		{
-			"id": 67,
-			"levels": [6, 7],
-			"question": "What kind of vehicles were used in the final round of Takeshi`s Castle?",
-			"options": {
-				"A": "Mini tanks with laser guns",
-				"B": "Mini tanks with cannons",
-				"C": "Mini tanks with water guns",
-				"D": "Mini tanks with paint guns"
-			},
-			"correct": "C",
-			"difficulty": "medium"
-		},
-		{
-			"id": 68,
-			"levels": [6, 7],
-			"question": "Which product's ad had this sun with a straw concept?",
-			"options": {
-				"A": "Rasna",
-				"B": "Glucon D",
-				"C": "Sprite",
-				"D": "Coco cola"
-			},
-			"correct": "B",
-			"difficulty": "medium",
-			"media": {
-				"type": "image",
-				"src": "/media/images/AISelect_20260414_224549_YouTube - Golla Bharath.png"
-			}
-		},
-		{
-			"id": 69,
-			"levels": [6, 7],
-			"question": "Which of these apps was originally known as “Musical.ly”?",
-			"options": {
-				"A": "Dubsmash",
-				"B": "Vine",
-				"C": "Thriller",
-				"D": "Tiktok"
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 70,
-			"levels": [6, 7],
-			"question": "Three cockroaches torment Oggy in the show. Which of the following is NOT the name of one of the three cockroaches?",
-			"options": {
-				"A": "Joey",
-				"B": "Dee Dee",
-				"C": "Marky",
-				"D": "Danny"
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 71,
-			"levels": [6, 7],
-			"question": "In the iconic Nirma washing powder jingle, which phrase described the whiteness Nirma gave to clothes?",
-			"options": {
-				"A": "\"Chamak chamak safedi\"",
-				"B": "\"Baraf jaisi safedi\"",
-				"C": "Doodh si safedi\"",
-				"D": "\"Bijli jaisi safedi\""
-			},
-			"correct": "C",
-			"difficulty": "medium"
-		},
-		{
-			"id": 72,
-			"levels": [6, 7],
-			"question": "In the Cartoon Network India original Roll No. 21, the protagonist Kris (inspired by Krishna) constantly battles a villain inspired by Kansa. What is that villain's name in the show?",
-			"options": {
-				"A": "Duryodhan",
-				"B": "Kans",
-				"C": "Shakuni",
-				"D": "Ravan"
-			},
-			"correct": "B",
-			"difficulty": "medium"
-		},
-		{
-			"id": 73,
-			"levels": [6, 7],
-			"question": "The viral Coffin Dance meme is set to a specific EDM track. What is the actual title of that song?",
-			"options": {
-				"A": "\"Space Party\"",
-				"B": "\"Galaxy Bounce\"",
-				"C": "\"Astronomia\"",
-				"D": "\"Electric Sky\""
-			},
-			"correct": "C",
-			"difficulty": "medium"
-		},
-		{
-			"id": 74,
-			"levels": [6, 7],
-			"question": "The Dalgona Coffee trend exploded on social media during COVID-19 lockdowns worldwide. Which country did this whipped coffee style originally come from?",
-			"options": {
-				"A": "India",
-				"B": "South Korea",
-				"C": "Japan",
-				"D": "Vietnam"
-			},
-			"correct": "B",
-			"difficulty": "medium"
-		},
-		{
-			"id": 75,
-			"levels": [6, 7],
-			"question": "In 2015, Nestlé's Maggi noodles were banned across India for nearly 5 months. What was the primary reason cited by the food regulator FSSAI for the ban?",
-			"options": {
-				"A": "Misleading \"2-minute\" cooking claim",
-				"B": "Use of unapproved artificial colouring",
-				"C": "Undisclosed non-vegetarian ingredients",
-				"D": "Lead content and MSG beyond permitted limits"
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 76,
-			"levels": [6, 7],
-			"question": "Aang, the last airbender, travels the world on a giant flying bison. What is the bison's name?",
-			"options": {
-				"A": "Momo",
-				"B": "Zuko",
-				"C": "Toph",
-				"D": "Appa"
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 77,
-			"levels": [6, 7],
-			"question": "In the show of Phineas and ferb,What is Candace allergic to?",
-			"options": {
-				"A": "Lobster and platypus fur",
-				"B": "Dairy and parsnips",
-				"C": "Uncooked celery and bee stings",
-				"D": "Pollen and avocados"
-			},
-			"correct": "B",
-			"difficulty": "medium"
-		},
-		{
-			"id": 78,
-			"levels": [6, 7],
-			"question": "In the show of Phineas and ferb,What is the name of Agent P’s organization?",
-			"options": {
-				"A": "L.O.V.E.M.U.F.F.I.N.",
-				"B": "P.F.T.",
-				"C": "A.G.L.E.T.",
-				"D": "O.W.C.A."
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 79,
-			"levels": [6, 7],
-			"question": "In the show of Phineas and ferb, Who among the following is not one of the members of Love Händel?",
-			"options": {
-				"A": "Danny",
-				"B": "Bobbi Fabulous",
-				"C": "Rodney",
-				"D": "Swampy"
-			},
-			"correct": "C",
-			"difficulty": "medium"
-		},
-		{
-			"id": 80,
-			"levels": [6, 7],
-			"question": "What is the name of the second dog that Shinchan adopted in a movie?",
-			"options": {
-				"A": "Sheero",
-				"B": "Buro",
-				"C": "Neero",
-				"D": "Kuro"
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 81,
-			"levels": [6, 7],
-			"question": "Whom does Shinchan's teacher Yoshinaga marry?",
-			"options": {
-				"A": "Ishida Junichi",
-				"B": "Suzuki",
-				"C": "Kuroiso",
-				"D": "Kenji Ishida"
-			},
-			"correct": "A",
-			"difficulty": "medium"
-		},
-		{
-			"id": 82,
-			"levels": [6, 7],
-			"question": "The colored blocks shown on the screen are part of the logo of which popular kids’ TV channel in India?",
-			"options": {
-				"A": "Hungama",
-				"B": "Nickelodeon",
-				"C": "Pogo",
-				"D": "Sony"
-			},
-			"correct": "C",
-			"difficulty": "medium",
-			"media": {
-				"type": "image",
-				"src": "/media/images/Pasted image - Tarang Harsola (1).png"
-			}
-		},
-		{
-			"id": 83,
-			"levels": [6, 7],
-			"question": "In the show of tom and jerry, What was Jerry originally called?",
-			"options": {
-				"A": "Ralph",
-				"B": "Buster",
-				"C": "Jinx",
-				"D": "Templeton"
-			},
-			"correct": "C",
-			"difficulty": "medium"
-		},
-		{
-			"id": 84,
-			"levels": [6, 7],
-			"question": "“Rasode Mein Kaun Tha?” is a famous dialogue from which TV show?",
-			"options": {
-				"A": "Kyunki Saas Bhi Kabhi Bahu Thi",
-				"B": "Saath Nibhaana Saathiya",
-				"C": "Kasautii Zindagii Kay",
-				"D": "Yeh Rishta Kya Kehlata Hai"
-			},
-			"correct": "B",
-			"difficulty": "medium"
-		},
-		{
-			"id": 85,
-			"levels": [6, 7],
-			"question": "What is ‘breadcrumbing’ in dating culture?",
-			"options": {
-				"A": "Showing consistent interest but avoiding commitment",
-				"B": "Sending occasional messages to keep someone interested without real intent",
-				"C": "Flirting casually with multiple people at the same time",
-				"D": "Gradually losing interest and communicating less over time"
-			},
-			"correct": "B",
-			"difficulty": "medium"
-		},
-		{
-			"id": 86,
-			"levels": [6, 7],
-			"question": "What is ‘zombieing’?",
-			"options": {
-				"A": "Reconnecting after a long break due to genuine reasons",
-				"B": "Returning suddenly after disappearing without explanation",
-				"C": "Messaging again after a mutual breakup",
-				"D": "Restarting a conversation after being ignored"
-			},
-			"correct": "B",
-			"difficulty": "medium"
-		},
-		{
-			"id": 87,
-			"levels": [6, 7],
-			"question": "What is the name of this pokemon?",
-			"options": {
-				"A": "Chikorita",
-				"B": "Treecko",
-				"C": "Mudkip",
-				"D": "Triechan"
-			},
-			"correct": "B",
-			"difficulty": "medium",
-			"media": {
-				"type": "image",
-				"src": "/media/images/treecko - Golla Bharath.jpeg"
-			}
-		},
-		{
-			"id": 88,
-			"levels": [6, 7],
-			"question": "What was motu's favorite food in \"Motu Patlu\"?",
-			"options": {
-				"A": "Laddo",
-				"B": "Parota",
-				"C": "Veg Puff",
-				"D": "Samosa"
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 89,
-			"levels": [6, 7],
-			"question": "\"Naur\" is slang for \"no,\" but which accent does it mimic?",
-			"options": {
-				"A": "Australian",
-				"B": "Polish",
-				"C": "Swedish",
-				"D": "British"
-			},
-			"correct": "A",
-			"difficulty": "medium"
-		},
-		{
-			"id": 90,
-			"levels": [6, 7],
-			"question": "What is a \"Roman empire\"? A historic regime? Is this a trick question?",
-			"options": {
-				"A": "Something that's too big or popular to fail",
-				"B": "Something that you can't stop obsessing over",
-				"C": "Something that's doomed from the start",
-				"D": "A historic regime? Is this a trick question?"
-			},
-			"correct": "A",
-			"difficulty": "medium"
-		},
-		{
-			"id": 91,
-			"levels": [6, 7],
-			"question": "Who made the catchy song “Baby Shark”?",
-			"options": {
-				"A": "Pinkfong",
-				"B": "Cocomelon",
-				"C": "Nickelodeon",
-				"D": "Disney"
-			},
-			"correct": "A",
-			"difficulty": "medium"
-		},
-		{
-			"id": 92,
-			"levels": [6, 7],
-			"question": "who won IPL in 2014",
-			"options": {
-				"A": "MI",
-				"B": "CSK",
-				"C": "KKR",
-				"D": "Delhi Dare Devils"
-			},
-			"correct": "C",
-			"difficulty": "medium"
-		},
-		{
-			"id": 93,
-			"levels": [6, 7],
-			"question": "In GENZ terms, What's is \"stan\" short for?",
-			"options": {
-				"A": "Stanley",
-				"B": "Stalker + fan",
-				"C": "Salty+bland",
-				"D": "Standard"
-			},
-			"correct": "B",
-			"difficulty": "medium"
-		},
-		{
-			"id": 94,
-			"levels": [6, 7],
-			"question": "Thums Up was created by an Indian company before Coca-Cola bought it. Which company originally made it?",
-			"options": {
-				"A": "Pure Drinks",
-				"B": "Bisleri International",
-				"C": "Parle",
-				"D": "Pepsi"
-			},
-			"correct": "C",
-			"difficulty": "medium"
-		},
-		{
-			"id": 95,
-			"levels": [6, 7],
-			"question": "Kurkure's tagline was \"Tedha Hai Par Mera Hai.\" Which actress was the long-running face of Kurkure in its iconic ads?",
-			"options": {
-				"A": "Kajol",
-				"B": "Rani Mukherjee",
-				"C": "Preity Zinta",
-				"D": "Juhi Chawla"
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 96,
-			"levels": [6, 7],
-			"question": "Cadbury Perk ran a famous campaign targeted at hungry schoolkids. What was its tagline?",
-			"options": {
-				"A": "\"Kuch Meetha Ho Jaaye\"",
-				"B": "\"Thodi si pet pooja\"",
-				"C": "\"Real Taste of Chocolate\"",
-				"D": "\"Eat 5 Star, Do Nothing\""
-			},
-			"correct": "B",
-			"difficulty": "medium"
-		},
-		{
-			"id": 97,
-			"levels": [6, 7],
-			"question": "Taare Zameen Par features a young boy struggling with dyslexia. What is the main child character's name?",
-			"options": {
-				"A": "Karan Awasthi",
-				"B": "Arjun Awasthi",
-				"C": "Rohan Awasthi",
-				"D": "Ishan Awasthi"
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 98,
-			"levels": [6, 7],
-			"question": "3 Idiots was loosely adapted from a novel by Chetan Bhagat. What is the name of that novel?",
-			"options": {
-				"A": "Two States",
-				"B": "Half Girlfriend",
-				"C": "The Zoya Factor",
-				"D": "Five Point Someone"
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 99,
-			"levels": [6, 7],
-			"question": "When Amitabh Bachchan stepped away from KBC, another Bollywood star hosted one season (Season 3, 2007). Who was that host?",
-			"options": {
-				"A": "Salman Khan",
-				"B": "Anil Kapoor",
-				"C": "Aamir Khan",
-				"D": "Shah Rukh Khan"
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 100,
-			"levels": [6, 7],
-			"question": "TVF (The Viral Fever) launched the Indian web series format with a breakout show about startup founders. What was the name of that show?",
-			"options": {
-				"A": "Kota Factory",
-				"B": "Aspirants",
-				"C": "Permanent Roommates",
-				"D": "TVF Pitchers"
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 101,
-			"levels": [6, 7],
-			"question": "Wordle, the viral word-guessing game, is literally named after its creator. What is his last name?",
-			"options": {
-				"A": "Hardle",
-				"B": "Gordle",
-				"C": "Byrdle",
-				"D": "Wardle"
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 102,
-			"levels": [6, 7],
-			"question": "This scene is from which movie",
-			"options": {
-				"A": "Hera pheri",
-				"B": "Phir Hera pheri",
-				"C": "Hungama",
-				"D": "Golmaal"
-			},
-			"correct": "C",
-			"difficulty": "medium",
-			"media": {
-				"type": "video",
-				"src": "/media/video/Maro humko maro salo Rajpal yadv best comedy humko jinda mt chodo salo #rajpalyadav - vehicle's STATUS (720p) - Tarang Harsola.mp4",
-				"controls": true
-			}
-		},
-		{
-			"id": 103,
-			"levels": [6, 7],
-			"question": "Who is the singer of \"Ishq Jalakar\" from Dhurandhar",
-			"options": {
-				"A": "Subhadeep Das Chowdhury",
-				"B": "Rishi Singh",
-				"C": "Vaibhav Gupta",
-				"D": "Arijit Singh"
-			},
-			"correct": "A",
-			"difficulty": "medium"
-		},
-		{
-			"id": 104,
-			"levels": [6, 7],
-			"question": "Singer of the song \"Lutt le gaya\" from Dhurandhar",
-			"options": {
-				"A": "Sonal Choudhary",
-				"B": "Simran Choudhary",
-				"C": "Sakshi Sharma",
-				"D": "Sonal Sharma"
-			},
-			"correct": "B",
-			"difficulty": "medium"
-		},
-		{
-			"id": 105,
-			"levels": [6, 7],
-			"question": "Singer of the song \"Aari Aari\" from Dhurandhar",
-			"options": {
-				"A": "Bombay Rockers",
-				"B": "Desi Rockers",
-				"C": "Bombay Blasters",
-				"D": "Desi blasters"
-			},
-			"correct": "A",
-			"difficulty": "medium"
-		},
-		{
-			"id": 106,
-			"levels": [6, 7],
-			"question": "Name of the cat of negative character in this cartoon",
-			"options": {
-				"A": "Amara",
-				"B": "Kio",
-				"C": "Kamra",
-				"D": "Kai"
-			},
-			"correct": "B",
-			"difficulty": "medium",
-			"media": {
-				"type": "image",
-				"src": "/media/images/images - Tarang Harsola.jpeg"
-			}
-		},
-		{
-			"id": 107,
-			"levels": [6, 7],
-			"question": "What is the name of Red Skull’s real identity in captain America movie?",
-			"options": {
-				"A": "Otto Octavius",
-				"B": "Johann Schmidt",
-				"C": "Helmut Zemo",
-				"D": "Arnim Zola"
-			},
-			"correct": "B",
-			"difficulty": "medium"
-		},
-		{
-			"id": 108,
-			"levels": [6, 7],
-			"question": "Guess the game name from the image ?",
-			"options": {
-				"A": "Extreme Car Driving Simulator",
-				"B": "CarX Drift Racing 2",
-				"C": "Race Master 3D: Car Racing",
-				"D": "Ultimate Car Driving Simulator"
-			},
-			"correct": "A",
-			"difficulty": "medium",
-			"media": {
-				"type": "image",
-				"src": "/media/images/Extreme Car Driving Simulator - Shishir Gella.png"
-			}
-		},
-		{
-			"id": 109,
-			"levels": [6, 7],
-			"question": "Guess the charecter name from the image ?",
-			"options": {
-				"A": "Julie",
-				"B": "Julia",
-				"C": "Juliana",
-				"D": "June"
-			},
-			"correct": "A",
-			"difficulty": "medium",
-			"media": {
-				"type": "image",
-				"src": "/media/images/Julie - Shishir Gella.jpg"
-			}
-		},
-		{
-			"id": 110,
-			"levels": [6, 7],
-			"question": "Which cartoon character gains strength by eating spinach?",
-			"options": {
-				"A": "Wimpy",
-				"B": "Bluto",
-				"C": "Popeye",
-				"D": "Olive Oyl"
-			},
-			"correct": "C",
-			"difficulty": "medium"
-		},
-		{
-			"id": 111,
-			"levels": [6, 7],
-			"question": "Guess the charecter name form the image below",
-			"options": {
-				"A": "Roxy",
-				"B": "Nova",
-				"C": "Mimi",
-				"D": "Tricky"
-			},
-			"correct": "D",
-			"difficulty": "medium",
-			"media": {
-				"type": "image",
-				"src": "/media/images/Tricky - Shishir Gella.jpg"
-			}
-		},
-		{
-			"id": 112,
-			"levels": [6, 7],
-			"question": "Guess the character name form the image below",
-			"options": {
-				"A": "Tagbot",
-				"B": "CodeTagger",
-				"C": "NanoSpray",
-				"D": "NeonTagger"
-			},
-			"correct": "A",
-			"difficulty": "medium",
-			"media": {
-				"type": "image",
-				"src": "/media/images/Tagbot - Shishir Gella.png"
-			}
-		},
-		{
-			"id": 113,
-			"levels": [6, 7],
-			"question": "In Subway Surfers, what is the inspector always chasing you with?",
-			"options": {
-				"A": "Stick",
-				"B": "Gun",
-				"C": "Whistle",
-				"D": "Dog"
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 114,
-			"levels": [6, 7],
-			"question": "What does “GYATT” mean in Gen Z slang?",
-			"options": {
-				"A": "Expression of suprise",
-				"B": "A dance move",
-				"C": "A gaming term",
-				"D": "Meme format"
-			},
-			"correct": "A",
-			"difficulty": "medium"
-		},
-		{
-			"id": 115,
-			"levels": [6, 7],
-			"question": "What does \"rizz\" mean?",
-			"options": {
-				"A": "Charisma",
-				"B": "Stylish",
-				"C": "Angry",
-				"D": "Intelligence"
-			},
-			"correct": "A",
-			"difficulty": "medium"
-		},
-		{
-			"id": 116,
-			"levels": [6, 7],
-			"question": "In CS:GO (now CS2), the AWP is the most feared sniper rifle in the game. What does \"AWP\" stand for?",
-			"options": {
-				"A": "Advanced Warfare Projectile",
-				"B": "Arctic Warfare Police",
-				"C": "Active Warzone Precision",
-				"D": "Automatic Weapon Platform"
-			},
-			"correct": "B",
-			"difficulty": "medium"
-		},
-		{
-			"id": 117,
-			"levels": [6, 7],
-			"question": "Clash of Clans is made by Supercell, one of the most profitable mobile game studios ever. Which country is Supercell headquartered in?",
-			"options": {
-				"A": "Sweden",
-				"B": "Canada",
-				"C": "Germany",
-				"D": "Finland"
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 118,
-			"levels": [8, 9],
-			"question": "What is the name of Tom’s owner in the cartoon: TOM AND JERRY",
-			"options": {
-				"A": "Mrs. Robinson",
-				"B": "Mammy Two Shoes",
-				"C": "Miss Clara",
-				"D": "Aunt poly"
-			},
-			"correct": "B",
-			"difficulty": "hard"
-		},
-		{
-			"id": 119,
-			"levels": [8, 9],
-			"question": "The logo shown on screen belongs to the former identity of which popular food platform?",
-			"options": {
-				"A": "Foodpanda india",
-				"B": "TinyOwl",
-				"C": "Zomato",
-				"D": "EazyDiner"
-			},
-			"correct": "C",
-			"difficulty": "hard",
-			"media": {
-				"type": "image",
-				"src": "/media/images/FoodieBay-Logo-2008 - Kondour Prakarsha.png"
-			}
-		},
-		{
-			"id": 120,
-			"levels": [8, 9],
-			"question": "The Blue Whale Challenge reportedly originated in which country?",
-			"options": {
-				"A": "Russia",
-				"B": "USA",
-				"C": "China",
-				"D": "Brazil"
-			},
-			"correct": "A",
-			"difficulty": "hard"
-		},
-		{
-			"id": 121,
-			"levels": [8, 9],
-			"question": "What is the full name of Dekisugi in Doraemon?",
-			"options": {
-				"A": "Hidetoshi Dekisugi",
-				"B": "Hidetaka Dekisugi",
-				"C": "Hideki Dekisugi",
-				"D": "Hiroshi Dekisugi"
-			},
-			"correct": "A",
-			"difficulty": "hard"
-		},
-		{
-			"id": 122,
-			"levels": [8, 9],
-			"question": "Nobita Nobi is known for falling asleep extremely quickly. Approximately how long does he take?",
-			"options": {
-				"A": "0.75s",
-				"B": "0.93s",
-				"C": "1.21s",
-				"D": "1.54s"
-			},
-			"correct": "B",
-			"difficulty": "hard"
-		},
-		{
-			"id": 123,
-			"levels": [8, 9],
-			"question": "In Grand Theft Auto: San Andreas, what is the maximum wanted level (stars) a player can reach?",
-			"options": {
-				"A": "4",
-				"B": "5",
-				"C": "6",
-				"D": "7"
-			},
-			"correct": "C",
-			"difficulty": "hard"
-		},
-		{
-			"id": 124,
-			"levels": [8, 9],
-			"question": "In which of these sports are the terms “dunk” and “rebound” commonly used?",
-			"options": {
-				"A": "Vollyball",
-				"B": "Basketball",
-				"C": "Football",
-				"D": "Netball"
-			},
-			"correct": "B",
-			"difficulty": "hard"
-		},
-		{
-			"id": 125,
-			"levels": [8, 9],
-			"question": "The above image is from which of the following Telugu movies?",
-			"options": {
-				"A": "Anand",
-				"B": "Godavari",
-				"C": "Happy days",
-				"D": "Ye maya chesave"
-			},
-			"correct": "B",
-			"difficulty": "hard",
-			"media": {
-				"type": "image",
-				"src": "/media/images/IMG_20260414_230547 - Rishith Chintala.jpg"
-			}
-		},
-		{
-			"id": 126,
-			"levels": [8, 9],
-			"question": "In the long-running crime show CID, which of the following characters is most famously associated with breaking doors during investigations?",
-			"options": {
-				"A": "Dr. Salunkhe",
-				"B": "Inspector Abhijeet",
-				"C": "Inspector Daya",
-				"D": "ACP Pradyuman"
-			},
-			"correct": "C",
-			"difficulty": "hard"
-		},
-		{
-			"id": 127,
-			"levels": [8, 9],
-			"question": "Many know Mahesh Babu as a superstar, but he starred in a 2004 experimental film inspired by the Hollywood movie Big. What is the name of that film?",
-			"options": {
-				"A": "Athadu",
-				"B": "Arjun",
-				"C": "Nani",
-				"D": "Murari"
-			},
-			"correct": "C",
-			"difficulty": "hard"
-		},
-		{
-			"id": 128,
-			"levels": [8, 9],
-			"question": "\"It's over 9,000!\" is one of the most iconic lines in anime. But in the original Japanese version of Dragon Ball Z, the actual number Vegeta announced was different. What was it?",
-			"options": {
-				"A": "8,000",
-				"B": "9,500",
-				"C": "10,000",
-				"D": "12,000"
-			},
-			"correct": "A",
-			"difficulty": "hard"
-		},
-		{
-			"id": 129,
-			"levels": [8, 9],
-			"question": "Chhota Bheem, arguably India's most watched animated show, is produced by Green Gold Animation. In which city is Green Gold Animation based?",
-			"options": {
-				"A": "Mumbai",
-				"B": "Chennai",
-				"C": "Bengaluru",
-				"D": "Hyderabad"
-			},
-			"correct": "D",
-			"difficulty": "hard"
-		},
-		{
-			"id": 130,
-			"levels": [8, 9],
-			"question": "Motu Patlu became a hit animated show on Nickelodeon India, but the two characters originally appeared decades earlier in a classic Indian children's magazine. Which one?",
-			"options": {
-				"A": "Champak",
-				"B": "Tinkle",
-				"C": "Nandan",
-				"D": "Lotpot"
-			},
-			"correct": "D",
-			"difficulty": "hard"
-		},
-		{
-			"id": 131,
-			"levels": [8, 9],
-			"question": "What was the original name Phineas and Ferb gave Perry the Platypus when they adopted him?",
-			"options": {
-				"A": "Bartholomew",
-				"B": "Reginald",
-				"C": "Claude",
-				"D": "Fitzgerald"
-			},
-			"correct": "A",
-			"difficulty": "hard"
-		},
-		{
-			"id": 132,
-			"levels": [8, 9],
-			"question": "Guess the Pokemon",
-			"options": {
-				"A": "Zeraora",
-				"B": "Lucario",
-				"C": "Cinderace",
-				"D": "Greninja"
-			},
-			"correct": "B",
-			"difficulty": "hard",
-			"media": {
-				"type": "image",
-				"src": "/media/images/IMG_3830 - J VARSHA.jpeg"
-			}
-		},
-		{
-			"id": 133,
-			"levels": [8, 9],
-			"question": "Who was the producer of this iconic TV show",
-			"options": {
-				"A": "B. R. Chopra",
-				"B": "R. K. Sharma",
-				"C": "K. S. Chatterjee",
-				"D": "S. D. Kapoor"
-			},
-			"correct": "A",
-			"difficulty": "hard",
-			"media": {
-				"type": "image",
-				"src": "/media/images/mahabharath - Tarang Harsola.jpg"
-			}
-		},
-		{
-			"id": 134,
-			"levels": [8, 9],
-			"question": "What is the name of this character ?",
-			"options": {
-				"A": "Suparna",
-				"B": "Supriya",
-				"C": "Suvarna",
-				"D": "Suchitra"
-			},
-			"correct": "A",
-			"difficulty": "hard",
-			"media": {
-				"type": "image",
-				"src": "/media/images/Pasted image - Tarang Harsola.png"
-			}
-		},
-		{
-			"id": 135,
-			"levels": [8, 9],
-			"question": "What is the name of this character?",
-			"options": {
-				"A": "Basant",
-				"B": "Vasu",
-				"C": "Bhanu",
-				"D": "Basu"
-			},
-			"correct": "D",
-			"difficulty": "hard",
-			"media": {
-				"type": "image",
-				"src": "/media/images/images - Tarang Harsola.png"
-			}
-		},
-		{
-			"id": 136,
-			"levels": [8, 9],
-			"question": "What was the parent company of Temple run?",
-			"options": {
-				"A": "Nikki",
-				"B": "Tencent",
-				"C": "Imangi Studios",
-				"D": "Pipeworks Studio"
-			},
-			"correct": "C",
-			"difficulty": "hard"
-		},
-		{
-			"id": 137,
-			"levels": [8, 9],
-			"question": "What was the one fruit NOT present in the game \"Fruit Ninja\"",
-			"options": {
-				"A": "Mango",
-				"B": "Peach",
-				"C": "Guava",
-				"D": "WaterMelon"
-			},
-			"correct": "C",
-			"difficulty": "hard"
-		},
-		{
-			"id": 138,
-			"levels": [8, 9],
-			"question": "Who was the youngest star to win the big prize at the Grammys?",
-			"options": {
-				"A": "Billie Eilish",
-				"B": "Taylor Swift",
-				"C": "Olivia Rodrigo",
-				"D": "Adele"
-			},
-			"correct": "A",
-			"difficulty": "hard"
-		},
-		{
-			"id": 139,
-			"levels": [8, 9],
-			"question": "Sachin Tendulkar scored his 100th international century in April 2012. Against which country did he reach this milestone?",
-			"options": {
-				"A": "Pakistan",
-				"B": "Australia",
-				"C": "Sri Lanka",
-				"D": "Bangladesh"
-			},
-			"correct": "D",
-			"difficulty": "hard"
-		},
-		{
-			"id": 140,
-			"levels": [8, 9],
-			"question": "The Ice Bucket Challenge in 2014 raised awareness and funds for ALS (Motor Neuron Disease). How much money did the ALS Association raise in the US alone in just 8 weeks?",
-			"options": {
-				"A": "$10 million",
-				"B": "$50 million",
-				"C": "$115 million",
-				"D": "$300 million"
-			},
-			"correct": "C",
-			"difficulty": "hard"
-		},
-		{
-			"id": 141,
-			"levels": [8, 9],
-			"question": "Angry Birds launched in 2009 during a specific global health event, and the game's green pig enemies were reportedly inspired by it. What was that event?",
-			"options": {
-				"A": "The 2008 global financial crisis",
-				"B": "A viral pig-farming documentary",
-				"C": "An Irish folk tale about pigs",
-				"D": "The H1N1 Swine Flu pandemic"
-			},
-			"correct": "D",
-			"difficulty": "hard"
-		},
-		{
-			"id": 142,
-			"levels": [8, 9],
-			"question": "Subway Surfers has been downloaded over 4 billion times. Most people assume it's American. Which country were the two studios that made it (SYBO Games and Kiloo) actually based in?",
-			"options": {
-				"A": "Denmark",
-				"B": "Sweden",
-				"C": "Norway",
-				"D": "Finland"
-			},
-			"correct": "A",
-			"difficulty": "hard"
-		},
-		{
-			"id": 143,
-			"levels": [8, 9],
-			"question": "What is the name of the character",
-			"options": {
-				"A": "Chingam",
-				"B": "Bubblegum",
-				"C": "Simba",
-				"D": "Singham"
-			},
-			"correct": "B",
-			"difficulty": "hard",
-			"media": {
-				"type": "image",
-				"src": "/media/images/Screenshot_2026-04-16-11-09-02-65_40deb401b9ffe8e1df2f1cc5ba480b12 - Tarang Harsola.jpg"
-			}
-		},
-		{
-			"id": 144,
-			"levels": [8, 9],
-			"question": "Name of the character",
-			"options": {
-				"A": "Bose",
-				"B": "Jazz",
-				"C": "Rose",
-				"D": "Jose"
-			},
-			"correct": "B",
-			"difficulty": "hard",
-			"media": {
-				"type": "image",
-				"src": "/media/images/Pasted image - Tarang Harsola.png"
-			}
-		},
-		{
-			"id": 145,
-			"levels": [8, 9],
-			"question": "Which TV serial was she a part of ?",
-			"options": {
-				"A": "Yeah rishta kya kehlata hai",
-				"B": "Bhabiji Ghar Par Hain",
-				"C": "Sasural Simar ka",
-				"D": "FIR"
-			},
-			"correct": "B",
-			"difficulty": "hard",
-			"media": {
-				"type": "image",
-				"src": "/media/images/images - Tarang Harsola.webp"
-			}
-		},
-		{
-			"id": 146,
-			"levels": [8, 9],
-			"question": "Who is the singer of the song Mann atkeya from Dhurandhar",
-			"options": {
-				"A": "Vaibhav Gupta",
-				"B": "Rishi Singh",
-				"C": "Shashwat Sachdev",
-				"D": "Aditya Rikhari"
-			},
-			"correct": "A",
-			"difficulty": "hard"
-		},
-		{
-			"id": 147,
-			"levels": [8, 9],
-			"question": "In the movie Dhurandhar, the female rapper known by her nickname “Rebel” is known by what real name?",
-			"options": {
-				"A": "Meba Lyngdoh",
-				"B": "Ridaan Kharsyntiew",
-				"C": "Siahrun Nongrum",
-				"D": "Daiaphi Lamare"
-			},
-			"correct": "D",
-			"difficulty": "hard"
-		},
-		{
-			"id": 148,
-			"levels": [8, 9],
-			"question": "What is Loki’s true heritage?",
-			"options": {
-				"A": "Asgardian",
-				"B": "Frost Giant",
-				"C": "Dark Elf",
-				"D": "Eternal"
-			},
-			"correct": "B",
-			"difficulty": "hard"
-		},
-		{
-			"id": 149,
-			"levels": [8, 9],
-			"question": "Guess the charecter name form the image",
-			"options": {
-				"A": "Scarlett Fox",
-				"B": "Ruby",
-				"C": "Wolfe",
-				"D": "Ivy Lynx"
-			},
-			"correct": "A",
-			"difficulty": "hard",
-			"media": {
-				"type": "image",
-				"src": "/media/images/Scarlett Fox - Shishir Gella.jpg"
-			}
-		},
-		{
-			"id": 150,
-			"levels": [8, 9],
-			"question": "Find the odd one out(context- takeshi castle)",
-			"options": {
-				"A": "Skipping stone",
-				"B": "Slippery wall",
-				"C": "Bridge ball",
-				"D": "Wipeout"
-			},
-			"correct": "D",
-			"difficulty": "hard"
-		},
-		{
-			"id": 151,
-			"levels": [8, 9],
-			"question": "What did Javed Jaffery used to call the general in Takeshi castle",
-			"options": {
-				"A": "General Takeshi",
-				"B": "General Hayate",
-				"C": "General Lee",
-				"D": "General Tani"
-			},
-			"correct": "C",
-			"difficulty": "hard"
-		},
-		{
-			"id": 152,
-			"levels": [8, 9],
-			"question": "What is the name of Mr. Bean’s landlady?",
-			"options": {
-				"A": "Mrs. Wicket",
-				"B": "Mrs. Wiggins",
-				"C": "Mrs. Wilkins",
-				"D": "Mrs. Watson"
-			},
-			"correct": "A",
-			"difficulty": "hard"
-		},
-		{
-			"id": 153,
-			"levels": [8, 9],
-			"question": "What is the name of the dog in Tom and Jerry?",
-			"options": {
-				"A": "Butch",
-				"B": "Spike",
-				"C": "Droopy",
-				"D": "Tyke"
-			},
-			"correct": "B",
-			"difficulty": "hard"
-		},
-		{
-			"id": 154,
-			"levels": [8, 9],
-			"question": "In Ninja Hattori, Hattori's biggest rival is a scheming ninja who constantly tries to expose him and steal Kenichi's love interest Yumeko. What is this rival's name?",
-			"options": {
-				"A": "Kagechiyo",
-				"B": "Tensai",
-				"C": "Kemumaki",
-				"D": "Raijin"
-			},
-			"correct": "C",
-			"difficulty": "hard"
-		},
-		{
-			"id": 155,
-			"levels": [10, 11],
-			"question": "Which was the first mobile game to cross 1 billion downloads on Google Play Store?",
-			"options": {
-				"A": "Temple Run",
-				"B": "Subway surfers",
-				"C": "Clash of clans",
-				"D": "Candy crush saga"
-			},
-			"correct": "B",
-			"difficulty": "hard"
-		},
-		{
-			"id": 156,
-			"levels": [10, 11],
-			"question": "What is the name of the character shown in the image?",
-			"options": {
-				"A": "Tony",
-				"B": "Alex",
-				"C": "Dylan",
-				"D": "Jake"
-			},
-			"correct": "D",
-			"difficulty": "hard",
-			"media": {
-				"type": "image",
-				"src": "/media/images/Jake1 - Golla Bharath.webp"
-			}
-		},
-		{
-			"id": 157,
-			"levels": [10, 11],
-			"question": "Purble Place was first introduced in which Windows version?",
-			"options": {
-				"A": "Windows XP",
-				"B": "Windows Vista",
-				"C": "Windows 7",
-				"D": "Windows 10"
-			},
-			"correct": "B",
-			"difficulty": "hard"
-		},
-		{
-			"id": 158,
-			"levels": [10, 11],
-			"question": "The social network Orkut was literally named after its creator, a Google engineer. What is his last name?",
-			"options": {
-				"A": "Büyükkökten",
-				"B": "Mehrotra",
-				"C": "Tanaka",
-				"D": "De Souza"
-			},
-			"correct": "A",
-			"difficulty": "hard"
-		},
-		{
-			"id": 159,
-			"levels": [10, 11],
-			"question": "Doraemon is a robotic cat with no ears. The show actually explains why he lost his ears AND why his colour changed from yellow to blue. What is the in-show explanation?",
-			"options": {
-				"A": "He sold his ears to buy Nobita a birthday gift",
-				"B": "They were removed during a factory malfunction",
-				"C": "A mouse chewed off his ears and he cried so hard his yellow paint washed off, turning him blue",
-				"D": "He was born without ears due to a manufacturing error"
-			},
-			"correct": "C",
-			"difficulty": "hard"
-		},
-		{
-			"id": 160,
-			"levels": [10, 11],
-			"question": "The ‘Saat Crore’ announcement followed the correct answer to which option?",
-			"options": {
-				"A": "Paul Canning",
-				"B": "William Hawkins",
-				"C": "Thomas Roe",
-				"D": "James Lancaster"
-			},
-			"correct": "B",
-			"difficulty": "hard",
-			"media": {
-				"type": "audio",
-				"src": "/media/audio/7_crore_meme_sound_kbc - Tarang Harsola.mp3",
-				"controls": true
-			}
-		},
-		{
-			"id": 161,
-			"levels": [10, 11],
-			"question": "Which platform was originally launched as ‘Musical.ly’ before re branding?",
-			"options": {
-				"A": "Snapchat",
-				"B": "TikTok",
-				"C": "Reddit",
-				"D": "Spotify"
-			},
-			"correct": "B",
-			"difficulty": "hard"
-		},
-		{
-			"id": 162,
-			"levels": [10, 11],
-			"question": "Which year was this video posted",
-			"options": {
-				"A": "2004",
-				"B": "2001",
-				"C": "2003",
-				"D": "2005"
-			},
-			"correct": "D",
-			"difficulty": "hard",
-			"media": {
-				"type": "video",
-				"src": "/media/video/Me at the zoo - jawed (240p) - Tarang Harsola.mp4",
-				"controls": true
-			}
-		},
-		{
-			"id": 163,
-			"levels": [10, 11],
-			"question": "What nickname does Tony Stark give Thor in Avengers (2012)?",
-			"options": {
-				"A": "Point Break",
-				"B": "Shakespeare in the Park",
-				"C": "Lebowski",
-				"D": "Goldilocks"
-			},
-			"correct": "A",
-			"difficulty": "hard"
-		},
-		{
-			"id": 164,
-			"levels": [10, 11],
-			"question": "Guess the name of this special / unlockable character",
-			"options": {
-				"A": "Francisco Montoya",
-				"B": "Zack Wonder",
-				"C": "Barry Bones",
-				"D": "Montana Smith"
-			},
-			"correct": "A",
-			"difficulty": "hard",
-			"media": {
-				"type": "image",
-				"src": "/media/images/Francisco Montoya - Shishir Gella.png"
-			}
-		},
-		{
-			"id": 165,
-			"levels": [10, 11],
-			"question": "What is the name of Mrs. Wicket’s cat in Mr. Bean ?",
-			"options": {
-				"A": "Scratch",
-				"B": "Scrapper",
-				"C": "Scruffy",
-				"D": "Stripe"
-			},
-			"correct": "B",
-			"difficulty": "hard"
-		},
-		{
-			"id": 166,
-			"levels": [10, 11],
-			"question": "What is his son name",
-			"options": {
-				"A": "Tyke",
-				"B": "Spike Jr.",
-				"C": "Butch",
-				"D": "Scrappy"
-			},
-			"correct": "A",
-			"difficulty": "hard",
-			"media": {
-				"type": "image",
-				"src": "/media/images/images - Tarang Harsola.png"
-			}
-		},
-		{
-			"id": 167,
-			"levels": [3, 4, 5],
-			"question": "The first Indian to take a test hat trick",
-			"options": {
-				"A": "Harbhajan Singh",
-				"B": "Irfan Pathan",
-				"C": "Zaheer Khan",
-				"D": "Anil Kumble"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 168,
-			"levels": [6, 7],
-			"question": "BeReal sent users a random daily notification asking them to post a photo. To be counted as \"on time,\" users had to post within what window?",
-			"options": {
-				"A": "30 seconds",
-				"B": "1 minute",
-				"C": "2 minutes",
-				"D": "5 minutes"
-			},
-			"correct": "C",
-			"difficulty": "medium"
-		},
-		{
-			"id": 169,
-			"levels": [3, 4, 5],
-			"question": "The iconic Airtel ringtone has played on phones across India for decades. Which Oscar-winning composer originally created it?",
-			"options": {
-				"A": "Ilaiyaraaja",
-				"B": "Vishal-Shekhar",
-				"C": "A.R. Rahman",
-				"D": "Shankar-Ehsaan-Loy"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 170,
-			"levels": [3, 4, 5],
-			"question": "These candy sticks were shaped and packaged to look exactly like cigarettes — complete with a foil wrapper and a red-tipped \"lit\" end. What were they most commonly called?",
-			"options": {
-				"A": "Candy Stix",
-				"B": "Phantom Sweet Cigarettes",
-				"C": "Choco Smokes",
-				"D": "Pan Sweets"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 171,
-			"levels": [3, 4, 5],
-			"question": "What is the name of Ben Tennyson's grandfather in Ben 10?",
-			"options": {
-				"A": "Carl",
-				"B": "Phil",
-				"C": "Joel",
-				"D": "Max"
-			},
-			"correct": "D",
-			"difficulty": "easy"
-		},
-		{
-			"id": 172,
-			"levels": [3, 4, 5],
-			"question": "What is the name of the gang's van in Scooby-Doo?",
-			"options": {
-				"A": "Phantom Van",
-				"B": "Clue Cruiser",
-				"C": "Mystery Machine",
-				"D": "Ghost Wagon"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 173,
-			"levels": [3, 4, 5],
-			"question": "Which telecom ad popularized the line \"What an Idea, Sirji!\"?",
-			"options": {
-				"A": "Airtel",
-				"B": "BSNL",
-				"C": "Reliance",
-				"D": "Idea"
-			},
-			"correct": "D",
-			"difficulty": "easy"
-		},
-		{
-			"id": 174,
-			"levels": [1, 2],
-			"question": "Which soft drink used the slogan \"Yeh Dil Maange More\"?",
-			"options": {
-				"A": "Coca-Cola",
-				"B": "Thums Up",
-				"C": "Pepsi",
-				"D": "Sprite"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 175,
-			"levels": [8, 9],
-			"question": "The ZooZoo ad characters were first launched during which cricket event? (vodafone)",
-			"options": {
-				"A": "Champions Trophy 2006",
-				"B": "World Cup 2011",
-				"C": "IPL 2013",
-				"D": "IPL 2009"
-			},
-			"correct": "D",
-			"difficulty": "hard"
-		},
-		{
-			"id": 176,
-			"levels": [1, 2],
-			"question": "Who composed the iconic Airtel signature tune?",
-			"options": {
-				"A": "Shankar Mahadevan",
-				"B": "Pritam",
-				"C": "Vishal-Shekhar",
-				"D": "A. R. Rahman"
-			},
-			"correct": "D",
-			"difficulty": "easy"
-		},
-		{
-			"id": 177,
-			"levels": [3, 4, 5],
-			"question": "Milk Bikis is a biscuit brand from which company?",
-			"options": {
-				"A": "Sunfeast",
-				"B": "Parle",
-				"C": "Britannia",
-				"D": "Priya Gold"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 178,
-			"levels": [1, 2],
-			"question": "Little Hearts biscuits are made by which company?",
-			"options": {
-				"A": "ITC",
-				"B": "Bisk Farm",
-				"C": "Britannia",
-				"D": "Parle"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 179,
-			"levels": [3, 4, 5],
-			"question": "What type of confectionery was Big Babol?",
-			"options": {
-				"A": "Bubble gum",
-				"B": "Wafer bar",
-				"C": "Jelly candy",
-				"D": "Lollipop"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 180,
-			"levels": [3, 4, 5],
-			"question": "What is the name of Munna Bhai's loyal sidekick? (MBBS)",
-			"options": {
-				"A": "Bunty",
-				"B": "Maqsood",
-				"C": "Circuit",
-				"D": "Lucky"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 181,
-			"levels": [6, 7],
-			"question": "In Lagaan, what is the name of Bhuvan's village?",
-			"options": {
-				"A": "Sitabari",
-				"B": "Rampur",
-				"C": "Kheda",
-				"D": "Champaner"
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 182,
-			"levels": [6, 7],
-			"question": "What is the name of the cop played by Abhishek Bachchan in Dhoom?",
-			"options": {
-				"A": "Aryan Singh",
-				"B": "Kabir Sharma",
-				"C": "Ali Akbar",
-				"D": "Jai Dixit"
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 183,
-			"levels": [3, 4, 5],
-			"question": "What is Shah Rukh Khan's coach character called in Chak De! India?",
-			"options": {
-				"A": "Vikram Khan",
-				"B": "Kabir Ali",
-				"C": "Kabir Khan",
-				"D": "Sameer Khan"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 184,
-			"levels": [8, 9],
-			"question": "What nickname is given to the child in Bhootnath?",
-			"options": {
-				"A": "Lucky",
-				"B": "Chintu",
-				"C": "Golu",
-				"D": "Banku"
-			},
-			"correct": "D",
-			"difficulty": "hard"
-		},
-		{
-			"id": 185,
-			"levels": [8, 9],
-			"question": "In Bhool Bhulaiyaa, what name is linked to Avni's haunting alter ego?",
-			"options": {
-				"A": "Manjulika",
-				"B": "Chandramukhi",
-				"C": "Nandini",
-				"D": "Mohini"
-			},
-			"correct": "A",
-			"difficulty": "hard"
-		},
-		{
-			"id": 186,
-			"levels": [8, 9],
-			"question": "What is Baburao's surname in Hera Pheri?",
-			"options": {
-				"A": "Deshmukh",
-				"B": "Apte",
-				"C": "Kulkarni",
-				"D": "Shenoy"
-			},
-			"correct": "B",
-			"difficulty": "hard"
-		},
-		{
-			"id": 187,
-			"levels": [6, 7],
-			"question": "What is the name of Krishna's father in Krrish?",
-			"options": {
-				"A": "Sanjay Mehra",
-				"B": "Arjun Mehra",
-				"C": "Raj Mehra",
-				"D": "Rohit Mehra"
-			},
-			"correct": "D",
-			"difficulty": "medium"
-		},
-		{
-			"id": 188,
-			"levels": [8, 9],
-			"question": "What was Yahoo Messenger's famous attention-grabbing nudge called?",
-			"options": {
-				"A": "Ping",
-				"B": "Flash",
-				"C": "Buzz",
-				"D": "Zap"
-			},
-			"correct": "C",
-			"difficulty": "hard"
-		},
-		{
-			"id": 189,
-			"levels": [3, 4, 5],
-			"question": "Which company made Gtalk?",
-			"options": {
-				"A": "AOL",
-				"B": "Microsoft",
-				"C": "Yahoo",
-				"D": "Google"
-			},
-			"correct": "D",
-			"difficulty": "easy"
-		},
-		{
-			"id": 190,
-			"levels": [3, 4, 5],
-			"question": "Which phone brand is most linked with the classic game Snake?",
-			"options": {
-				"A": "Nokia",
-				"B": "Motorola",
-				"C": "Sony Ericsson",
-				"D": "Samsung"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 191,
-			"levels": [6, 7],
-			"question": "India defeated which team in the 2007 ICC T20 World Cup final?",
-			"options": {
-				"A": "Pakistan",
-				"B": "England",
-				"C": "Sri Lanka",
-				"D": "Australia"
-			},
-			"correct": "A",
-			"difficulty": "medium"
-		},
-		{
-			"id": 192,
-			"levels": [6, 7],
-			"question": "Yuvraj Singh hit six sixes in an over off which bowler?",
-			"options": {
-				"A": "Stuart Broad",
-				"B": "Graeme Swann",
-				"C": "Andrew Flintoff",
-				"D": "James Anderson"
-			},
-			"correct": "A",
-			"difficulty": "medium"
-		},
-		{
-			"id": 193,
-			"levels": [8, 9],
-			"question": "Which team won the IPL in 2009?",
-			"options": {
-				"A": "Royal Challengers Bangalore",
-				"B": "Mumbai Indians",
-				"C": "Chennai Super Kings",
-				"D": "Deccan Chargers"
-			},
-			"correct": "D",
-			"difficulty": "hard"
-		},
-		{
-			"id": 194,
-			"levels": [3, 4, 5],
-			"question": "India beat which team in the final of the 2013 Champions Trophy?",
-			"options": {
-				"A": "Sri Lanka",
-				"B": "South Africa",
-				"C": "England",
-				"D": "Pakistan"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 195,
-			"levels": [8, 9],
-			"question": "Microsoft Encarta was primarily what kind of product?",
-			"options": {
-				"A": "Photo editor",
-				"B": "Digital encyclopedia",
-				"C": "Typing tutor",
-				"D": "Antivirus"
-			},
-			"correct": "B",
-			"difficulty": "hard"
-		},
-		{
-			"id": 196,
-			"levels": [10, 11],
-			"question": "WWF changed its name to WWE after a dispute with which organization?",
-			"options": {
-				"A": "World Wrestling Federation UK",
-				"B": "World Fight Federation",
-				"C": "World Wildlife Fund",
-				"D": "World Fitness Forum"
-			},
-			"correct": "C",
-			"difficulty": "hard"
-		},
-		{
-			"id": 197,
-			"levels": [1, 2],
-			"question": "What does IYKYK stand for?",
-			"options": {
-				"A": "It's your key, your kingdom",
-				"B": "I yield, keep your knowledge",
-				"C": "If you keep yelling, know",
-				"D": "If you know, you know"
-			},
-			"correct": "D",
-			"difficulty": "easy"
-		},
-		{
-			"id": 198,
-			"levels": [8, 9],
-			"question": "What does it mean when someone gets \"ratioed\" online?",
-			"options": {
-				"A": "Their post is removed for copyright",
-				"B": "Their comments are turned off",
-				"C": "A reply or quote gets more engagement and makes them look bad",
-				"D": "They lose followers after going private"
-			},
-			"correct": "C",
-			"difficulty": "hard"
-		},
-		{
-			"id": 199,
-			"levels": [8, 9],
-			"question": "What does \"gaslighting\" mean?",
-			"options": {
-				"A": "Posting fake luxury photos",
-				"B": "Ignoring messages for days",
-				"C": "Manipulating someone into doubting their reality",
-				"D": "Making a joke about a serious issue"
-			},
-			"correct": "C",
-			"difficulty": "hard"
-		},
-		{
-			"id": 200,
-			"levels": [3, 4, 5],
-			"question": "What is \"catfishing\"?",
-			"options": {
-				"A": "Using a fake online identity to deceive someone",
-				"B": "Leaking private screenshots",
-				"C": "Editing photos heavily",
-				"D": "Hacking a verified account"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 201,
-			"levels": [8, 9],
-			"question": "What is Instagram's side-by-side reaction video format called?",
-			"options": {
-				"A": "Collab",
-				"B": "Remix",
-				"C": "Blend",
-				"D": "Duet"
-			},
-			"correct": "B",
-			"difficulty": "hard"
-		},
-		{
-			"id": 202,
-			"levels": [1, 2],
-			"question": "On Discord, what are most communities called?",
-			"options": {
-				"A": "Servers",
-				"B": "Clubs",
-				"C": "Pods",
-				"D": "Rooms"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 203,
-			"levels": [8, 9],
-			"question": "On Reddit, what is the public score from upvotes commonly called?",
-			"options": {
-				"A": "Karma",
-				"B": "Influence",
-				"C": "Rank XP",
-				"D": "Cred"
-			},
-			"correct": "A",
-			"difficulty": "hard"
-		},
-		{
-			"id": 204,
-			"levels": [8, 9],
-			"question": "What does \"lurking\" mean online?",
-			"options": {
-				"A": "Running multiple fake accounts",
-				"B": "Following only private accounts",
-				"C": "Reading or watching without posting",
-				"D": "Deleting old content quietly"
-			},
-			"correct": "C",
-			"difficulty": "hard"
-		},
-		{
-			"id": 205,
-			"levels": [1, 2],
-			"question": "Which Minecraft mob is known for exploding near players?",
-			"options": {
-				"A": "Enderman",
-				"B": "Skeleton",
-				"C": "Creeper",
-				"D": "Slime"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 206,
-			"levels": [3, 4, 5],
-			"question": "In Valorant, the Spike is used for what objective?",
-			"options": {
-				"A": "Unlocking agent abilities",
-				"B": "Reviving teammates",
-				"C": "Purchasing weapons",
-				"D": "Planting or defusing the bomb"
-			},
-			"correct": "D",
-			"difficulty": "easy"
-		},
-		{
-			"id": 207,
-			"levels": [3, 4, 5],
-			"question": "What is Fortnite's best-known main mode?",
-			"options": {
-				"A": "Team Deathmatch",
-				"B": "Battle Royale",
-				"C": "Search and Destroy",
-				"D": "Payload Escort"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 208,
-			"levels": [8, 9],
-			"question": "What is Prajakta Koli's character name in Mismatched?",
-			"options": {
-				"A": "Dimple Ahuja",
-				"B": "Anmol Malhotra",
-				"C": "Namrata Bidasaria",
-				"D": "Celina Matthew"
-			},
-			"correct": "A",
-			"difficulty": "hard"
-		},
-		{
-			"id": 209,
-			"levels": [8, 9],
-			"question": "Mismatched is based on which novel?",
-			"options": {
-				"A": "The Fault in Our Stars",
-				"B": "When Dimple Met Rishi",
-				"C": "I Too Had a Love Story",
-				"D": "One Indian Girl"
-			},
-			"correct": "B",
-			"difficulty": "hard"
-		},
-		{
-			"id": 210,
-			"levels": [3, 4, 5],
-			"question": "What is the name of Manoj Bajpayee's character in The Family Man?",
-			"options": {
-				"A": "Kabir Sawant",
-				"B": "Akhilesh Singh",
-				"C": "Vikram Malhotra",
-				"D": "Srikant Tiwari"
-			},
-			"correct": "D",
-			"difficulty": "easy"
-		},
-		{
-			"id": 211,
-			"levels": [8, 9],
-			"question": "In Stranger Things, what is the name of the town where the story begins?",
-			"options": {
-				"A": "Riverton",
-				"B": "Hillview",
-				"C": "Hawkins",
-				"D": "Rosewood"
-			},
-			"correct": "C",
-			"difficulty": "hard"
-		},
-		{
-			"id": 212,
-			"levels": [8, 9],
-			"question": "What is the name of the giant doll in Squid Game's Red Light, Green Light?",
-			"options": {
-				"A": "Min-ji",
-				"B": "Bok-hee",
-				"C": "Young-hee",
-				"D": "Soo-yeon"
-			},
-			"correct": "C",
-			"difficulty": "hard"
-		},
-		{
-			"id": 213,
-			"levels": [8, 9],
-			"question": "Crunchyroll is primarily known for streaming what?",
-			"options": {
-				"A": "Stand-up specials",
-				"B": "Live sports",
-				"C": "True crime documentaries",
-				"D": "Anime"
-			},
-			"correct": "D",
-			"difficulty": "hard"
-		},
-		{
-			"id": 214,
-			"levels": [8, 9],
-			"question": "Cheems, the meme dog, belonged to which breed?",
-			"options": {
-				"A": "Beagle",
-				"B": "Shiba Inu",
-				"C": "Pug",
-				"D": "Corgi"
-			},
-			"correct": "B",
-			"difficulty": "hard"
-		},
-		{
-			"id": 215,
-			"levels": [8, 9],
-			"question": "What is a \"canon event\" in meme culture?",
-			"options": {
-				"A": "An officially verified rumor",
-				"B": "A defining moment that is treated as unavoidable",
-				"C": "A crossover post between fandoms",
-				"D": "A celebrity scandal with proof"
-			},
-			"correct": "B",
-			"difficulty": "hard"
-		},
-		{
-			"id": 216,
-			"levels": [6, 7],
-			"question": "Which detergent brand used the famous line \"Daag Achhe Hain\"?",
-			"options": {
-				"A": "Rin",
-				"B": "Surf Excel",
-				"C": "Wheel",
-				"D": "Ariel"
-			},
-			"correct": "B",
-			"difficulty": "medium"
-		},
-		{
-			"id": 217,
-			"levels": [1, 2],
-			"question": "In Shaka Laka Boom Boom, which item had magical powers?",
-			"options": {
-				"A": "Eraser",
-				"B": "Compass box",
-				"C": "School bag",
-				"D": "Pencil"
-			},
-			"correct": "D",
-			"difficulty": "easy"
-		},
-		{
-			"id": 218,
-			"levels": [3, 4, 5],
-			"question": "In Sarabhai vs Sarabhai, Rosesh is most obsessed with writing what?",
-			"options": {
-				"A": "Screenplays",
-				"B": "Ghazals",
-				"C": "Poetry",
-				"D": "Stand-up jokes"
-			},
-			"correct": "C",
-			"difficulty": "easy"
-		},
-		{
-			"id": 219,
-			"levels": [1, 2],
-			"question": "Vicco Turmeric was famously described in ads as an Ayurvedic what?",
-			"options": {
-				"A": "Oil",
-				"B": "Cream",
-				"C": "Soap",
-				"D": "Powder"
-			},
-			"correct": "B",
-			"difficulty": "easy"
-		},
-		{
-			"id": 220,
-			"levels": [1, 2],
-			"question": "Which company was behind the iconic campaign \"Hamara Bajaj\"?",
-			"options": {
-				"A": "Hero Honda",
-				"B": "TVS",
-				"C": "LML",
-				"D": "Bajaj Auto"
-			},
-			"correct": "D",
-			"difficulty": "easy"
-		},
-		{
-			"id": 221,
-			"levels": [10, 11],
-			"question": "The famous Titan ad tune is adapted from which composer's work?",
-			"options": {
-				"A": "Vivaldi",
-				"B": "Beethoven",
-				"C": "Chopin",
-				"D": "Mozart"
-			},
-			"correct": "D",
-			"difficulty": "hard",
-			"media": {
-				"type": "audio",
-				"src": "/media/audio/titan.mp3",
-				"controls": true
-			}
-		},
-		{
-			"id": 222,
-			"levels": [8, 9],
-			"question": "What is the name of the default Windows XP wallpaper image?",
-			"options": {
-				"A": "Horizon",
-				"B": "Meadow",
-				"C": "Greenscape",
-				"D": "Bliss"
-			},
-			"correct": "D",
-			"difficulty": "hard",
-			"media": {
-				"type": "image",
-				"src": "/media/images/xp-wallpaper.jpeg"
-			}
-		},
-		{
-			"id": 223,
-			"levels": [1, 2],
-			"question": "What does \"delulu\" usually mean in internet slang?",
-			"options": {
-				"A": "Delusional in a playful way",
-				"B": "Deleted unexpectedly",
-				"C": "Deeply unlucky",
-				"D": "Deliberately rude online"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 224,
-			"levels": [1, 2],
-			"question": "What is CarryMinati's first name?",
-			"options": {
-				"A": "Ajey",
-				"B": "Ankit",
-				"C": "Aviral",
-				"D": "Aman"
-			},
-			"correct": "A",
-			"difficulty": "easy"
-		},
-		{
-			"id": 225,
-			"levels": [8, 9],
-			"question": "What is the name of the school Wednesday Addams attends?",
-			"options": {
-				"A": "Nightshade Academy",
-				"B": "Nevermore Academy",
-				"C": "Ravencrest School",
-				"D": "Blackwood Hall"
-			},
-			"correct": "B",
-			"difficulty": "hard"
-		}
-	]
+  "gameConfig": {
+    "rounds": [
+      {
+        "label": "Question 1",
+        "prize": "Rs 10",
+        "timeLimit": 20
+      },
+      {
+        "label": "Question 2",
+        "prize": "Rs 20",
+        "timeLimit": 20
+      },
+      {
+        "label": "Question 3",
+        "prize": "Rs 30",
+        "timeLimit": 20
+      },
+      {
+        "label": "Question 4 - Checkpoint 1",
+        "prize": "Rs 50",
+        "timeLimit": 30
+      },
+      {
+        "label": "Question 5",
+        "prize": "Rs 80",
+        "timeLimit": 30
+      },
+      {
+        "label": "Question 6",
+        "prize": "Rs 120",
+        "timeLimit": 30
+      },
+      {
+        "label": "Question 7",
+        "prize": "Rs 180",
+        "timeLimit": 30
+      },
+      {
+        "label": "Question 8 - Checkpoint 2",
+        "prize": "Rs 240",
+        "timeLimit": 45
+      },
+      {
+        "label": "Question 9",
+        "prize": "Rs 400",
+        "timeLimit": 45
+      },
+      {
+        "label": "Question 10",
+        "prize": "Rs 500",
+        "timeLimit": 45
+      },
+      {
+        "label": "Question 11 - All or nothing",
+        "prize": "Rs 1,000",
+        "timeLimit": 45
+      }
+    ]
+  },
+  "questions": [
+    {
+      "id": 1,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "Which chocolate brand launched the now-discontinued product “Bytes” in India?",
+      "options": {
+        "A": "Nestle",
+        "B": "Amul",
+        "C": "Cadbury",
+        "D": "Ferrero"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 2,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "Who is the creator of Doraemon?",
+      "options": {
+        "A": "Akira Toriyama",
+        "B": "Eiichiro Oda",
+        "C": "Fujiko F. Fujio",
+        "D": "Masashi Kishimoto"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 3,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "In Mr. Bean, which color car does Mr. Bean frequently crash into?",
+      "options": {
+        "A": "Blue",
+        "B": "Red",
+        "C": "Green",
+        "D": "Yellow"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 4,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "What are the names of the main characters in Bandbudh Aur Budbak?",
+      "options": {
+        "A": "Budhraj & Badri",
+        "B": "Badrinath & Budhdev",
+        "C": "Budhdev & Budhraj",
+        "D": "Budh & Budbak"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 5,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "Complete the iconic Frooti tagline: \"Fresh N ___",
+      "options": {
+        "A": "Tasty",
+        "B": "Cool",
+        "C": "Juicy",
+        "D": "Sweet"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 6,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "Which candy brand used the tagline \"Dimaag ki batti jala de\"?",
+      "options": {
+        "A": "Poppins",
+        "B": "Center Fresh",
+        "C": "Mango Bite",
+        "D": "Mentos"
+      },
+      "correct": "D",
+      "difficulty": "easy"
+    },
+    {
+      "id": 7,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "what is the name of the late night Japanese stunt show which aired on pogo",
+      "options": {
+        "A": "Wipeout",
+        "B": "takeshi's castle",
+        "C": "MXC",
+        "D": "Double dare"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 8,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "What is the vegetable that Shinchan hates to eat?",
+      "options": {
+        "A": "Bittergourd",
+        "B": "Capsicum",
+        "C": "Beans",
+        "D": "Carrot"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 9,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "What is the name of the song that Mickey and friends dance to at the end of every episode?",
+      "options": {
+        "A": "Mickey Mouse Clubhouse",
+        "B": "Hot dog",
+        "C": "Oh Mickey",
+        "D": "The Mickey Mouse March"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 10,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "What shows the mousekatools that are going to be needed in each show?",
+      "options": {
+        "A": "Youdles",
+        "B": "Mickey screen",
+        "C": "Toodles",
+        "D": "Scootles"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 11,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "Identify the brand associated with the advertisement shown.",
+      "options": {
+        "A": "Tide",
+        "B": "Rin",
+        "C": "Nirma",
+        "D": "Surf excel"
+      },
+      "correct": "C",
+      "difficulty": "easy",
+      "media": {
+        "type": "image",
+        "src": "/media/images/file_0000000060ac71fd9d4128ed182b6af3 - Kondour Prakarsha.jpg"
+      }
+    },
+    {
+      "id": 12,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "Identify the cartoon based on the theme music played.",
+      "options": {
+        "A": "Sylvester and Tweety",
+        "B": "Scooby-Doo",
+        "C": "Tom and Jerry",
+        "D": "The Pink Panther Show"
+      },
+      "correct": "C",
+      "difficulty": "easy",
+      "media": {
+        "type": "audio",
+        "src": "/media/audio/tom_and_jerry_theme - Kondour Prakarsha.mp3",
+        "controls": true
+      }
+    },
+    {
+      "id": 13,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "Which Indian cartoon was set in Furfuri Nagar?",
+      "options": {
+        "A": "Motu Patlu",
+        "B": "Mighty Raju",
+        "C": "Roll No 21",
+        "D": "Shiva"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 14,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "What does the acronym \"GOAT\" stand for?",
+      "options": {
+        "A": "Greatest of All Time",
+        "B": "Good Ol' American Truck",
+        "C": "Goats on a Trip",
+        "D": "Girls of All Types"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 15,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "What does \"opp\" mean?",
+      "options": {
+        "A": "An exclamation, like \"oops!\"",
+        "B": "Only Pretties Permitted",
+        "C": "Opposite",
+        "D": "Opposition or opponent"
+      },
+      "correct": "D",
+      "difficulty": "easy"
+    },
+    {
+      "id": 16,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "What does “NPC behavior” refer to?",
+      "options": {
+        "A": "Someone acting robotic, predictable, or lacking originality",
+        "B": "Someone who plays games a lot",
+        "C": "Someone who talks too much",
+        "D": "Someone acting aggressively"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 17,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "f someone says “he’s in his villain arc,” what does it mean?",
+      "options": {
+        "A": "Being a menace to society",
+        "B": "focusing on himself",
+        "C": "He’s watching too many movies",
+        "D": "He’s becoming lazy"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 18,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "Complete the Boomer bubble gum tagline: \"Boom Boom ___\"",
+      "options": {
+        "A": "Blaster",
+        "B": "Bubble",
+        "C": "Blast Off!",
+        "D": "Boomer!"
+      },
+      "correct": "D",
+      "difficulty": "easy"
+    },
+    {
+      "id": 19,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "In Koi Mil Gaya, the friendly alien that Rohit befriends has a name. What is it?",
+      "options": {
+        "A": "Golu",
+        "B": "Munno",
+        "C": "Kalu",
+        "D": "Jadoo"
+      },
+      "correct": "D",
+      "difficulty": "easy"
+    },
+    {
+      "id": 20,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "In 3 Idiots, \"Rancho\" is a borrowed identity. What is Aamir Khan's character's actual birth name, revealed in the film's twist?",
+      "options": {
+        "A": "Ranchhoddas Shamaldas Chanchad",
+        "B": "Farhan Qureshi",
+        "C": "Phunsukh Wangdu",
+        "D": "Raju Rastogi"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 21,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "What is the name of this character",
+      "options": {
+        "A": "Kenichi",
+        "B": "Kenji",
+        "C": "Kenshin",
+        "D": "Kenzo"
+      },
+      "correct": "A",
+      "difficulty": "easy",
+      "media": {
+        "type": "image",
+        "src": "/media/images/images (1) - Tarang Harsola.jpeg"
+      }
+    },
+    {
+      "id": 22,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "Name of the person who made storm breaker for Thor",
+      "options": {
+        "A": "Odin",
+        "B": "Eitri",
+        "C": "Hela",
+        "D": "Nidavellir"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 23,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "Which game made the word “sus” mainstream?",
+      "options": {
+        "A": "Roblox",
+        "B": "Minecraft",
+        "C": "Among us",
+        "D": "Free fire"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 24,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "In S.S. Rajamouli's 2012 film Eega (released as Makkhi in Hindi), a murdered man is reincarnated as what creature to seek revenge on his killer?",
+      "options": {
+        "A": "A mosquito",
+        "B": "A housefly",
+        "C": "A cockroach",
+        "D": "A moth"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 25,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "What does “NPC energy” usually describe?",
+      "options": {
+        "A": "Someone who avoids social media completely",
+        "B": "Someone acting robotic or lacking originality",
+        "C": "Someone who plays too many video games",
+        "D": "Someone who posts only aesthetic content"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 26,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "What does “finsta” refer to?",
+      "options": {
+        "A": "A fake or private Instagram account for close friends",
+        "B": "A finance-related Instagram page",
+        "C": "A deleted account",
+        "D": "A verified influencer account"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 27,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "What is the name of the iconic host of the TV show Art Attack?",
+      "options": {
+        "A": "Gaurav Juyal",
+        "B": "Manish Paul",
+        "C": "Karanvir Bohra",
+        "D": "Cyrus Broacha"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 28,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "In Gen Z slang, what does the gesture of touching your thumb and index finger together (often shown in memes/reels) mean?",
+      "options": {
+        "A": "Mini claps",
+        "B": "Perfect / OK",
+        "C": "clock it",
+        "D": "Tiny amount"
+      },
+      "correct": "C",
+      "difficulty": "easy",
+      "media": {
+        "type": "video",
+        "src": "/media/video/VID-20260411-WA0010 - Kondour Prakarsha.mp4",
+        "controls": true
+      }
+    },
+    {
+      "id": 29,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "What is the thing in this image called?",
+      "options": {
+        "A": "Super soaker",
+        "B": "Lazer blaster",
+        "C": "Flame Thrower",
+        "D": "Water Pistol"
+      },
+      "correct": "C",
+      "difficulty": "easy",
+      "media": {
+        "type": "image",
+        "src": "/media/images/Flame_thrower - Golla Bharath.webp"
+      }
+    },
+    {
+      "id": 30,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "What brand does this AD belong to?",
+      "options": {
+        "A": "Indigo paints",
+        "B": "Bajaj paints",
+        "C": "Asian paints",
+        "D": "JSW paints"
+      },
+      "correct": "C",
+      "difficulty": "easy",
+      "media": {
+        "type": "video",
+        "src": "/media/video/VN20260414_231323 - Golla Bharath.mp4",
+        "controls": true
+      }
+    },
+    {
+      "id": 31,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Chhota Bheem is set in a fictional kingdom. What is that kingdom called?",
+      "options": {
+        "A": "Champakpur",
+        "B": "Dholakpur",
+        "C": "Rajgarh",
+        "D": "Hastinapur"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 32,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Shinchan is obsessed with a fictional superhero he constantly imitates and dresses up as. What is that superhero's name?",
+      "options": {
+        "A": "Ultra Ranger",
+        "B": "Action Kamen",
+        "C": "Power Mask",
+        "D": "Super Shin"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 33,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "PUBG Mobile was banned in India in September 2020. When it relaunched under an Indian entity in July 2021, what was the new name?",
+      "options": {
+        "A": "PUBG India Reloaded",
+        "B": "Free Fire India",
+        "C": "Battlegrounds Mobile India",
+        "D": "PUBG New State India"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 34,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Parle ran a famous campaign with the slogan \"G maane Genius.\" But officially, the G in Parle-G actually stands for something else entirely. What does it officially stand for?",
+      "options": {
+        "A": "Glucose",
+        "B": "Great",
+        "C": "Genius",
+        "D": "Gold"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 35,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Professor Utonium accidentally created the Powerpuff Girls by mixing \"sugar, spice, and everything nice\" with one extra ingredient. What was it?",
+      "options": {
+        "A": "Chemical Z",
+        "B": "Chemical X",
+        "C": "danger",
+        "D": "evil"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 36,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Courage's family lives in \"the middle of Nowhere.\" That's not just a description — it's the actual name of the town. What is the town literally called?",
+      "options": {
+        "A": "Dustville",
+        "B": "Deadwood",
+        "C": "Lostville",
+        "D": "Nowhere"
+      },
+      "correct": "D",
+      "difficulty": "easy"
+    },
+    {
+      "id": 37,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "In the show of Mickey mouse,What are the hands that help open the doors and do chores called?",
+      "options": {
+        "A": "Helping hands",
+        "B": "Handy helpers",
+        "C": "Handy hands",
+        "D": "Hands to help"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 38,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "In Winnie the Pooh, which character is most closely known as Pooh’s best friend?",
+      "options": {
+        "A": "Piglet",
+        "B": "Christopher Robin",
+        "C": "Tigger",
+        "D": "Eeyore"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 39,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "What city do the bear brothers live in?(We bare bears)",
+      "options": {
+        "A": "Tokyo",
+        "B": "San Francisco",
+        "C": "New york",
+        "D": "Chicago"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 40,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Which American composer wrote the theme song to \"The Pink Panther\"?",
+      "options": {
+        "A": "Samuel Barber",
+        "B": "George Gershwin",
+        "C": "Leonard Bernstein",
+        "D": "Henry Mancini"
+      },
+      "correct": "D",
+      "difficulty": "easy"
+    },
+    {
+      "id": 41,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Which tv channel aired Chota Bheem on TV?",
+      "options": {
+        "A": "Hungama",
+        "B": "Nickelodeon",
+        "C": "Pogo",
+        "D": "Cartoon Network"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 42,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "What does \"Bussin'\" mean?",
+      "options": {
+        "A": "Bursting, overflowing",
+        "B": "Riding a bus",
+        "C": "Excellent or great",
+        "D": "To bust someone, like to catch them in the act."
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 43,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "What was the connection needed to share files via \"SHAREIt\"",
+      "options": {
+        "A": "Wifi/Hotspot",
+        "B": "Bluetooth",
+        "C": "USB Cable",
+        "D": "Internet"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 44,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "What cartoon is about a crazy scientist and his grandson?",
+      "options": {
+        "A": "SpongeBob SquarePants",
+        "B": "Adventure Time",
+        "C": "Rick and Morty",
+        "D": "The Simpsons"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 45,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "What does “main character energy” mean?",
+      "options": {
+        "A": "Being selfish",
+        "B": "confident person",
+        "C": "Being dramatic all the time",
+        "D": "Following trends blindly"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 46,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Guess the meaning of 'swole.'",
+      "options": {
+        "A": "Fat",
+        "B": "smart",
+        "C": "Buff",
+        "D": "Beautiful"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 47,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "What does “mogging” mean?",
+      "options": {
+        "A": "Losing badly in game",
+        "B": "Completely outshining someone",
+        "C": "Copying someone’s personality",
+        "D": "Ignoring someone on purpose"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 48,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "In the 2011 World Cup Final, MS Dhoni hit the winning six off Nuwan Kulasekara. Which stadium hosted that historic moment?",
+      "options": {
+        "A": "Chepauk, Chennai",
+        "B": "Eden Gardens, Kolkata",
+        "C": "Narendra Modi Stadium, Ahmedabad",
+        "D": "Wankhede Stadium, Mumbai"
+      },
+      "correct": "D",
+      "difficulty": "easy"
+    },
+    {
+      "id": 49,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "The battle between PewDiePie and T-Series for the most subscribed YouTube channel gripped the internet for over a year. Who ultimately won?",
+      "options": {
+        "A": "PewDiePie",
+        "B": "They tied permanently",
+        "C": "MrBeast (took both spots)",
+        "D": "T-Series"
+      },
+      "correct": "D",
+      "difficulty": "easy"
+    },
+    {
+      "id": 50,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Who went from being the most hated kid in the village... to the Leader everyone believed in ?",
+      "options": {
+        "A": "Naruto uzumaki",
+        "B": "Gojo satoru",
+        "C": "Shoyo hinata",
+        "D": "Monkey D.Luffy"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 51,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Where does Mr. Bean live ?",
+      "options": {
+        "A": "Paris",
+        "B": "New York City",
+        "C": "London",
+        "D": "Los Angeles"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 52,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Guess the company whose famous advertisement looked like the image",
+      "options": {
+        "A": "Vodafone",
+        "B": "Airtel",
+        "C": "TATA Docomo",
+        "D": "Idea"
+      },
+      "correct": "A",
+      "difficulty": "easy",
+      "media": {
+        "type": "image",
+        "src": "/media/images/Vodafone - Shishir Gella.jpg"
+      }
+    },
+    {
+      "id": 53,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "In February 2015, a single photo of a dress broke the internet because people genuinely couldn't agree on what colors it was. What were the two opposing camps?",
+      "options": {
+        "A": "Purple & Gold vs Silver & White",
+        "B": "Black & Blue vs White & Gold",
+        "C": "Blue & Green vs Pink & Orange",
+        "D": "Red & Black vs Yellow & White"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 54,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "\"Dumb Ways to Die\" is one of the most-awarded public service campaigns in history. What was it originally made to promote?",
+      "options": {
+        "A": "Road safety in Sydney",
+        "B": "Fire safety in Canada",
+        "C": "Melbourne's Metro train safety",
+        "D": "Electrical safety in the UK"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 55,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "In Dexter's Laboratory, Dexter has an extremely annoying sister who constantly stumbles into his secret lab and ruins everything. What is her name?",
+      "options": {
+        "A": "Dee Dee",
+        "B": "Dede",
+        "C": "Dana",
+        "D": "donna"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 56,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "In The Fairly OddParents, Timmy Turner is assigned two magical fairy godparents. What are their names?",
+      "options": {
+        "A": "Cosmo and Wanda",
+        "B": "Cosmo and Stella",
+        "C": "Poof and Wanda",
+        "D": "Poof and Cosmo"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 57,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Cadbury 5 Star's long-running \"Eaten by 5 Star\" Indian ad campaign features a lazy iconic duo who forget everything after eating a 5 Star. What are the two characters' names?",
+      "options": {
+        "A": "Pappu and Pintu",
+        "B": "Ramesh and Suresh",
+        "C": "Bunty and Babli",
+        "D": "Raja and Rani"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 58,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Baahubali: The Beginning released in 2015 and ended on a massive cliffhanger — \"Kattappa ne Baahubali ko kyun maara?\" How many years did audiences wait before The Conclusion answered the question?",
+      "options": {
+        "A": "1 year",
+        "B": "2 years",
+        "C": "3 years",
+        "D": "4 years"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 59,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Which term describes creating content specifically optimized to go viral?",
+      "options": {
+        "A": "Creating content aligned with trending topics and formats",
+        "B": "Designing content primarily to maximize reach and virality",
+        "C": "Posting content frequently to stay visible on feeds",
+        "D": "Adapting content style to match audience preferences"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 60,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "What are the names of the three cockroaches in the cartoon oggy and the cockroaches",
+      "options": {
+        "A": "Spike, Tyke, Butch",
+        "B": "Zig, Sharko, Marina",
+        "C": "Joey, Dee Dee, Marky",
+        "D": "Tom, Dick, Harry"
+      },
+      "correct": "C",
+      "difficulty": "medium"
+    },
+    {
+      "id": 61,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "What is the name of Kazama’s private tutor in the show of shinchan",
+      "options": {
+        "A": "Mr. Suzuki",
+        "B": "Mr. Tokuro",
+        "C": "Mr. Kuroiso",
+        "D": "Mr. Hattori"
+      },
+      "correct": "C",
+      "difficulty": "medium"
+    },
+    {
+      "id": 62,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "In which year did Apple Inc. launch its first iPhone?",
+      "options": {
+        "A": "2005",
+        "B": "2007",
+        "C": "2008",
+        "D": "2010"
+      },
+      "correct": "B",
+      "difficulty": "medium"
+    },
+    {
+      "id": 63,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "On which date did the Government of India announce the demonetisation of ₹500 and ₹1000 notes?",
+      "options": {
+        "A": "19 august 2016",
+        "B": "4 October 2016",
+        "C": "8 november 2016",
+        "D": "17 january 2017"
+      },
+      "correct": "C",
+      "difficulty": "medium"
+    },
+    {
+      "id": 64,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "In Grand Theft Auto: Vice City, who betrays Tommy Vercetti?",
+      "options": {
+        "A": "Sonny Forelli",
+        "B": "Ricardo Diaz",
+        "C": "Lance Vance",
+        "D": "Ken Rosenberg"
+      },
+      "correct": "C",
+      "difficulty": "medium"
+    },
+    {
+      "id": 65,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "In which year did WhatsApp launch?",
+      "options": {
+        "A": "2007",
+        "B": "2008",
+        "C": "2009",
+        "D": "2010"
+      },
+      "correct": "C",
+      "difficulty": "medium"
+    },
+    {
+      "id": 66,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "What kind of vehicles were used in the final round of Takeshi`s Castle?",
+      "options": {
+        "A": "Mini tanks with laser guns",
+        "B": "Mini tanks with cannons",
+        "C": "Mini tanks with water guns",
+        "D": "Mini tanks with paint guns"
+      },
+      "correct": "C",
+      "difficulty": "medium"
+    },
+    {
+      "id": 67,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Which product's ad had this sun with a straw concept?",
+      "options": {
+        "A": "Rasna",
+        "B": "Glucon D",
+        "C": "Sprite",
+        "D": "Coco cola"
+      },
+      "correct": "B",
+      "difficulty": "medium",
+      "media": {
+        "type": "image",
+        "src": "/media/images/AISelect_20260414_224549_YouTube - Golla Bharath.png"
+      }
+    },
+    {
+      "id": 68,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Which of these apps was originally known as “Musical.ly”?",
+      "options": {
+        "A": "Dubsmash",
+        "B": "Vine",
+        "C": "Thriller",
+        "D": "Tiktok"
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 69,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Three cockroaches torment Oggy in the show. Which of the following is NOT the name of one of the three cockroaches?",
+      "options": {
+        "A": "Joey",
+        "B": "Dee Dee",
+        "C": "Marky",
+        "D": "Danny"
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 70,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "In the iconic Nirma washing powder jingle, which phrase described the whiteness Nirma gave to clothes?",
+      "options": {
+        "A": "\"Chamak chamak safedi\"",
+        "B": "\"Baraf jaisi safedi\"",
+        "C": "Doodh si safedi\"",
+        "D": "\"Bijli jaisi safedi\""
+      },
+      "correct": "C",
+      "difficulty": "medium"
+    },
+    {
+      "id": 71,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "In the Cartoon Network India original Roll No. 21, the protagonist Kris (inspired by Krishna) constantly battles a villain inspired by Kansa. What is that villain's name in the show?",
+      "options": {
+        "A": "Duryodhan",
+        "B": "Kans",
+        "C": "Shakuni",
+        "D": "Ravan"
+      },
+      "correct": "B",
+      "difficulty": "medium"
+    },
+    {
+      "id": 72,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "The viral Coffin Dance meme is set to a specific EDM track. What is the actual title of that song?",
+      "options": {
+        "A": "\"Space Party\"",
+        "B": "\"Galaxy Bounce\"",
+        "C": "\"Astronomia\"",
+        "D": "\"Electric Sky\""
+      },
+      "correct": "C",
+      "difficulty": "medium"
+    },
+    {
+      "id": 73,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "The Dalgona Coffee trend exploded on social media during COVID-19 lockdowns worldwide. Which country did this whipped coffee style originally come from?",
+      "options": {
+        "A": "India",
+        "B": "South Korea",
+        "C": "Japan",
+        "D": "Vietnam"
+      },
+      "correct": "B",
+      "difficulty": "medium"
+    },
+    {
+      "id": 74,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "In 2015, Nestlé's Maggi noodles were banned across India for nearly 5 months. What was the primary reason cited by the food regulator FSSAI for the ban?",
+      "options": {
+        "A": "Misleading \"2-minute\" cooking claim",
+        "B": "Use of unapproved artificial colouring",
+        "C": "Undisclosed non-vegetarian ingredients",
+        "D": "Lead content and MSG beyond permitted limits"
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 75,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Aang, the last airbender, travels the world on a giant flying bison. What is the bison's name?",
+      "options": {
+        "A": "Momo",
+        "B": "Zuko",
+        "C": "Toph",
+        "D": "Appa"
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 76,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "In the show of Phineas and ferb,What is Candace allergic to?",
+      "options": {
+        "A": "Lobster and platypus fur",
+        "B": "Dairy and parsnips",
+        "C": "Uncooked celery and bee stings",
+        "D": "Pollen and avocados"
+      },
+      "correct": "B",
+      "difficulty": "medium"
+    },
+    {
+      "id": 77,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "In the show of Phineas and ferb,What is the name of Agent P’s organization?",
+      "options": {
+        "A": "L.O.V.E.M.U.F.F.I.N.",
+        "B": "P.F.T.",
+        "C": "A.G.L.E.T.",
+        "D": "O.W.C.A."
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 78,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "In the show of Phineas and ferb, Who among the following is not one of the members of Love Händel?",
+      "options": {
+        "A": "Danny",
+        "B": "Bobbi Fabulous",
+        "C": "Rodney",
+        "D": "Swampy"
+      },
+      "correct": "C",
+      "difficulty": "medium"
+    },
+    {
+      "id": 79,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "What is the name of the second dog that Shinchan adopted in a movie?",
+      "options": {
+        "A": "Sheero",
+        "B": "Buro",
+        "C": "Neero",
+        "D": "Kuro"
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 80,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Whom does Shinchan's teacher Yoshinaga marry?",
+      "options": {
+        "A": "Ishida Junichi",
+        "B": "Suzuki",
+        "C": "Kuroiso",
+        "D": "Kenji Ishida"
+      },
+      "correct": "A",
+      "difficulty": "medium"
+    },
+    {
+      "id": 81,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "The colored blocks shown on the screen are part of the logo of which popular kids’ TV channel in India?",
+      "options": {
+        "A": "Hungama",
+        "B": "Nickelodeon",
+        "C": "Pogo",
+        "D": "Sony"
+      },
+      "correct": "C",
+      "difficulty": "medium",
+      "media": {
+        "type": "image",
+        "src": "/media/images/Pasted image - Tarang Harsola (1).png"
+      }
+    },
+    {
+      "id": 82,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "In the show of tom and jerry, What was Jerry originally called?",
+      "options": {
+        "A": "Ralph",
+        "B": "Buster",
+        "C": "Jinx",
+        "D": "Templeton"
+      },
+      "correct": "C",
+      "difficulty": "medium"
+    },
+    {
+      "id": 83,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "“Rasode Mein Kaun Tha?” is a famous dialogue from which TV show?",
+      "options": {
+        "A": "Kyunki Saas Bhi Kabhi Bahu Thi",
+        "B": "Saath Nibhaana Saathiya",
+        "C": "Kasautii Zindagii Kay",
+        "D": "Yeh Rishta Kya Kehlata Hai"
+      },
+      "correct": "B",
+      "difficulty": "medium"
+    },
+    {
+      "id": 84,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "What is ‘breadcrumbing’ in dating culture?",
+      "options": {
+        "A": "Showing consistent interest but avoiding commitment",
+        "B": "Sending occasional messages to keep someone interested without real intent",
+        "C": "Flirting casually with multiple people at the same time",
+        "D": "Gradually losing interest and communicating less over time"
+      },
+      "correct": "B",
+      "difficulty": "medium"
+    },
+    {
+      "id": 85,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "What is ‘zombieing’?",
+      "options": {
+        "A": "Reconnecting after a long break due to genuine reasons",
+        "B": "Returning suddenly after disappearing without explanation",
+        "C": "Messaging again after a mutual breakup",
+        "D": "Restarting a conversation after being ignored"
+      },
+      "correct": "B",
+      "difficulty": "medium"
+    },
+    {
+      "id": 86,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "What is the name of this pokemon?",
+      "options": {
+        "A": "Chikorita",
+        "B": "Treecko",
+        "C": "Mudkip",
+        "D": "Triechan"
+      },
+      "correct": "B",
+      "difficulty": "medium",
+      "media": {
+        "type": "image",
+        "src": "/media/images/treecko - Golla Bharath.jpeg"
+      }
+    },
+    {
+      "id": 87,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "What was motu's favorite food in \"Motu Patlu\"?",
+      "options": {
+        "A": "Laddo",
+        "B": "Parota",
+        "C": "Veg Puff",
+        "D": "Samosa"
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 88,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "\"Naur\" is slang for \"no,\" but which accent does it mimic?",
+      "options": {
+        "A": "Australian",
+        "B": "Polish",
+        "C": "Swedish",
+        "D": "British"
+      },
+      "correct": "A",
+      "difficulty": "medium"
+    },
+    {
+      "id": 89,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "What is a \"Roman empire\"? A historic regime? Is this a trick question?",
+      "options": {
+        "A": "Something that's too big or popular to fail",
+        "B": "Something that you can't stop obsessing over",
+        "C": "Something that's doomed from the start",
+        "D": "A historic regime? Is this a trick question?"
+      },
+      "correct": "A",
+      "difficulty": "medium"
+    },
+    {
+      "id": 90,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Who made the catchy song “Baby Shark”?",
+      "options": {
+        "A": "Pinkfong",
+        "B": "Cocomelon",
+        "C": "Nickelodeon",
+        "D": "Disney"
+      },
+      "correct": "A",
+      "difficulty": "medium"
+    },
+    {
+      "id": 91,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "who won IPL in 2014",
+      "options": {
+        "A": "MI",
+        "B": "CSK",
+        "C": "KKR",
+        "D": "Delhi Dare Devils"
+      },
+      "correct": "C",
+      "difficulty": "medium"
+    },
+    {
+      "id": 92,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "In GENZ terms, What's is \"stan\" short for?",
+      "options": {
+        "A": "Stanley",
+        "B": "Stalker + fan",
+        "C": "Salty+bland",
+        "D": "Standard"
+      },
+      "correct": "B",
+      "difficulty": "medium"
+    },
+    {
+      "id": 93,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Thums Up was created by an Indian company before Coca-Cola bought it. Which company originally made it?",
+      "options": {
+        "A": "Pure Drinks",
+        "B": "Bisleri International",
+        "C": "Parle",
+        "D": "Pepsi"
+      },
+      "correct": "C",
+      "difficulty": "medium"
+    },
+    {
+      "id": 94,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Kurkure's tagline was \"Tedha Hai Par Mera Hai.\" Which actress was the long-running face of Kurkure in its iconic ads?",
+      "options": {
+        "A": "Kajol",
+        "B": "Rani Mukherjee",
+        "C": "Preity Zinta",
+        "D": "Juhi Chawla"
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 95,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Cadbury Perk ran a famous campaign targeted at hungry schoolkids. What was its tagline?",
+      "options": {
+        "A": "\"Kuch Meetha Ho Jaaye\"",
+        "B": "\"Thodi si pet pooja\"",
+        "C": "\"Real Taste of Chocolate\"",
+        "D": "\"Eat 5 Star, Do Nothing\""
+      },
+      "correct": "B",
+      "difficulty": "medium"
+    },
+    {
+      "id": 96,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Taare Zameen Par features a young boy struggling with dyslexia. What is the main child character's name?",
+      "options": {
+        "A": "Karan Awasthi",
+        "B": "Arjun Awasthi",
+        "C": "Rohan Awasthi",
+        "D": "Ishan Awasthi"
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 97,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "3 Idiots was loosely adapted from a novel by Chetan Bhagat. What is the name of that novel?",
+      "options": {
+        "A": "Two States",
+        "B": "Half Girlfriend",
+        "C": "The Zoya Factor",
+        "D": "Five Point Someone"
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 98,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "When Amitabh Bachchan stepped away from KBC, another Bollywood star hosted one season (Season 3, 2007). Who was that host?",
+      "options": {
+        "A": "Salman Khan",
+        "B": "Anil Kapoor",
+        "C": "Aamir Khan",
+        "D": "Shah Rukh Khan"
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 99,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "TVF (The Viral Fever) launched the Indian web series format with a breakout show about startup founders. What was the name of that show?",
+      "options": {
+        "A": "Kota Factory",
+        "B": "Aspirants",
+        "C": "Permanent Roommates",
+        "D": "TVF Pitchers"
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 100,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Wordle, the viral word-guessing game, is literally named after its creator. What is his last name?",
+      "options": {
+        "A": "Hardle",
+        "B": "Gordle",
+        "C": "Byrdle",
+        "D": "Wardle"
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 101,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "This scene is from which movie",
+      "options": {
+        "A": "Hera pheri",
+        "B": "Phir Hera pheri",
+        "C": "Hungama",
+        "D": "Golmaal"
+      },
+      "correct": "C",
+      "difficulty": "medium",
+      "media": {
+        "type": "video",
+        "src": "/media/video/Maro humko maro salo Rajpal yadv best comedy humko jinda mt chodo salo #rajpalyadav - vehicle's STATUS (720p) - Tarang Harsola.mp4",
+        "controls": true
+      }
+    },
+    {
+      "id": 102,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Who is the singer of \"Ishq Jalakar\" from Dhurandhar",
+      "options": {
+        "A": "Subhadeep Das Chowdhury",
+        "B": "Rishi Singh",
+        "C": "Vaibhav Gupta",
+        "D": "Arijit Singh"
+      },
+      "correct": "A",
+      "difficulty": "medium"
+    },
+    {
+      "id": 103,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Singer of the song \"Lutt le gaya\" from Dhurandhar",
+      "options": {
+        "A": "Sonal Choudhary",
+        "B": "Simran Choudhary",
+        "C": "Sakshi Sharma",
+        "D": "Sonal Sharma"
+      },
+      "correct": "B",
+      "difficulty": "medium"
+    },
+    {
+      "id": 104,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Singer of the song \"Aari Aari\" from Dhurandhar",
+      "options": {
+        "A": "Bombay Rockers",
+        "B": "Desi Rockers",
+        "C": "Bombay Blasters",
+        "D": "Desi blasters"
+      },
+      "correct": "A",
+      "difficulty": "medium"
+    },
+    {
+      "id": 105,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Name of the cat of negative character in this cartoon",
+      "options": {
+        "A": "Amara",
+        "B": "Kio",
+        "C": "Kamra",
+        "D": "Kai"
+      },
+      "correct": "B",
+      "difficulty": "medium",
+      "media": {
+        "type": "image",
+        "src": "/media/images/images - Tarang Harsola.jpeg"
+      }
+    },
+    {
+      "id": 106,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "What is the name of Red Skull’s real identity in captain America movie?",
+      "options": {
+        "A": "Otto Octavius",
+        "B": "Johann Schmidt",
+        "C": "Helmut Zemo",
+        "D": "Arnim Zola"
+      },
+      "correct": "B",
+      "difficulty": "medium"
+    },
+    {
+      "id": 107,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Guess the game name from the image ?",
+      "options": {
+        "A": "Extreme Car Driving Simulator",
+        "B": "CarX Drift Racing 2",
+        "C": "Race Master 3D: Car Racing",
+        "D": "Ultimate Car Driving Simulator"
+      },
+      "correct": "A",
+      "difficulty": "medium",
+      "media": {
+        "type": "image",
+        "src": "/media/images/Extreme Car Driving Simulator - Shishir Gella.png"
+      }
+    },
+    {
+      "id": 108,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Guess the charecter name from the image ?",
+      "options": {
+        "A": "Julie",
+        "B": "Julia",
+        "C": "Juliana",
+        "D": "June"
+      },
+      "correct": "A",
+      "difficulty": "medium",
+      "media": {
+        "type": "image",
+        "src": "/media/images/Julie - Shishir Gella.jpg"
+      }
+    },
+    {
+      "id": 109,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Which cartoon character gains strength by eating spinach?",
+      "options": {
+        "A": "Wimpy",
+        "B": "Bluto",
+        "C": "Popeye",
+        "D": "Olive Oyl"
+      },
+      "correct": "C",
+      "difficulty": "medium"
+    },
+    {
+      "id": 110,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Guess the charecter name form the image below",
+      "options": {
+        "A": "Roxy",
+        "B": "Nova",
+        "C": "Mimi",
+        "D": "Tricky"
+      },
+      "correct": "D",
+      "difficulty": "medium",
+      "media": {
+        "type": "image",
+        "src": "/media/images/Tricky - Shishir Gella.jpg"
+      }
+    },
+    {
+      "id": 111,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Guess the character name form the image below",
+      "options": {
+        "A": "Tagbot",
+        "B": "CodeTagger",
+        "C": "NanoSpray",
+        "D": "NeonTagger"
+      },
+      "correct": "A",
+      "difficulty": "medium",
+      "media": {
+        "type": "image",
+        "src": "/media/images/Tagbot - Shishir Gella.png"
+      }
+    },
+    {
+      "id": 112,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "In Subway Surfers, what is the inspector always chasing you with?",
+      "options": {
+        "A": "Stick",
+        "B": "Gun",
+        "C": "Whistle",
+        "D": "Dog"
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 113,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "What does “GYATT” mean in Gen Z slang?",
+      "options": {
+        "A": "Expression of suprise",
+        "B": "A dance move",
+        "C": "A gaming term",
+        "D": "Meme format"
+      },
+      "correct": "A",
+      "difficulty": "medium"
+    },
+    {
+      "id": 114,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "What does \"rizz\" mean?",
+      "options": {
+        "A": "Charisma",
+        "B": "Stylish",
+        "C": "Angry",
+        "D": "Intelligence"
+      },
+      "correct": "A",
+      "difficulty": "medium"
+    },
+    {
+      "id": 115,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "In CS:GO (now CS2), the AWP is the most feared sniper rifle in the game. What does \"AWP\" stand for?",
+      "options": {
+        "A": "Advanced Warfare Projectile",
+        "B": "Arctic Warfare Police",
+        "C": "Active Warzone Precision",
+        "D": "Automatic Weapon Platform"
+      },
+      "correct": "B",
+      "difficulty": "medium"
+    },
+    {
+      "id": 116,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Clash of Clans is made by Supercell, one of the most profitable mobile game studios ever. Which country is Supercell headquartered in?",
+      "options": {
+        "A": "Sweden",
+        "B": "Canada",
+        "C": "Germany",
+        "D": "Finland"
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 117,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What is the name of Tom’s owner in the cartoon: TOM AND JERRY",
+      "options": {
+        "A": "Mrs. Robinson",
+        "B": "Mammy Two Shoes",
+        "C": "Miss Clara",
+        "D": "Aunt poly"
+      },
+      "correct": "B",
+      "difficulty": "hard"
+    },
+    {
+      "id": 118,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "The logo shown on screen belongs to the former identity of which popular food platform?",
+      "options": {
+        "A": "Foodpanda india",
+        "B": "TinyOwl",
+        "C": "Zomato",
+        "D": "EazyDiner"
+      },
+      "correct": "C",
+      "difficulty": "hard",
+      "media": {
+        "type": "image",
+        "src": "/media/images/FoodieBay-Logo-2008 - Kondour Prakarsha.png"
+      }
+    },
+    {
+      "id": 119,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "The Blue Whale Challenge reportedly originated in which country?",
+      "options": {
+        "A": "Russia",
+        "B": "USA",
+        "C": "China",
+        "D": "Brazil"
+      },
+      "correct": "A",
+      "difficulty": "hard"
+    },
+    {
+      "id": 120,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What is the full name of Dekisugi in Doraemon?",
+      "options": {
+        "A": "Hidetoshi Dekisugi",
+        "B": "Hidetaka Dekisugi",
+        "C": "Hideki Dekisugi",
+        "D": "Hiroshi Dekisugi"
+      },
+      "correct": "A",
+      "difficulty": "hard"
+    },
+    {
+      "id": 121,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Nobita Nobi is known for falling asleep extremely quickly. Approximately how long does he take?",
+      "options": {
+        "A": "0.75s",
+        "B": "0.93s",
+        "C": "1.21s",
+        "D": "1.54s"
+      },
+      "correct": "B",
+      "difficulty": "hard"
+    },
+    {
+      "id": 122,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "In Grand Theft Auto: San Andreas, what is the maximum wanted level (stars) a player can reach?",
+      "options": {
+        "A": "4",
+        "B": "5",
+        "C": "6",
+        "D": "7"
+      },
+      "correct": "C",
+      "difficulty": "hard"
+    },
+    {
+      "id": 123,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "In which of these sports are the terms “dunk” and “rebound” commonly used?",
+      "options": {
+        "A": "Vollyball",
+        "B": "Basketball",
+        "C": "Football",
+        "D": "Netball"
+      },
+      "correct": "B",
+      "difficulty": "hard"
+    },
+    {
+      "id": 124,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "The above image is from which of the following Telugu movies?",
+      "options": {
+        "A": "Anand",
+        "B": "Godavari",
+        "C": "Happy days",
+        "D": "Ye maya chesave"
+      },
+      "correct": "B",
+      "difficulty": "hard",
+      "media": {
+        "type": "image",
+        "src": "/media/images/IMG_20260414_230547 - Rishith Chintala.jpg"
+      }
+    },
+    {
+      "id": 125,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "In the long-running crime show CID, which of the following characters is most famously associated with breaking doors during investigations?",
+      "options": {
+        "A": "Dr. Salunkhe",
+        "B": "Inspector Abhijeet",
+        "C": "Inspector Daya",
+        "D": "ACP Pradyuman"
+      },
+      "correct": "C",
+      "difficulty": "hard"
+    },
+    {
+      "id": 126,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Many know Mahesh Babu as a superstar, but he starred in a 2004 experimental film inspired by the Hollywood movie Big. What is the name of that film?",
+      "options": {
+        "A": "Athadu",
+        "B": "Arjun",
+        "C": "Nani",
+        "D": "Murari"
+      },
+      "correct": "C",
+      "difficulty": "hard"
+    },
+    {
+      "id": 127,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "\"It's over 9,000!\" is one of the most iconic lines in anime. But in the original Japanese version of Dragon Ball Z, the actual number Vegeta announced was different. What was it?",
+      "options": {
+        "A": "8,000",
+        "B": "9,500",
+        "C": "10,000",
+        "D": "12,000"
+      },
+      "correct": "A",
+      "difficulty": "hard"
+    },
+    {
+      "id": 128,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Chhota Bheem, arguably India's most watched animated show, is produced by Green Gold Animation. In which city is Green Gold Animation based?",
+      "options": {
+        "A": "Mumbai",
+        "B": "Chennai",
+        "C": "Bengaluru",
+        "D": "Hyderabad"
+      },
+      "correct": "D",
+      "difficulty": "hard"
+    },
+    {
+      "id": 129,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Motu Patlu became a hit animated show on Nickelodeon India, but the two characters originally appeared decades earlier in a classic Indian children's magazine. Which one?",
+      "options": {
+        "A": "Champak",
+        "B": "Tinkle",
+        "C": "Nandan",
+        "D": "Lotpot"
+      },
+      "correct": "D",
+      "difficulty": "hard"
+    },
+    {
+      "id": 130,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What was the original name Phineas and Ferb gave Perry the Platypus when they adopted him?",
+      "options": {
+        "A": "Bartholomew",
+        "B": "Reginald",
+        "C": "Claude",
+        "D": "Fitzgerald"
+      },
+      "correct": "A",
+      "difficulty": "hard"
+    },
+    {
+      "id": 131,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Guess the Pokemon",
+      "options": {
+        "A": "Zeraora",
+        "B": "Lucario",
+        "C": "Cinderace",
+        "D": "Greninja"
+      },
+      "correct": "B",
+      "difficulty": "hard",
+      "media": {
+        "type": "image",
+        "src": "/media/images/IMG_3830 - J VARSHA.jpeg"
+      }
+    },
+    {
+      "id": 132,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Who was the producer of this iconic TV show",
+      "options": {
+        "A": "B. R. Chopra",
+        "B": "R. K. Sharma",
+        "C": "K. S. Chatterjee",
+        "D": "S. D. Kapoor"
+      },
+      "correct": "A",
+      "difficulty": "hard",
+      "media": {
+        "type": "image",
+        "src": "/media/images/mahabharath - Tarang Harsola.jpg"
+      }
+    },
+    {
+      "id": 133,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What is the name of this character ?",
+      "options": {
+        "A": "Suparna",
+        "B": "Supriya",
+        "C": "Suvarna",
+        "D": "Suchitra"
+      },
+      "correct": "A",
+      "difficulty": "hard",
+      "media": {
+        "type": "image",
+        "src": "/media/images/Pasted image - Tarang Harsola.png"
+      }
+    },
+    {
+      "id": 134,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What is the name of this character?",
+      "options": {
+        "A": "Basant",
+        "B": "Vasu",
+        "C": "Bhanu",
+        "D": "Basu"
+      },
+      "correct": "D",
+      "difficulty": "hard",
+      "media": {
+        "type": "image",
+        "src": "/media/images/images - Tarang Harsola.png"
+      }
+    },
+    {
+      "id": 135,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What was the parent company of Temple run?",
+      "options": {
+        "A": "Nikki",
+        "B": "Tencent",
+        "C": "Imangi Studios",
+        "D": "Pipeworks Studio"
+      },
+      "correct": "C",
+      "difficulty": "hard"
+    },
+    {
+      "id": 136,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What was the one fruit NOT present in the game \"Fruit Ninja\"",
+      "options": {
+        "A": "Mango",
+        "B": "Peach",
+        "C": "Guava",
+        "D": "WaterMelon"
+      },
+      "correct": "C",
+      "difficulty": "hard"
+    },
+    {
+      "id": 137,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Who was the youngest star to win the big prize at the Grammys?",
+      "options": {
+        "A": "Billie Eilish",
+        "B": "Taylor Swift",
+        "C": "Olivia Rodrigo",
+        "D": "Adele"
+      },
+      "correct": "A",
+      "difficulty": "hard"
+    },
+    {
+      "id": 138,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Sachin Tendulkar scored his 100th international century in April 2012. Against which country did he reach this milestone?",
+      "options": {
+        "A": "Pakistan",
+        "B": "Australia",
+        "C": "Sri Lanka",
+        "D": "Bangladesh"
+      },
+      "correct": "D",
+      "difficulty": "hard"
+    },
+    {
+      "id": 139,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "The Ice Bucket Challenge in 2014 raised awareness and funds for ALS (Motor Neuron Disease). How much money did the ALS Association raise in the US alone in just 8 weeks?",
+      "options": {
+        "A": "$10 million",
+        "B": "$50 million",
+        "C": "$115 million",
+        "D": "$300 million"
+      },
+      "correct": "C",
+      "difficulty": "hard"
+    },
+    {
+      "id": 140,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Angry Birds launched in 2009 during a specific global health event, and the game's green pig enemies were reportedly inspired by it. What was that event?",
+      "options": {
+        "A": "The 2008 global financial crisis",
+        "B": "A viral pig-farming documentary",
+        "C": "An Irish folk tale about pigs",
+        "D": "The H1N1 Swine Flu pandemic"
+      },
+      "correct": "D",
+      "difficulty": "hard"
+    },
+    {
+      "id": 141,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Subway Surfers has been downloaded over 4 billion times. Most people assume it's American. Which country were the two studios that made it (SYBO Games and Kiloo) actually based in?",
+      "options": {
+        "A": "Denmark",
+        "B": "Sweden",
+        "C": "Norway",
+        "D": "Finland"
+      },
+      "correct": "A",
+      "difficulty": "hard"
+    },
+    {
+      "id": 142,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What is the name of the character",
+      "options": {
+        "A": "Chingam",
+        "B": "Bubblegum",
+        "C": "Simba",
+        "D": "Singham"
+      },
+      "correct": "B",
+      "difficulty": "hard",
+      "media": {
+        "type": "image",
+        "src": "/media/images/Screenshot_2026-04-16-11-09-02-65_40deb401b9ffe8e1df2f1cc5ba480b12 - Tarang Harsola.jpg"
+      }
+    },
+    {
+      "id": 143,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Name of the character",
+      "options": {
+        "A": "Bose",
+        "B": "Jazz",
+        "C": "Rose",
+        "D": "Jose"
+      },
+      "correct": "B",
+      "difficulty": "hard",
+      "media": {
+        "type": "image",
+        "src": "/media/images/Pasted image - Tarang Harsola.png"
+      }
+    },
+    {
+      "id": 144,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Which TV serial was she a part of ?",
+      "options": {
+        "A": "Yeah rishta kya kehlata hai",
+        "B": "Bhabiji Ghar Par Hain",
+        "C": "Sasural Simar ka",
+        "D": "FIR"
+      },
+      "correct": "B",
+      "difficulty": "hard",
+      "media": {
+        "type": "image",
+        "src": "/media/images/images - Tarang Harsola.webp"
+      }
+    },
+    {
+      "id": 145,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Who is the singer of the song Mann atkeya from Dhurandhar",
+      "options": {
+        "A": "Vaibhav Gupta",
+        "B": "Rishi Singh",
+        "C": "Shashwat Sachdev",
+        "D": "Aditya Rikhari"
+      },
+      "correct": "A",
+      "difficulty": "hard"
+    },
+    {
+      "id": 146,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "In the movie Dhurandhar, the female rapper known by her nickname “Rebel” is known by what real name?",
+      "options": {
+        "A": "Meba Lyngdoh",
+        "B": "Ridaan Kharsyntiew",
+        "C": "Siahrun Nongrum",
+        "D": "Daiaphi Lamare"
+      },
+      "correct": "D",
+      "difficulty": "hard"
+    },
+    {
+      "id": 147,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What is Loki’s true heritage?",
+      "options": {
+        "A": "Asgardian",
+        "B": "Frost Giant",
+        "C": "Dark Elf",
+        "D": "Eternal"
+      },
+      "correct": "B",
+      "difficulty": "hard"
+    },
+    {
+      "id": 148,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Guess the charecter name form the image",
+      "options": {
+        "A": "Scarlett Fox",
+        "B": "Ruby",
+        "C": "Wolfe",
+        "D": "Ivy Lynx"
+      },
+      "correct": "A",
+      "difficulty": "hard",
+      "media": {
+        "type": "image",
+        "src": "/media/images/Scarlett Fox - Shishir Gella.jpg"
+      }
+    },
+    {
+      "id": 149,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Find the odd one out(context- takeshi castle)",
+      "options": {
+        "A": "Skipping stone",
+        "B": "Slippery wall",
+        "C": "Bridge ball",
+        "D": "Wipeout"
+      },
+      "correct": "D",
+      "difficulty": "hard"
+    },
+    {
+      "id": 150,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What did Javed Jaffery used to call the general in Takeshi castle",
+      "options": {
+        "A": "General Takeshi",
+        "B": "General Hayate",
+        "C": "General Lee",
+        "D": "General Tani"
+      },
+      "correct": "C",
+      "difficulty": "hard"
+    },
+    {
+      "id": 151,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What is the name of Mr. Bean’s landlady?",
+      "options": {
+        "A": "Mrs. Wicket",
+        "B": "Mrs. Wiggins",
+        "C": "Mrs. Wilkins",
+        "D": "Mrs. Watson"
+      },
+      "correct": "A",
+      "difficulty": "hard"
+    },
+    {
+      "id": 152,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What is the name of the dog in Tom and Jerry?",
+      "options": {
+        "A": "Butch",
+        "B": "Spike",
+        "C": "Droopy",
+        "D": "Tyke"
+      },
+      "correct": "B",
+      "difficulty": "hard"
+    },
+    {
+      "id": 153,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "In Ninja Hattori, Hattori's biggest rival is a scheming ninja who constantly tries to expose him and steal Kenichi's love interest Yumeko. What is this rival's name?",
+      "options": {
+        "A": "Kagechiyo",
+        "B": "Tensai",
+        "C": "Kemumaki",
+        "D": "Raijin"
+      },
+      "correct": "C",
+      "difficulty": "hard"
+    },
+    {
+      "id": 154,
+      "levels": [
+        10,
+        11
+      ],
+      "question": "Which was the first mobile game to cross 1 billion downloads on Google Play Store?",
+      "options": {
+        "A": "Temple Run",
+        "B": "Subway surfers",
+        "C": "Clash of clans",
+        "D": "Candy crush saga"
+      },
+      "correct": "B",
+      "difficulty": "hard"
+    },
+    {
+      "id": 155,
+      "levels": [
+        10,
+        11
+      ],
+      "question": "What is the name of the character shown in the image?",
+      "options": {
+        "A": "Tony",
+        "B": "Alex",
+        "C": "Dylan",
+        "D": "Jake"
+      },
+      "correct": "D",
+      "difficulty": "hard",
+      "media": {
+        "type": "image",
+        "src": "/media/images/Jake1 - Golla Bharath.webp"
+      }
+    },
+    {
+      "id": 156,
+      "levels": [
+        10,
+        11
+      ],
+      "question": "Purble Place was first introduced in which Windows version?",
+      "options": {
+        "A": "Windows XP",
+        "B": "Windows Vista",
+        "C": "Windows 7",
+        "D": "Windows 10"
+      },
+      "correct": "B",
+      "difficulty": "hard"
+    },
+    {
+      "id": 157,
+      "levels": [
+        10,
+        11
+      ],
+      "question": "The social network Orkut was literally named after its creator, a Google engineer. What is his last name?",
+      "options": {
+        "A": "Büyükkökten",
+        "B": "Mehrotra",
+        "C": "Tanaka",
+        "D": "De Souza"
+      },
+      "correct": "A",
+      "difficulty": "hard"
+    },
+    {
+      "id": 158,
+      "levels": [
+        10,
+        11
+      ],
+      "question": "Doraemon is a robotic cat with no ears. The show actually explains why he lost his ears AND why his colour changed from yellow to blue. What is the in-show explanation?",
+      "options": {
+        "A": "He sold his ears to buy Nobita a birthday gift",
+        "B": "They were removed during a factory malfunction",
+        "C": "A mouse chewed off his ears and he cried so hard his yellow paint washed off, turning him blue",
+        "D": "He was born without ears due to a manufacturing error"
+      },
+      "correct": "C",
+      "difficulty": "hard"
+    },
+    {
+      "id": 159,
+      "levels": [
+        10,
+        11
+      ],
+      "question": "The ‘Saat Crore’ announcement followed the correct answer to which option?",
+      "options": {
+        "A": "Paul Canning",
+        "B": "William Hawkins",
+        "C": "Thomas Roe",
+        "D": "James Lancaster"
+      },
+      "correct": "B",
+      "difficulty": "hard",
+      "media": {
+        "type": "audio",
+        "src": "/media/audio/7_crore_meme_sound_kbc - Tarang Harsola.mp3",
+        "controls": true
+      }
+    },
+    {
+      "id": 160,
+      "levels": [
+        10,
+        11
+      ],
+      "question": "Which platform was originally launched as ‘Musical.ly’ before re branding?",
+      "options": {
+        "A": "Snapchat",
+        "B": "TikTok",
+        "C": "Reddit",
+        "D": "Spotify"
+      },
+      "correct": "B",
+      "difficulty": "hard"
+    },
+    {
+      "id": 161,
+      "levels": [
+        10,
+        11
+      ],
+      "question": "Which year was this video posted",
+      "options": {
+        "A": "2004",
+        "B": "2001",
+        "C": "2003",
+        "D": "2005"
+      },
+      "correct": "D",
+      "difficulty": "hard",
+      "media": {
+        "type": "video",
+        "src": "/media/video/Me at the zoo - jawed (240p) - Tarang Harsola.mp4",
+        "controls": true
+      }
+    },
+    {
+      "id": 162,
+      "levels": [
+        10,
+        11
+      ],
+      "question": "What nickname does Tony Stark give Thor in Avengers (2012)?",
+      "options": {
+        "A": "Point Break",
+        "B": "Shakespeare in the Park",
+        "C": "Lebowski",
+        "D": "Goldilocks"
+      },
+      "correct": "A",
+      "difficulty": "hard"
+    },
+    {
+      "id": 163,
+      "levels": [
+        10,
+        11
+      ],
+      "question": "Guess the name of this special / unlockable character",
+      "options": {
+        "A": "Francisco Montoya",
+        "B": "Zack Wonder",
+        "C": "Barry Bones",
+        "D": "Montana Smith"
+      },
+      "correct": "A",
+      "difficulty": "hard",
+      "media": {
+        "type": "image",
+        "src": "/media/images/Francisco Montoya - Shishir Gella.png"
+      }
+    },
+    {
+      "id": 164,
+      "levels": [
+        10,
+        11
+      ],
+      "question": "What is the name of Mrs. Wicket’s cat in Mr. Bean ?",
+      "options": {
+        "A": "Scratch",
+        "B": "Scrapper",
+        "C": "Scruffy",
+        "D": "Stripe"
+      },
+      "correct": "B",
+      "difficulty": "hard"
+    },
+    {
+      "id": 165,
+      "levels": [
+        10,
+        11
+      ],
+      "question": "What is his son name",
+      "options": {
+        "A": "Tyke",
+        "B": "Spike Jr.",
+        "C": "Butch",
+        "D": "Scrappy"
+      },
+      "correct": "A",
+      "difficulty": "hard",
+      "media": {
+        "type": "image",
+        "src": "/media/images/images - Tarang Harsola.png"
+      }
+    },
+    {
+      "id": 166,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "The first Indian to take a test hat trick",
+      "options": {
+        "A": "Harbhajan Singh",
+        "B": "Irfan Pathan",
+        "C": "Zaheer Khan",
+        "D": "Anil Kumble"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 167,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "BeReal sent users a random daily notification asking them to post a photo. To be counted as \"on time,\" users had to post within what window?",
+      "options": {
+        "A": "30 seconds",
+        "B": "1 minute",
+        "C": "2 minutes",
+        "D": "5 minutes"
+      },
+      "correct": "C",
+      "difficulty": "medium"
+    },
+    {
+      "id": 168,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "The iconic Airtel ringtone has played on phones across India for decades. Which Oscar-winning composer originally created it?",
+      "options": {
+        "A": "Ilaiyaraaja",
+        "B": "Vishal-Shekhar",
+        "C": "A.R. Rahman",
+        "D": "Shankar-Ehsaan-Loy"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 169,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "These candy sticks were shaped and packaged to look exactly like cigarettes — complete with a foil wrapper and a red-tipped \"lit\" end. What were they most commonly called?",
+      "options": {
+        "A": "Candy Stix",
+        "B": "Phantom Sweet Cigarettes",
+        "C": "Choco Smokes",
+        "D": "Pan Sweets"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 170,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "What is the name of Ben Tennyson's grandfather in Ben 10?",
+      "options": {
+        "A": "Carl",
+        "B": "Phil",
+        "C": "Joel",
+        "D": "Max"
+      },
+      "correct": "D",
+      "difficulty": "easy"
+    },
+    {
+      "id": 171,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "What is the name of the gang's van in Scooby-Doo?",
+      "options": {
+        "A": "Phantom Van",
+        "B": "Clue Cruiser",
+        "C": "Mystery Machine",
+        "D": "Ghost Wagon"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 172,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Which telecom ad popularized the line \"What an Idea, Sirji!\"?",
+      "options": {
+        "A": "Airtel",
+        "B": "BSNL",
+        "C": "Reliance",
+        "D": "Idea"
+      },
+      "correct": "D",
+      "difficulty": "easy"
+    },
+    {
+      "id": 173,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "Which soft drink used the slogan \"Yeh Dil Maange More\"?",
+      "options": {
+        "A": "Coca-Cola",
+        "B": "Thums Up",
+        "C": "Pepsi",
+        "D": "Sprite"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 174,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "The ZooZoo ad characters were first launched during which cricket event? (vodafone)",
+      "options": {
+        "A": "Champions Trophy 2006",
+        "B": "World Cup 2011",
+        "C": "IPL 2013",
+        "D": "IPL 2009"
+      },
+      "correct": "D",
+      "difficulty": "hard"
+    },
+    {
+      "id": 175,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "Who composed the iconic Airtel signature tune?",
+      "options": {
+        "A": "Shankar Mahadevan",
+        "B": "Pritam",
+        "C": "Vishal-Shekhar",
+        "D": "A. R. Rahman"
+      },
+      "correct": "D",
+      "difficulty": "easy"
+    },
+    {
+      "id": 176,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Milk Bikis is a biscuit brand from which company?",
+      "options": {
+        "A": "Sunfeast",
+        "B": "Parle",
+        "C": "Britannia",
+        "D": "Priya Gold"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 177,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "Little Hearts biscuits are made by which company?",
+      "options": {
+        "A": "ITC",
+        "B": "Bisk Farm",
+        "C": "Britannia",
+        "D": "Parle"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 178,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "What type of confectionery was Big Babol?",
+      "options": {
+        "A": "Bubble gum",
+        "B": "Wafer bar",
+        "C": "Jelly candy",
+        "D": "Lollipop"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 179,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "What is the name of Munna Bhai's loyal sidekick? (MBBS)",
+      "options": {
+        "A": "Bunty",
+        "B": "Maqsood",
+        "C": "Circuit",
+        "D": "Lucky"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 180,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "In Lagaan, what is the name of Bhuvan's village?",
+      "options": {
+        "A": "Sitabari",
+        "B": "Rampur",
+        "C": "Kheda",
+        "D": "Champaner"
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 181,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "What is the name of the cop played by Abhishek Bachchan in Dhoom?",
+      "options": {
+        "A": "Aryan Singh",
+        "B": "Kabir Sharma",
+        "C": "Ali Akbar",
+        "D": "Jai Dixit"
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 182,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "What is Shah Rukh Khan's coach character called in Chak De! India?",
+      "options": {
+        "A": "Vikram Khan",
+        "B": "Kabir Ali",
+        "C": "Kabir Khan",
+        "D": "Sameer Khan"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 183,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What nickname is given to the child in Bhootnath?",
+      "options": {
+        "A": "Lucky",
+        "B": "Chintu",
+        "C": "Golu",
+        "D": "Banku"
+      },
+      "correct": "D",
+      "difficulty": "hard"
+    },
+    {
+      "id": 184,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "In Bhool Bhulaiyaa, what name is linked to Avni's haunting alter ego?",
+      "options": {
+        "A": "Manjulika",
+        "B": "Chandramukhi",
+        "C": "Nandini",
+        "D": "Mohini"
+      },
+      "correct": "A",
+      "difficulty": "hard"
+    },
+    {
+      "id": 185,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What is Baburao's surname in Hera Pheri?",
+      "options": {
+        "A": "Deshmukh",
+        "B": "Apte",
+        "C": "Kulkarni",
+        "D": "Shenoy"
+      },
+      "correct": "B",
+      "difficulty": "hard"
+    },
+    {
+      "id": 186,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "What is the name of Krishna's father in Krrish?",
+      "options": {
+        "A": "Sanjay Mehra",
+        "B": "Arjun Mehra",
+        "C": "Raj Mehra",
+        "D": "Rohit Mehra"
+      },
+      "correct": "D",
+      "difficulty": "medium"
+    },
+    {
+      "id": 187,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What was Yahoo Messenger's famous attention-grabbing nudge called?",
+      "options": {
+        "A": "Ping",
+        "B": "Flash",
+        "C": "Buzz",
+        "D": "Zap"
+      },
+      "correct": "C",
+      "difficulty": "hard"
+    },
+    {
+      "id": 188,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Which company made Gtalk?",
+      "options": {
+        "A": "AOL",
+        "B": "Microsoft",
+        "C": "Yahoo",
+        "D": "Google"
+      },
+      "correct": "D",
+      "difficulty": "easy"
+    },
+    {
+      "id": 189,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "Which phone brand is most linked with the classic game Snake?",
+      "options": {
+        "A": "Nokia",
+        "B": "Motorola",
+        "C": "Sony Ericsson",
+        "D": "Samsung"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 190,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "India defeated which team in the 2007 ICC T20 World Cup final?",
+      "options": {
+        "A": "Pakistan",
+        "B": "England",
+        "C": "Sri Lanka",
+        "D": "Australia"
+      },
+      "correct": "A",
+      "difficulty": "medium"
+    },
+    {
+      "id": 191,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Yuvraj Singh hit six sixes in an over off which bowler?",
+      "options": {
+        "A": "Stuart Broad",
+        "B": "Graeme Swann",
+        "C": "Andrew Flintoff",
+        "D": "James Anderson"
+      },
+      "correct": "A",
+      "difficulty": "medium"
+    },
+    {
+      "id": 192,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Which team won the IPL in 2009?",
+      "options": {
+        "A": "Royal Challengers Bangalore",
+        "B": "Mumbai Indians",
+        "C": "Chennai Super Kings",
+        "D": "Deccan Chargers"
+      },
+      "correct": "D",
+      "difficulty": "hard"
+    },
+    {
+      "id": 193,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "India beat which team in the final of the 2013 Champions Trophy?",
+      "options": {
+        "A": "Sri Lanka",
+        "B": "South Africa",
+        "C": "England",
+        "D": "Pakistan"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 194,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Microsoft Encarta was primarily what kind of product?",
+      "options": {
+        "A": "Photo editor",
+        "B": "Digital encyclopedia",
+        "C": "Typing tutor",
+        "D": "Antivirus"
+      },
+      "correct": "B",
+      "difficulty": "hard"
+    },
+    {
+      "id": 195,
+      "levels": [
+        10,
+        11
+      ],
+      "question": "WWF changed its name to WWE after a dispute with which organization?",
+      "options": {
+        "A": "World Wrestling Federation UK",
+        "B": "World Fight Federation",
+        "C": "World Wildlife Fund",
+        "D": "World Fitness Forum"
+      },
+      "correct": "C",
+      "difficulty": "hard"
+    },
+    {
+      "id": 196,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "What does IYKYK stand for?",
+      "options": {
+        "A": "It's your key, your kingdom",
+        "B": "I yield, keep your knowledge",
+        "C": "If you keep yelling, know",
+        "D": "If you know, you know"
+      },
+      "correct": "D",
+      "difficulty": "easy"
+    },
+    {
+      "id": 197,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What does it mean when someone gets \"ratioed\" online?",
+      "options": {
+        "A": "Their post is removed for copyright",
+        "B": "Their comments are turned off",
+        "C": "A reply or quote gets more engagement and makes them look bad",
+        "D": "They lose followers after going private"
+      },
+      "correct": "C",
+      "difficulty": "hard"
+    },
+    {
+      "id": 198,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What does \"gaslighting\" mean?",
+      "options": {
+        "A": "Posting fake luxury photos",
+        "B": "Ignoring messages for days",
+        "C": "Manipulating someone into doubting their reality",
+        "D": "Making a joke about a serious issue"
+      },
+      "correct": "C",
+      "difficulty": "hard"
+    },
+    {
+      "id": 199,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "What is \"catfishing\"?",
+      "options": {
+        "A": "Using a fake online identity to deceive someone",
+        "B": "Leaking private screenshots",
+        "C": "Editing photos heavily",
+        "D": "Hacking a verified account"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 200,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What is Instagram's side-by-side reaction video format called?",
+      "options": {
+        "A": "Collab",
+        "B": "Remix",
+        "C": "Blend",
+        "D": "Duet"
+      },
+      "correct": "B",
+      "difficulty": "hard"
+    },
+    {
+      "id": 201,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "On Discord, what are most communities called?",
+      "options": {
+        "A": "Servers",
+        "B": "Clubs",
+        "C": "Pods",
+        "D": "Rooms"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 202,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "On Reddit, what is the public score from upvotes commonly called?",
+      "options": {
+        "A": "Karma",
+        "B": "Influence",
+        "C": "Rank XP",
+        "D": "Cred"
+      },
+      "correct": "A",
+      "difficulty": "hard"
+    },
+    {
+      "id": 203,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What does \"lurking\" mean online?",
+      "options": {
+        "A": "Running multiple fake accounts",
+        "B": "Following only private accounts",
+        "C": "Reading or watching without posting",
+        "D": "Deleting old content quietly"
+      },
+      "correct": "C",
+      "difficulty": "hard"
+    },
+    {
+      "id": 204,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "Which Minecraft mob is known for exploding near players?",
+      "options": {
+        "A": "Enderman",
+        "B": "Skeleton",
+        "C": "Creeper",
+        "D": "Slime"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 205,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "In Valorant, the Spike is used for what objective?",
+      "options": {
+        "A": "Unlocking agent abilities",
+        "B": "Reviving teammates",
+        "C": "Purchasing weapons",
+        "D": "Planting or defusing the bomb"
+      },
+      "correct": "D",
+      "difficulty": "easy"
+    },
+    {
+      "id": 206,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "What is Fortnite's best-known main mode?",
+      "options": {
+        "A": "Team Deathmatch",
+        "B": "Battle Royale",
+        "C": "Search and Destroy",
+        "D": "Payload Escort"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 207,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What is Prajakta Koli's character name in Mismatched?",
+      "options": {
+        "A": "Dimple Ahuja",
+        "B": "Anmol Malhotra",
+        "C": "Namrata Bidasaria",
+        "D": "Celina Matthew"
+      },
+      "correct": "A",
+      "difficulty": "hard"
+    },
+    {
+      "id": 208,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Mismatched is based on which novel?",
+      "options": {
+        "A": "The Fault in Our Stars",
+        "B": "When Dimple Met Rishi",
+        "C": "I Too Had a Love Story",
+        "D": "One Indian Girl"
+      },
+      "correct": "B",
+      "difficulty": "hard"
+    },
+    {
+      "id": 209,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "What is the name of Manoj Bajpayee's character in The Family Man?",
+      "options": {
+        "A": "Kabir Sawant",
+        "B": "Akhilesh Singh",
+        "C": "Vikram Malhotra",
+        "D": "Srikant Tiwari"
+      },
+      "correct": "D",
+      "difficulty": "easy"
+    },
+    {
+      "id": 210,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "In Stranger Things, what is the name of the town where the story begins?",
+      "options": {
+        "A": "Riverton",
+        "B": "Hillview",
+        "C": "Hawkins",
+        "D": "Rosewood"
+      },
+      "correct": "C",
+      "difficulty": "hard"
+    },
+    {
+      "id": 211,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What is the name of the giant doll in Squid Game's Red Light, Green Light?",
+      "options": {
+        "A": "Min-ji",
+        "B": "Bok-hee",
+        "C": "Young-hee",
+        "D": "Soo-yeon"
+      },
+      "correct": "C",
+      "difficulty": "hard"
+    },
+    {
+      "id": 212,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Crunchyroll is primarily known for streaming what?",
+      "options": {
+        "A": "Stand-up specials",
+        "B": "Live sports",
+        "C": "True crime documentaries",
+        "D": "Anime"
+      },
+      "correct": "D",
+      "difficulty": "hard"
+    },
+    {
+      "id": 213,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "Cheems, the meme dog, belonged to which breed?",
+      "options": {
+        "A": "Beagle",
+        "B": "Shiba Inu",
+        "C": "Pug",
+        "D": "Corgi"
+      },
+      "correct": "B",
+      "difficulty": "hard"
+    },
+    {
+      "id": 214,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What is a \"canon event\" in meme culture?",
+      "options": {
+        "A": "An officially verified rumor",
+        "B": "A defining moment that is treated as unavoidable",
+        "C": "A crossover post between fandoms",
+        "D": "A celebrity scandal with proof"
+      },
+      "correct": "B",
+      "difficulty": "hard"
+    },
+    {
+      "id": 215,
+      "levels": [
+        6,
+        7
+      ],
+      "question": "Which detergent brand used the famous line \"Daag Achhe Hain\"?",
+      "options": {
+        "A": "Rin",
+        "B": "Surf Excel",
+        "C": "Wheel",
+        "D": "Ariel"
+      },
+      "correct": "B",
+      "difficulty": "medium"
+    },
+    {
+      "id": 216,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "In Shaka Laka Boom Boom, which item had magical powers?",
+      "options": {
+        "A": "Eraser",
+        "B": "Compass box",
+        "C": "School bag",
+        "D": "Pencil"
+      },
+      "correct": "D",
+      "difficulty": "easy"
+    },
+    {
+      "id": 217,
+      "levels": [
+        3,
+        4,
+        5
+      ],
+      "question": "In Sarabhai vs Sarabhai, Rosesh is most obsessed with writing what?",
+      "options": {
+        "A": "Screenplays",
+        "B": "Ghazals",
+        "C": "Poetry",
+        "D": "Stand-up jokes"
+      },
+      "correct": "C",
+      "difficulty": "easy"
+    },
+    {
+      "id": 218,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "Vicco Turmeric was famously described in ads as an Ayurvedic what?",
+      "options": {
+        "A": "Oil",
+        "B": "Cream",
+        "C": "Soap",
+        "D": "Powder"
+      },
+      "correct": "B",
+      "difficulty": "easy"
+    },
+    {
+      "id": 219,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "Which company was behind the iconic campaign \"Hamara Bajaj\"?",
+      "options": {
+        "A": "Hero Honda",
+        "B": "TVS",
+        "C": "LML",
+        "D": "Bajaj Auto"
+      },
+      "correct": "D",
+      "difficulty": "easy"
+    },
+    {
+      "id": 220,
+      "levels": [
+        10,
+        11
+      ],
+      "question": "The famous Titan ad tune is adapted from which composer's work?",
+      "options": {
+        "A": "Vivaldi",
+        "B": "Beethoven",
+        "C": "Chopin",
+        "D": "Mozart"
+      },
+      "correct": "D",
+      "difficulty": "hard",
+      "media": {
+        "type": "audio",
+        "src": "/media/audio/titan.mp3",
+        "controls": true
+      }
+    },
+    {
+      "id": 221,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What is the name of the default Windows XP wallpaper image?",
+      "options": {
+        "A": "Horizon",
+        "B": "Meadow",
+        "C": "Greenscape",
+        "D": "Bliss"
+      },
+      "correct": "D",
+      "difficulty": "hard",
+      "media": {
+        "type": "image",
+        "src": "/media/images/xp-wallpaper.jpeg"
+      }
+    },
+    {
+      "id": 222,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "What does \"delulu\" usually mean in internet slang?",
+      "options": {
+        "A": "Delusional in a playful way",
+        "B": "Deleted unexpectedly",
+        "C": "Deeply unlucky",
+        "D": "Deliberately rude online"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 223,
+      "levels": [
+        1,
+        2
+      ],
+      "question": "What is CarryMinati's first name?",
+      "options": {
+        "A": "Ajey",
+        "B": "Ankit",
+        "C": "Aviral",
+        "D": "Aman"
+      },
+      "correct": "A",
+      "difficulty": "easy"
+    },
+    {
+      "id": 224,
+      "levels": [
+        8,
+        9
+      ],
+      "question": "What is the name of the school Wednesday Addams attends?",
+      "options": {
+        "A": "Nightshade Academy",
+        "B": "Nevermore Academy",
+        "C": "Ravencrest School",
+        "D": "Blackwood Hall"
+      },
+      "correct": "B",
+      "difficulty": "hard"
+    }
+  ]
 }

@@ -37,6 +37,10 @@
 			dispatch("pause-sound", JSON.parse(event.data));
 		});
 
+		source.addEventListener("stop-all-sounds", (event) => {
+			dispatch("stop-all-sounds", JSON.parse(event.data));
+		});
+
 		source.addEventListener("error", (event) => {
 			dispatch("error", event);
 		});

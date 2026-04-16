@@ -2028,13 +2028,38 @@
 			}
 
 			function pauseSound(name) {
+				if (name === "*") {
+					forceStopAllAudio();
+					return;
+				}
 				const audio = sounds[name];
 				if (!audio) return;
 				try {
 					audio.pause();
+					audio.currentTime = 0;
 				} catch (_error) {
 					/* ignore playback issues */
 				}
+			}
+
+			function forceStopAllAudio() {
+				Object.values(sounds).forEach((audio) => {
+					try {
+						audio.pause();
+						audio.currentTime = 0;
+					} catch (_error) {
+						/* ignore playback issues */
+					}
+				});
+
+				document.querySelectorAll("audio, video").forEach((mediaEl) => {
+					try {
+						mediaEl.pause();
+						mediaEl.currentTime = 0;
+					} catch (_error) {
+						/* ignore playback issues */
+					}
+				});
 			}
 
 			function getActiveContestantLifelines(state) {
@@ -2108,6 +2133,10 @@
 
 			pubsub.on("pause-sound", ({ sound }) => {
 				pauseSound(sound);
+			});
+
+			pubsub.on("stop-all-sounds", () => {
+				forceStopAllAudio();
 			});
 
 			function readyGame() {
